@@ -1,0 +1,28 @@
+# Milvus Standalone：docker compose up -d
+# 当前采用「单容器」部署：Milvus 内嵌 etcd + 本地对象存储，无需 etcd/minio 镜像。
+# 官方文档: https://milvus.io/docs/install_standalone-docker.md（standalone_embed 方式）
+#
+# 对外行为与三容器版完全一致：gRPC 19530 / 指标 9091，pymilvus 连接方式不变。
+# 如需经典三容器版（etcd + minio + standalone，适合 Linux/答辩演示），
+# 参考 Git 历史或官方 install_standalone-docker.md 的 docker-compose.yml。
+
+services:
+  standalone:
+    image: milvusdb/milvus:v2.5.4
+    command: ["milvus", "run", "standalone"]
+    restart: unless-stopped   # 意外退出（如启动瞬间内存不足被杀）时自动重启
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      ETCD_USE_EMBED: "true"
+      ETCD_CONFIG_PATH: /milvus/configs/advanced/etcd.yaml
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      COMMON_STORAGETYPE: local
+    volumes:
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+
+volumes:
+  milvus_data:

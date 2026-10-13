@@ -1,0 +1,13 @@
+# 运行时数据与密钥不入库
+data/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+evaluation/eval_set.json
+
+*.log
+start_log.txt
+stop_log.txt

@@ -1,0 +1,4 @@
+# 仅模式 B/C（本地向量模型）需要安装；无 GPU 用户可跳过，改用 API 托管模型
+-r requirements.txt
+sentence-transformers>=3.0.0
+torch>=2.1.0
