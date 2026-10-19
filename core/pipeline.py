@@ -13,7 +13,7 @@ from core.bm25 import BM25Index
 from core.embedder import build_embedder
 from core.fusion import rrf_fuse
 from core.loader import file_sha256, parse_bytes
-from core.llm import LLMClient, build_messages
+from core.llm import LLMClient, build_messages, build_rewrite_messages
 from core.reranker import Reranker
 from core.splitter import split_segments
 from core.vectorstore import MilvusStore
@@ -92,10 +92,8 @@ class RagPipeline:
         if not self._bm25_ready:
             self.refresh_bm25()
 
-    # ==================== 问答 ====================
-    def ask(
-        self, question: str, top_k: int | None = None, llm: LLMClient | None = None
-    ) -> dict:
+    # ==================== 检索（问答与流式问答共用） ====================
+    def _retrieve(self, question: str, top_k: int | None = None) -> tuple[list[dict], dict]:
         rc = self.cfg.get("retrieval", {})
         dense_top_k = int(rc.get("dense_top_k", 20))
         bm25_top_k = int(rc.get("bm25_top_k", 20))
@@ -117,30 +115,94 @@ class RagPipeline:
         else:
             contexts = fused[:final_top_k]
         t5 = time.perf_counter()
-        answer = (llm or self.llm).chat(build_messages(question, contexts))
-        t6 = time.perf_counter()
+        timings = {
+            "embed_ms": int((t1 - t0) * 1000),
+            "dense_ms": int((t2 - t1) * 1000),
+            "bm25_ms": int((t3 - t2) * 1000),
+            "fuse_ms": int((t4 - t3) * 1000),
+            "rerank_ms": int((t5 - t4) * 1000),
+        }
+        return contexts, timings
 
+    @staticmethod
+    def _format_refs(contexts: list[dict]) -> list[dict]:
+        return [
+            {
+                "source": h["source"],
+                "page": h["page"],
+                "chunk_idx": h.get("chunk_idx", -1),
+                "snippet": h["text"][:200],
+                "score": round(float(h.get("rrf_score", 0.0)), 6),
+                "channels": h.get("channels", []),
+            }
+            for h in contexts
+        ]
+
+    # ==================== 问答 ====================
+    def _rewrite_query(self, history: list[dict], question: str, llm: LLMClient) -> str:
+        """指代消解：结合历史把追问改写为独立问题；失败时回退原问题。"""
+        if not history:
+            return question
+        try:
+            rewritten = llm.chat(build_rewrite_messages(history, question)).strip().strip('"“”')
+            if rewritten and len(rewritten) <= 300:
+                return rewritten
+        except Exception:
+            pass
+        return question
+
+    def ask(
+        self,
+        question: str,
+        top_k: int | None = None,
+        llm: LLMClient | None = None,
+        history: list[dict] | None = None,
+    ) -> dict:
+        t0 = time.perf_counter()
+        eff_llm = llm or self.llm
+        # 改写固定用主配置模型（cloud）：微调模型训练分布是 RAG 问答，指令改写遵循差
+        rewritten = self._rewrite_query(history or [], question, self.llm)
+        contexts, timings = self._retrieve(rewritten, top_k)
+        answer = eff_llm.chat(build_messages(rewritten, contexts))
+        timings["llm_ms"] = int(
+            (time.perf_counter() - t0) * 1000 - sum(timings.values())
+        )
         return {
             "answer": answer,
-            "references": [
-                {
-                    "source": h["source"],
-                    "page": h["page"],
-                    "chunk_idx": h.get("chunk_idx", -1),
-                    "snippet": h["text"][:200],
-                    "score": round(float(h.get("rrf_score", 0.0)), 6),
-                    "channels": h.get("channels", []),
-                }
-                for h in contexts
-            ],
-            "timings": {
-                "embed_ms": int((t1 - t0) * 1000),
-                "dense_ms": int((t2 - t1) * 1000),
-                "bm25_ms": int((t3 - t2) * 1000),
-                "fuse_ms": int((t4 - t3) * 1000),
-                "rerank_ms": int((t5 - t4) * 1000),
-                "llm_ms": int((t6 - t5) * 1000),
-            },
+            "references": self._format_refs(contexts),
+            "timings": timings,
+            "total_ms": int((time.perf_counter() - t0) * 1000),
+        }
+
+    def ask_stream(
+        self,
+        question: str,
+        top_k: int | None = None,
+        llm: LLMClient | None = None,
+        history: list[dict] | None = None,
+    ):
+        """流式问答生成器：rewrite? → refs → delta* → done。"""
+        t0 = time.perf_counter()
+        eff_llm = llm or self.llm
+        history = history or []
+        if history:
+            # 改写固定用主配置模型（cloud）：微调模型训练分布是 RAG 问答，指令改写遵循差
+            rewritten = self._rewrite_query(history, question, self.llm)
+            yield {"type": "rewrite", "query": rewritten}
+        else:
+            rewritten = question
+        contexts, timings = self._retrieve(rewritten, top_k)
+        yield {"type": "refs", "references": self._format_refs(contexts), "timings": timings}
+        t1 = time.perf_counter()
+        answer = ""
+        for chunk in eff_llm.chat_stream(build_messages(rewritten, contexts)):
+            answer += chunk
+            yield {"type": "delta", "text": chunk}
+        timings["llm_ms"] = int((time.perf_counter() - t1) * 1000)
+        yield {
+            "type": "done",
+            "answer": answer,
+            "timings": timings,
             "total_ms": int((time.perf_counter() - t0) * 1000),
         }
 

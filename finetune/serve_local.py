@@ -8,13 +8,16 @@ Qwen3 默认关闭思考模式（enable_thinking=False），与 RAG 运行时行
     python finetune/serve_local.py --model Qwen/Qwen3-1.7B --port 8009      # 基座对照
 """
 import argparse
+import json
 import time
 import uuid
+from threading import Thread
 
 import torch
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TextIteratorStreamer
 from peft import PeftModel
 
 
@@ -28,6 +31,7 @@ class ChatRequest(BaseModel):
     messages: list[ChatMessage]
     temperature: float = 0.1
     max_tokens: int = 512
+    stream: bool = False
 
 
 app = FastAPI(title="DocQA Fine-tuned LLM Server")
@@ -47,6 +51,36 @@ def chat(req: ChatRequest):
         tokenize=False, add_generation_prompt=True, enable_thinking=False,
     )
     inputs = tok(text, return_tensors="pt").to(model.device)
+
+    if req.stream:
+        # 流式：后台线程跑 generate，TextIteratorStreamer 逐 token 产出 SSE
+        streamer = TextIteratorStreamer(
+            tok, skip_prompt=True, skip_special_tokens=True, timeout=600.0
+        )
+        gen_kwargs = dict(
+            **inputs,
+            max_new_tokens=req.max_tokens,
+            do_sample=req.temperature > 0,
+            temperature=max(req.temperature, 0.01),
+            pad_token_id=tok.eos_token_id,
+            streamer=streamer,
+        )
+        Thread(target=model.generate, kwargs=gen_kwargs, daemon=True).start()
+
+        def sse():
+            yield "data: " + json.dumps(
+                {"choices": [{"index": 0, "delta": {"role": "assistant"}}]}
+            ) + "\n\n"
+            for piece in streamer:
+                if piece:
+                    yield "data: " + json.dumps(
+                        {"choices": [{"index": 0, "delta": {"content": piece}}]},
+                        ensure_ascii=False,
+                    ) + "\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(sse(), media_type="text/event-stream")
+
     t0 = time.time()
     with torch.no_grad():
         out = model.generate(

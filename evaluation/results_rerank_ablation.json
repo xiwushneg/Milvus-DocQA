@@ -1,0 +1,27 @@
+{
+  "top_k": 5,
+  "num_questions": 20,
+  "results": [
+    {
+      "strategy": "dense",
+      "recall_at_k": 0.9,
+      "mrr": 0.789,
+      "avg_ms": 112.1,
+      "top_k": 5
+    },
+    {
+      "strategy": "hybrid(RRF)",
+      "recall_at_k": 0.95,
+      "mrr": 0.827,
+      "avg_ms": 112.8,
+      "top_k": 5
+    },
+    {
+      "strategy": "hybrid+rerank",
+      "recall_at_k": 0.95,
+      "mrr": 0.91,
+      "avg_ms": 647.0,
+      "top_k": 5
+    }
+  ]
+}

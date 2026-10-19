@@ -12,6 +12,25 @@ SYSTEM_PROMPT = (
     "“根据现有资料无法回答”，不要编造。"
 )
 
+CONDENSE_PROMPT = (
+    "你是查询改写助手。请结合对话历史，把【新问题】改写成一个不依赖上下文、"
+    "指代明确的独立问题：把“它/这个/那种”等指代词替换为其具体指代对象，保留原意。"
+    "只输出改写后的问题本身，不要任何解释、前缀或引号。"
+)
+
+
+def build_rewrite_messages(history: list[dict], question: str) -> list[dict]:
+    """多轮对话指代消解：把历史 + 新问题组装成改写 prompt。"""
+    lines = [
+        f"{'用户' if m['role'] == 'user' else '助手'}: {m['content'][:500]}"
+        for m in history[-6:]
+    ]
+    user = "\n".join(lines) + f"\n\n【新问题】\n{question}"
+    return [
+        {"role": "system", "content": CONDENSE_PROMPT},
+        {"role": "user", "content": user},
+    ]
+
 
 def build_context(hits: list[dict]) -> str:
     blocks = []
@@ -59,3 +78,38 @@ class LLMClient:
         )
         resp.raise_for_status()
         return resp.json()["choices"][0]["message"]["content"]
+
+    def chat_stream(self, messages: list[dict]):
+        """流式生成：按 OpenAI 兼容 SSE 协议逐段 yield 文本增量。"""
+        import httpx
+        import json
+
+        payload = {
+            "model": self._model,
+            "messages": messages,
+            "temperature": self._temperature,
+            "max_tokens": self._max_tokens,
+            "stream": True,
+        }
+        with self._http.stream(
+            "POST",
+            f"{self._base}/chat/completions",
+            headers=self._headers,
+            json=payload,
+            timeout=httpx.Timeout(300.0, connect=10.0),
+        ) as resp:
+            resp.raise_for_status()
+            for line in resp.iter_lines():
+                if not line or not line.startswith("data:"):
+                    continue
+                data = line[5:].strip()
+                if data == "[DONE]":
+                    break
+                try:
+                    chunk = json.loads(data)
+                except json.JSONDecodeError:
+                    continue
+                choices = chunk.get("choices") or []  # 部分 chunk 只含 usage，choices 为空
+                text = choices[0].get("delta", {}).get("content") if choices else None
+                if text:
+                    yield text

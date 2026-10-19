@@ -5,11 +5,13 @@
 """
 from __future__ import annotations
 
+import json
 from contextlib import asynccontextmanager
 
 import httpx
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
 from app.config import load_config
 from app.schemas import ChatRequest, ChatResponse, DocStats, IngestResponse
@@ -117,10 +119,13 @@ def chat(
     req: ChatRequest, request: Request, pipeline: RagPipeline = Depends(get_pipeline)
 ):
     llms = request.app.state.llms
-    chosen_id = req.llm if req.llm in llms else "cloud"  # 未知档案回退主配置
+    chosen_id = req.llm if req.llm in llms else "cloud"
     try:
         out = pipeline.ask(
-            req.question, top_k=req.top_k, llm=llms[chosen_id]["client"]
+            req.question,
+            top_k=req.top_k,
+            llm=llms[chosen_id]["client"],
+            history=[m.model_dump() for m in req.history],
         )
     except Exception as exc:  # 网络/向量库瞬时故障 → 503 而非裸 500
         raise HTTPException(
@@ -128,6 +133,35 @@ def chat(
             detail=f"问答服务暂时不可用（多为网络波动，请稍后重试）: {exc}",
         ) from exc
     return ChatResponse(llm=chosen_id, **out)
+
+
+@app.post("/api/chat/stream")
+def chat_stream(
+    req: ChatRequest, request: Request, pipeline: RagPipeline = Depends(get_pipeline)
+):
+    """SSE 流式问答：refs（检索完成+引用）→ delta*（逐段生成）→ done（耗时）→ 结束。"""
+    llms = request.app.state.llms
+    chosen_id = req.llm if req.llm in llms else "cloud"
+
+    def event_gen():
+        try:
+            for ev in pipeline.ask_stream(
+                req.question,
+                top_k=req.top_k,
+                llm=llms[chosen_id]["client"],
+                history=[m.model_dump() for m in req.history],
+            ):
+                ev["llm"] = chosen_id
+                yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
+        except Exception as exc:  # 流已开始，无法改 HTTP 状态码 → 以 error 事件告知
+            detail = {"type": "error", "detail": str(exc), "llm": chosen_id}
+            yield f"data: {json.dumps(detail, ensure_ascii=False)}\n\n"
+
+    return StreamingResponse(
+        event_gen(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.get("/api/documents", response_model=DocStats)

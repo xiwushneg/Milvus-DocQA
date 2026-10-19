@@ -4,10 +4,16 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 
+class HistoryMessage(BaseModel):
+    role: str = Field(..., pattern="^(user|assistant)$", description="user 或 assistant")
+    content: str = Field(..., min_length=1)
+
+
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, description="用户问题")
     top_k: int | None = Field(None, ge=1, le=20, description="最终上下文块数，缺省用配置")
     llm: str = Field("cloud", description="生成模型档案 id，见 GET /api/llms")
+    history: list[HistoryMessage] = Field([], description="最近对话历史（用于指代消解/查询改写）")
 
 
 class Reference(BaseModel):

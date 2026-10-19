@@ -1,0 +1,524 @@
+{
+  "judge_model": "deepseek-ai/DeepSeek-V3.2",
+  "num_questions": 25,
+  "results": [
+    {
+      "model": "cloud",
+      "faithfulness": 4.4,
+      "relevance": 4.8,
+      "refusal_correct": "5/5",
+      "avg_latency_s": 9.0,
+      "details": [
+        {
+          "question": "Milvus 有哪几种部署形态？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 2,
+          "relevance": 5,
+          "reason": "答案准确回答了问题，但编造了参考资料中未提及的“Milvus Standalone”和“Milvus Distributed”两种部署形态的具体描述。参考资料仅明确提及并描述了“Milvus Lite”这一种形态。",
+          "answer": "根据参考资料，Milvus 提供三种部署形态：\n1.  **Milvus Lite**：轻量级版本，通过 pip 安装 pymilvus 即可使用，数据保存在单个本地文件中，适合原型验证和小规模数据 [1][2][3][4]。\n2.  **Milvus Standalone**：单机服务器版，通过 Docker 部署，支持更大规模的数据 [1][2][3][4]。\n3.  **Milvus Dis",
+          "latency_s": 12.3
+        },
+        {
+          "question": "生产环境最常用的 Milvus 索引类型是什么？",
+          "refusal_expected": false,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案严格依据参考资料，明确指出资料[5]提及HNSW是生产环境最常用索引类型，但该结论并非来自指定文档，因此诚实回答“无法回答”。答案无编造，且完全切题。",
+          "answer": "根据现有资料无法回答。参考资料[1]至[4]中“距离度量”章节内容为空，而资料[5]虽然提及了HNSW是生产环境最常用的索引类型，但该结论并非来自参考资料[1]至[4]中指定的“milvus入门.md”文档。",
+          "latency_s": 6.3
+        },
+        {
+          "question": "文本向量检索最常用的距离度量是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1][2][3][4]中明确指出的'余弦相似度 COSINE 是文本向量检索最常用的度量'，完全忠于参考资料且精准回答了问题。",
+          "answer": "文本向量检索最常用的距离度量是余弦相似度（COSINE）[1][5]。",
+          "latency_s": 3.1
+        },
+        {
+          "question": "HNSW 是什么结构的索引？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案准确概括了参考资料[1][2]中‘HNSW是基于图的索引’的核心定义，并基于参考资料[3][4][5]中关于向量索引和ANN的背景知识，正确且合理地补充了‘分层可导航小世界图’这一具体结构名称及其多层级搜索机制，无编造信息，完全切题。",
+          "answer": "HNSW 是一种基于图的索引，具体结构为“分层可导航小世界图”。它将向量组织成多层次的近邻图，查询时从顶层的稀疏图出发，逐层下沉到更精细的层进行搜索 [3][4][5]。",
+          "latency_s": 23.6
+        },
+        {
+          "question": "超大规模数据放不进内存时该用什么索引？",
+          "refusal_expected": false,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案核心观点（使用DISKANN）完全来自参考资料，并准确引用了其设计目的（为单机内存放不下的超大规模数据设计，用磁盘IO换内存容量），且与问题场景（超大规模数据放不进内存）高度匹配，回答直接且完整。",
+          "answer": "根据现有资料，当面临超大规模数据且单机内存无法容纳时，应使用 DISKANN 索引。因为 DISKANN 专为单机放不下内存的超大规模数据设计，通过将索引放到磁盘上来用磁盘 IO 换取内存容量 [1][2][3][4][5]。",
+          "latency_s": 4.2
+        },
+        {
+          "question": "Milvus 如何实现多租户数据隔离？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠于参考资料[5]，准确描述了通过标量字段存储权限信息并在检索时过滤的实现方式，与问题高度相关且无编造。",
+          "answer": "Milvus通过其标量过滤功能实现多租户数据隔离。具体做法是，将用户身份或部门属性等权限信息作为标量字段与向量数据一同存储。在查询时，将租户条件（如用户ID）作为布尔表达式加入检索请求，先对数据进行过滤，确保只有该租户有权访问的文档向量才会进入候选集进行相似度检索，从而实现数据库层面的数据隔离 [1][5]。",
+          "latency_s": 6.0
+        },
+        {
+          "question": "RAG 分为哪两个阶段？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1][2][3][4]中明确指出的两个阶段名称，完全忠于原文，且精准回答了问题。",
+          "answer": "RAG 分为离线索引与在线问答两个阶段 [1][2][3][4]。",
+          "latency_s": 4.6
+        },
+        {
+          "question": "RRF 融合公式的常数 k 通常取多少？",
+          "refusal_expected": false,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料中多次明确提到的信息（k通常取60），完全忠于原文，且精准回答了问题。",
+          "answer": "根据现有资料，RRF融合公式中的常数 k 通常取 60 [1][2][3][4][5]。",
+          "latency_s": 5.0
+        },
+        {
+          "question": "为什么 BM25 和稠密检索要一起用？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠于参考资料，准确概括了稠密检索和BM25各自的优缺点及互补性，并点明了混合检索的目的。答案直接、完整地回答了问题，无编造信息。",
+          "answer": "BM25和稠密检索需要一起使用，是因为它们各自存在系统性弱点，而混合使用可以相互弥补，从而获得更稳定、全面的召回效果。\n\n具体原因如下：\n1.  **稠密向量检索擅长理解语义**，例如能将“电脑坏了”与“计算机故障”关联起来，但它对专有名词、产品型号、错误代码等“字面即关键”的查询不够敏感，因为这些词在训练语料中出现频率低，其向量表示不够可分 [1]。\n2.  **BM25等稀疏关键词检索则相反*",
+          "latency_s": 34.9
+        },
+        {
+          "question": "RRF 相比加权分数融合的优点是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠于参考资料，准确概括了RRF免调参和对分数分布鲁棒两大优点，并正确引用了相关段落。",
+          "answer": "RRF相比加权分数融合的优点主要有两个：\n1.  **免调参**：RRF不依赖原始分数，只关注排名，因此无需像加权分数融合那样精心设计归一化方法和调整权重 [1][4]。\n2.  **对分数分布鲁棒**：由于不直接使用分数，RRF能够避免因不同检索方法（如稠密检索和BM25）的分数量纲和分布不一致所带来的问题 [1][4]。",
+          "latency_s": 19.9
+        },
+        {
+          "question": "bge-m3 模型的三个 M 分别指什么？最大输入长度是多少？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 5,
+          "reason": "答案完全回答了问题，但关于三个M的具体含义和最大输入长度的信息在提供的参考资料中均未提及，属于编造内容。",
+          "answer": "bge-m3 模型的三个 M 分别指：\n*   Multi-Lingual（多语言）\n*   Multi-Granularity（多粒度）\n*   Multi-Function（多功能）[1][2][3]\n\n其最大输入长度为 8192 token [1][2][3]。",
+          "latency_s": 9.6
+        },
+        {
+          "question": "中文嵌入模型评测基准叫什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 5,
+          "reason": "答案完全偏离参考资料内容。参考资料中未提及任何评测基准（如C-MTEB），仅讨论了BGE系列模型及其在RAG中的作用，因此答案存在编造。",
+          "answer": "中文嵌入模型的评测基准是 C-MTEB [1][2][3]。",
+          "latency_s": 2.2
+        },
+        {
+          "question": "交叉编码器为什么比双塔结构精度高但不能做全库检索？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全基于参考资料，准确解释了交叉编码器精度高的原因（词级别交互）和不能做全库检索的原因（计算成本高，只能处理少量候选），与问题高度相关且无编造。",
+          "answer": "交叉编码器精度更高，是因为它将查询和文档拼接后一起送入Transformer，允许注意力机制在词级别进行充分交互，从而能更精细地判断相关性 [1][2][3][4][5]。它不能用于全库检索，是因为需要对每条候选文档都运行一次完整的前向传播，计算成本过高，因此只能作为精排模型处理少量（如几十条）候选文档 [1][3][5]。",
+          "latency_s": 10.4
+        },
+        {
+          "question": "文档分块的重叠比例一般取多少？",
+          "refusal_expected": false,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1][2][3]中明确指出的重叠比例典型取值（块长的10%到20%），完全忠于原文，且精准回答了问题。",
+          "answer": "根据现有资料，文档分块的重叠（Overlap）比例典型取值为块长的 10% 到 20% [1][2][3]。",
+          "latency_s": 9.4
+        },
+        {
+          "question": "递归字符分块是按什么顺序切分的？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠实于参考资料，准确概括了递归字符分块按段落->句子->固定字符的层级顺序进行切分的核心逻辑，并正确引用了相关参考资料。",
+          "answer": "递归字符分块按照预定义的分隔符层级进行递归切分。其顺序是：先尝试按段落切分，如果段落超长，则再按句子切分，如果句子仍然超长，最后再按固定字符切分 [1][2][3]。",
+          "latency_s": 7.3
+        },
+        {
+          "question": "大模型产生幻觉的原因有哪些？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完整、准确地复现了参考资料[1][2][3]中关于大模型幻觉成因的三个核心要点，无任何编造或添加，并正确标注了引用来源，完全忠于资料。答案直接、完整地回答了问题，高度相关。",
+          "answer": "根据参考资料，大模型产生幻觉的原因主要有以下三个方面：\n\n1.  **训练数据本身的错误、过时或偏见被模型记忆** [1][2][3]。\n2.  **语言模型的生成机制本质上是概率性的下一个词预测**，它会倾向于生成“语言上合理”的内容，而非“事实上正确”的内容 [1][2][3]。\n3.  **当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案** [1][2][3]。",
+          "latency_s": 6.5
+        },
+        {
+          "question": "衡量答案是否基于上下文、有没有编造的指标叫什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全基于参考资料，准确指出指标为“忠实度（Faithfulness）”，并正确引用了相关段落[1][2][3][5]。答案直接、完整地回应了问题，无编造内容。",
+          "answer": "衡量答案是否严格基于检索到的上下文、有没有编造内容的指标叫**忠实度（Faithfulness）** [1][2][3][5]。",
+          "latency_s": 2.8
+        },
+        {
+          "question": "MRR 指标的定义是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 4,
+          "relevance": 5,
+          "reason": "答案核心定义（排第一得1分，排第二得0.5分，取平均）与参考资料[4][5]一致，且正确指出这是检索评估指标。但参考资料中并未明确写出“MRR（Mean Reciprocal Rank，平均倒数排名）”这一全称和缩写，此部分为答案的合理补充，故忠实度扣1分。答案完全切题，清晰回答了MRR的定义。",
+          "answer": "MRR（Mean Reciprocal Rank，平均倒数排名）的定义是：在检索评估中，对于每个问题，如果标准答案片段被检索到，则其排名的倒数（例如，排第一得1分，排第二得0.5分）作为该问题的得分，最后对所有问题的得分取平均值 [1][2][3][4]。",
+          "latency_s": 4.8
+        },
+        {
+          "question": "用大模型给另一个模型的答案打分的评估方法叫什么？",
+          "refusal_expected": false,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 1,
+          "reason": "答案完全忠于参考资料，因为参考资料中确实没有提及该评估方法的名称。但答案与问题完全不相关，未提供任何有效信息，仅声明无法回答，因此相关性极低。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 8.2
+        },
+        {
+          "question": "问答场景的温度参数应该怎么设？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠实于参考资料，准确引用了温度参数应设为接近零的低值及其作用（减少随机性、提高一致性、输出更保守确定），且直接、完整地回答了问题。",
+          "answer": "在问答场景中，应将温度参数（temperature）设为接近零的低值 [1][2][4]。这样做可以减少模型的随机发挥，提高同一问题的答案一致性。生成温度越低，模型越倾向于选择概率最高的词，输出越保守和确定 [1][2][4]。",
+          "latency_s": 3.9
+        },
+        {
+          "question": "《Milvus索引与检索原理》这篇文档的作者是谁？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "参考资料中未提及文档作者信息，答案如实说明无法回答，完全忠于资料且切题。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 2.0
+        },
+        {
+          "question": "RRF 融合公式最初发表于哪一年的哪篇论文？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 1,
+          "reason": "答案完全忠于参考资料，因为参考资料中确实未提及RRF融合公式的发表年份和具体论文，故回答“无法回答”是忠实的。但答案与问题相关性低，未提供任何有效信息，未满足用户对具体年份和论文的查询需求。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.9
+        },
+        {
+          "question": "HNSW 和 DISKANN 的内存占用具体相差多少 GB？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案严格基于参考资料，明确指出资料未提供具体GB数值，仅描述了设计差异，无任何编造。答案直接回应了问题中关于具体数值的询问，并解释了无法回答的原因，完全切题。",
+          "answer": "根据现有资料无法回答。参考资料中虽然提到了HNSW和DISKANN在内存使用上的差异（例如DISKANN专为内存受限的超大规模场景设计，用磁盘IO换取内存容量），但并未提供两者内存占用相差的具体数值（如GB级别）[1][2][3][5]。",
+          "latency_s": 5.4
+        },
+        {
+          "question": "Milvus 项目在 GitHub 上有多少 star？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "参考资料未提供Milvus项目在GitHub上的star数量信息，答案如实说明无法回答，完全忠于资料且切题。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 26.0
+        },
+        {
+          "question": "bge-reranker-v2-m3 的模型权重文件有多大？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠于参考资料，参考资料仅提及模型原理，未包含权重文件大小信息，因此回答“无法回答”是准确且忠实的。答案直接回应了问题，明确指出资料缺失，完全切题。",
+          "answer": "根据现有资料无法回答。参考资料中提到了 bge-reranker-v2-m3 模型的工作原理和应用场景 [2][5]，但并未提及该模型权重文件的具体大小。",
+          "latency_s": 3.5
+        }
+      ]
+    },
+    {
+      "model": "ft",
+      "faithfulness": 3.75,
+      "relevance": 4.65,
+      "refusal_correct": "5/5",
+      "avg_latency_s": 3.4,
+      "details": [
+        {
+          "question": "Milvus 有哪几种部署形态？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 2,
+          "relevance": 4,
+          "reason": "答案提及了三种部署形态，切题。但参考资料[1]-[4]仅明确描述了Milvus Lite，未提及Standalone和Distributed的具体信息，答案中后两种形态的细节（如Docker部署、Kubernetes扩展）在提供的参考资料中无依据，属于编造。参考资料[5]内容与部署形态无关。",
+          "answer": "Milvus 提供三种部署形态：Milvus Lite 是轻量级版本，通过 pip 安装 pymilvus 即可使用，数据保存在单个本地文件中，适合原型验证和小规模数据；Milvus Standalone 是单机服务器版，通过 Docker 部署，支持更大规模的数据；Milvus Distributed 是分布式版本，可在 Kubernetes 集群上水平扩展至十亿级向量 [1]。",
+          "latency_s": 7.5
+        },
+        {
+          "question": "生产环境最常用的 Milvus 索引类型是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 5,
+          "reason": "答案声称HNSW是生产环境最常用的索引类型，但参考资料[5]仅提及FLAT是暴力精确检索，并未提及HNSW或任何关于“最常用”的信息，因此答案内容在参考资料中无依据，属于编造。",
+          "answer": "HNSW 是生产环境最常用的 Milvus 索引类型 [5]。",
+          "latency_s": 2.1
+        },
+        {
+          "question": "文本向量检索最常用的距离度量是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]的明确表述'余弦相似度 COSINE 衡量向量方向的一致性，是文本向量检索最常用的度量'，完全忠于参考资料且精准回答了问题。",
+          "answer": "文本向量检索最常用的相似度度量是余弦相似度 COSINE [1]。",
+          "latency_s": 1.9
+        },
+        {
+          "question": "HNSW 是什么结构的索引？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]中的原句，准确描述了HNSW是基于图的索引，并说明了其兼顾高召回率与低延迟的特点，完全忠于参考资料且精准回答了问题。",
+          "answer": "HNSW 是基于图的索引，兼顾高召回率与低延迟，是生产环境最常用的选择 [1]。",
+          "latency_s": 2.6
+        },
+        {
+          "question": "超大规模数据放不进内存时该用什么索引？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]的核心内容，准确指出DISKANN是为超大规模数据、内存受限场景设计的索引，完全忠于参考资料且精准回答了问题。",
+          "answer": "DISKANN 将索引放到磁盘上，专为单机放不下内存的超大规模数据设计，用磁盘 IO 换内存容量 [1]。",
+          "latency_s": 3.4
+        },
+        {
+          "question": "Milvus 如何实现多租户数据隔离？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 2,
+          "reason": "答案声称标量过滤支持多租户隔离，但参考资料[1][2][3]仅讨论索引选型和相似度度量，[4]介绍部署形态，[5]提及多租户隔离应在检索层实现但未说明Milvus具体机制。答案引用[1]无依据，且未解释Milvus如何实现数据隔离（如租户标识、分区等核心机制），部分偏离问题。",
+          "answer": "Milvus 的标量过滤特性支持多租户隔离和权限控制，可以在数据库层实现。每个向量可以附带来源、页码、用户 ID 等结构化属性，查询时用布尔表达式先过滤再检索，让无权文档根本不进入候选集 [1]。",
+          "latency_s": 5.2
+        },
+        {
+          "question": "RAG 分为哪两个阶段？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]中的原句，完全忠于原文，且精准回答了问题。",
+          "answer": "RAG 分为离线索引与在线问答两个阶段 [1]。",
+          "latency_s": 1.8
+        },
+        {
+          "question": "RRF 融合公式的常数 k 通常取多少？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]中的明确信息“常数 k 通常取 60”，完全忠于原文，且精准回答了问题。",
+          "answer": "常数 k 通常取 60 [1]。",
+          "latency_s": 1.4
+        },
+        {
+          "question": "为什么 BM25 和稠密检索要一起用？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠于参考资料，准确概括了稠密检索和BM25各自的优缺点及混合检索的必要性，无编造信息。答案直接、完整地回答了问题，解释了为什么要一起使用。",
+          "answer": "因为单一检索通道存在盲区，稠密向量检索擅长理解语义，但对专有名词、产品型号、错误代码、法规编号等“字面即关键”的查询不够敏感；BM25擅长精确关键词的召回，但对语义理解能力差，无法处理同义改写、口语化表达等。混合检索通过并行执行两路检索，各取回Top-K候选，再通过融合算法把两份候选列表合并成一份，从而弥补单一路的盲区，实践证明混合检索在多数文档问答基准上显著优于任一单路 [1]。",
+          "latency_s": 9.9
+        },
+        {
+          "question": "RRF 相比加权分数融合的优点是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案准确概括了RRF的原理（看排名、取倒数求和）及其核心优点（免调参、对分数分布鲁棒），与参考资料[1][2][5]的内容完全一致，且直接回答了问题。",
+          "answer": "RRF 不看分数，只看排名，对每个文档把它在各路检索中的名次取倒数再求和。RRF 的最大优点是免调参、对分数分布鲁棒，因此成为工业界混合检索的默认选择 [1]。",
+          "latency_s": 4.5
+        },
+        {
+          "question": "bge-m3 模型的三个 M 分别指什么？最大输入长度是多少？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 5,
+          "reason": "答案完全切题，直接回答了问题。但答案中关于三个M的具体解释（Multi-Lingual, Multi-Granularity, Multi-Function）和最大输入长度（8192 token）在提供的参考资料中均未提及，属于编造信息，因此忠实性得分低。",
+          "answer": "bge-m3 是 Multi-Lingual（多语言）、Multi-Granularity（多粒度）、Multi-Function（多功能）模型，支持 100 多种语言、最长 8192 token 的输入 [1]。",
+          "latency_s": 4.4
+        },
+        {
+          "question": "中文嵌入模型评测基准叫什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 1,
+          "relevance": 5,
+          "reason": "答案直接回答了问题，高度相关。但参考资料中未提及任何评测基准（如C-MTEB），答案内容完全编造，严重不忠于参考资料。",
+          "answer": "中文嵌入模型评测基准是 C-MTEB [1]。",
+          "latency_s": 1.7
+        },
+        {
+          "question": "交叉编码器为什么比双塔结构精度高但不能做全库检索？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全基于参考资料，准确解释了交叉编码器精度高的原因（词级别交互）和不能做全库检索的原因（每条候选需完整前向传播），与问题高度相关且无编造。",
+          "answer": "因为交叉编码器将查询和文档拼接成一条输入，一起送入 Transformer，让注意力机制在词级别充分交互，最后输出一个相关性分数。它的相关性判断精度显著高于双塔结构 [1]。由于每条候选都要跑一次完整前向传播，交叉编码器无法用于全库检索，只能作为精排使用 [1]。",
+          "latency_s": 6.2
+        },
+        {
+          "question": "文档分块的重叠比例一般取多少？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]中的原句，准确无误地给出了重叠比例的典型取值范围，完全忠于参考资料且精准回答了问题。",
+          "answer": "典型取块长的 10% 到 20% [1]。",
+          "latency_s": 2.0
+        },
+        {
+          "question": "递归字符分块是按什么顺序切分的？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠实于参考资料[4]的描述，准确概括了递归字符分块按段落、句子、固定字符的层级顺序切分的核心逻辑，并正确说明了其目标。答案直接、完整地回答了问题。",
+          "answer": "递归字符分块是按照预定义的分隔符层级递归切分：先尝试按段落切，超长的段落再按句子切，超长的句子再按固定字符切，目标是让每个块尽量落在目标长度内，同时尽量在自然边界断开，保住语义完整。",
+          "latency_s": 5.4
+        },
+        {
+          "question": "大模型产生幻觉的原因有哪些？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完整、准确地复述了参考资料[1][2][3]中关于大模型幻觉成因的三个核心要点，无任何编造或添加，且直接回应了问题。",
+          "answer": "大模型幻觉的成因主要有三个方面：一是训练数据本身的错误、过时或偏见被模型记忆；二是语言模型的生成机制本质上是概率性的下一个词预测，它会倾向于生成“语言上合理”的内容，而非“事实上正确”的内容；三是当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案 [1]。",
+          "latency_s": 6.8
+        },
+        {
+          "question": "衡量答案是否基于上下文、有没有编造的指标叫什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案直接引用参考资料[1]中关于忠实度（Faithfulness）的定义，准确无误，无任何编造。答案完全回应了用户关于衡量指标名称的问题，高度切题。",
+          "answer": "忠实度（Faithfulness）衡量答案是否严格基于检索到的上下文、有没有编造内容，这是抑制幻觉的直接度量 [1]。",
+          "latency_s": 3.1
+        },
+        {
+          "question": "MRR 指标的定义是什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 2,
+          "relevance": 5,
+          "reason": "答案核心定义（排第一得1分、排第二得0.5分等）与参考资料[4][5]一致，且准确回答了问题，故相关性高。但答案错误引用参考资料[1]，且将MRR描述为“在命中基础上进一步考虑排名”，而参考资料中MRR是独立于“召回率”的另一个指标，此描述在参考资料中无依据，存在编造成分，故忠实度低。",
+          "answer": "MRR（Mean Reciprocal Rank，平均倒数排名）在命中基础上进一步考虑排名，标准片段排第一得 1 分、排第二得 0.5 分，以此类推后取平均，回答“找到的排得靠不靠前” [1]。",
+          "latency_s": 4.9
+        },
+        {
+          "question": "用大模型给另一个模型的答案打分的评估方法叫什么？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 2,
+          "relevance": 2,
+          "reason": "答案声称该方法称为“用大模型评判大模型”（LLM as Judge），并引用参考资料[2]。但参考资料[2]（以及[1]、[3]）中仅提到“自动化评估常用‘用大模型...’”，并未给出该方法的正式名称。参考资料中完全没有出现“LLM as Judge”这一术语。因此，答案存在编造内容且引用不实。同时，答案未能准确回答“叫什么”的问题，因为参考资料并未提供该方法的明确命名，相关性不足。",
+          "answer": "这种评估方法称为“用大模型评判大模型”（LLM as Judge）[2]。",
+          "latency_s": 2.2
+        },
+        {
+          "question": "问答场景的温度参数应该怎么设？",
+          "refusal_expected": false,
+          "refused": false,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "答案完全忠实于参考资料[1]和[3]、[5]的内容，准确复述了温度参数应设为接近零的低值及其作用；答案直接、完整地回答了问题，高度相关。",
+          "answer": "问答类任务把 temperature 设为接近零的低值，减少模型的随机发挥，提高同一问题的答案一致性；生成温度越低，模型越倾向于选择概率最高的词，输出越保守确定 [1]。",
+          "latency_s": 3.9
+        },
+        {
+          "question": "《Milvus索引与检索原理》这篇文档的作者是谁？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "参考资料中未提及文档作者信息，答案如实说明无法回答，完全忠于资料且切题。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.1
+        },
+        {
+          "question": "RRF 融合公式最初发表于哪一年的哪篇论文？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 1,
+          "reason": "答案完全忠于参考资料，未编造任何信息。但参考资料中未提及RRF融合公式最初发表的年份和论文，答案未能回答问题，因此相关性极低。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.0
+        },
+        {
+          "question": "HNSW 和 DISKANN 的内存占用具体相差多少 GB？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "参考资料仅说明DISKANN为内存受限的超大规模数据设计，用磁盘换内存，而HNSW适用于百万级以下数据，未提供具体GB级内存占用对比数据。答案“根据现有资料无法回答”完全忠于资料且切题。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.1
+        },
+        {
+          "question": "Milvus 项目在 GitHub 上有多少 star？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 5,
+          "reason": "参考资料仅包含Milvus的技术介绍，未提及GitHub star数量。答案“根据现有资料无法回答”完全忠于参考资料，且直接、准确地回应了问题，未进行任何编造或猜测。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.0
+        },
+        {
+          "question": "bge-reranker-v2-m3 的模型权重文件有多大？",
+          "refusal_expected": true,
+          "refused": true,
+          "faithfulness": 5,
+          "relevance": 1,
+          "reason": "答案完全忠于参考资料，未编造任何信息。但参考资料仅提及模型名称和用途，未包含其权重文件大小的任何信息，因此答案“无法回答”未能解决用户的具体问题，相关性低。",
+          "answer": "根据现有资料无法回答。",
+          "latency_s": 1.1
+        }
+      ]
+    }
+  ]
+}
