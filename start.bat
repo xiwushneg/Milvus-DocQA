@@ -20,7 +20,7 @@ if errorlevel 1 (
     if errorlevel 1 (
         set /a tries+=1
         if !tries! lss 24 goto waitdocker
-        echo   [错误] Docker 启动超时，请手动打开 Docker Desktop 后重试
+        echo   [错误] Docker 启动超时，请手动启动 Docker Desktop 后重试
         endlocal
         pause
         exit /b 1
@@ -32,13 +32,20 @@ echo   Docker 已就绪
 echo.
 echo [2/4] 启动 Milvus 向量数据库...
 docker compose up -d
-echo   等待 Milvus 就绪（首次约需 30 秒）...
+echo   等待 Milvus 就绪（首次启动约 30 秒）...
+set /a mtries=0
 :waitmilvus
-curl -s -m 2 http://localhost:9091/healthz 2>nul | findstr OK >nul
-if errorlevel 1 (
-    ping -n 4 127.0.0.1 >nul
-    goto waitmilvus
-)
+".venv\Scripts\python.exe" -c "import urllib.request; urllib.request.urlopen('http://localhost:9091/healthz', timeout=2)" >nul 2>&1
+if not errorlevel 1 goto milvusok
+set /a mtries+=1
+if %mtries% geq 90 goto milvustimeout
+ping -n 4 127.0.0.1 >nul
+goto waitmilvus
+:milvustimeout
+echo   [错误] Milvus 启动超时，请运行 docker compose logs 查看日志后重试
+pause
+exit /b 1
+:milvusok
 echo   Milvus 已就绪
 
 echo.
@@ -55,12 +62,10 @@ start http://localhost:8501
 
 echo.
 echo ============================================
-echo   全部启动完成！
+echo   全部启动完成
 echo   - 问答界面: http://localhost:8501
 echo   - API 文档: http://127.0.0.1:8000/docs
 echo   关闭系统请双击 stop.bat
 echo ============================================
 echo 此窗口可以关闭。
 pause >nul
-
-
