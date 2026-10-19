@@ -1,0 +1,48 @@
+### ============================================================
+### Qwen3-1.7B QLoRA 领域微调配置（LLaMA-Factory）
+### 目标硬件: RTX 5060 8GB / 16GB 内存
+### 启动方式: 在 LLaMA-Factory 目录下执行
+###   llamafactory-cli train ..\qwen3_lora_docqa.yaml
+### ============================================================
+
+### model
+model_name_or_path: Qwen/Qwen3-1.7B
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: all
+lora_rank: 8
+lora_alpha: 16
+lora_dropout: 0.05
+quantization_bit: 4            # QLoRA 4-bit，1.7B 训练显存约 4-5GB
+
+### dataset（dataset_dir 指向本项目的训练数据目录）
+dataset: docqa_lora
+dataset_dir: C:/Users/Administrator/Documents/trae_projects/tizhong/milvus-docqa/finetune/data
+template: qwen3
+cutoff_len: 1536
+
+### train
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 8   # 有效 batch = 16
+learning_rate: 1.0e-4            # LoRA 常用 1e-4（7B 用 5e-5）
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+bf16: true
+gradient_checkpointing: true     # 省显存关键项
+
+### validation（留 5% 看损失曲线，论文可引用）
+val_size: 0.05
+per_device_eval_batch_size: 2
+eval_strategy: steps
+eval_steps: 50
+
+### output
+output_dir: C:/Users/Administrator/Documents/trae_projects/tizhong/milvus-docqa/finetune/saves/qwen3-docqa-lora
+logging_steps: 10
+save_steps: 200
+plot_loss: true
+report_to: none

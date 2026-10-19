@@ -1,0 +1,12 @@
+{
+  "docqa_lora": {
+    "file_name": "docqa_lora.json",
+    "formatting": "alpaca",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "response": "output",
+      "system": "system"
+    }
+  }
+}

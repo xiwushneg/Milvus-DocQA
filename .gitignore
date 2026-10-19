@@ -1,5 +1,5 @@
-# 运行时数据与密钥不入库
-data/
+# 运行时数据与密钥不入库（仅根目录 data/；finetune/data/ 训练集需入库）
+/data/
 .env
 __pycache__/
 *.pyc
@@ -11,3 +11,9 @@ evaluation/eval_set.json
 *.log
 start_log.txt
 stop_log.txt
+
+# 微调训练产物（体积大，不入库）
+finetune/.venv-ft/
+finetune/LLaMA-Factory/
+finetune/saves/
+finetune/models/
