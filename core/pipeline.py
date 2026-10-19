@@ -93,7 +93,9 @@ class RagPipeline:
             self.refresh_bm25()
 
     # ==================== 问答 ====================
-    def ask(self, question: str, top_k: int | None = None) -> dict:
+    def ask(
+        self, question: str, top_k: int | None = None, llm: LLMClient | None = None
+    ) -> dict:
         rc = self.cfg.get("retrieval", {})
         dense_top_k = int(rc.get("dense_top_k", 20))
         bm25_top_k = int(rc.get("bm25_top_k", 20))
@@ -115,7 +117,7 @@ class RagPipeline:
         else:
             contexts = fused[:final_top_k]
         t5 = time.perf_counter()
-        answer = self.llm.chat(build_messages(question, contexts))
+        answer = (llm or self.llm).chat(build_messages(question, contexts))
         t6 = time.perf_counter()
 
         return {

@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, description="用户问题")
     top_k: int | None = Field(None, ge=1, le=20, description="最终上下文块数，缺省用配置")
+    llm: str = Field("cloud", description="生成模型档案 id，见 GET /api/llms")
 
 
 class Reference(BaseModel):
@@ -23,6 +24,7 @@ class ChatResponse(BaseModel):
     references: list[Reference]
     timings: dict
     total_ms: int
+    llm: str = "cloud"
 
 
 class IngestItem(BaseModel):

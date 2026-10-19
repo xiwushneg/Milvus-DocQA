@@ -80,17 +80,25 @@ def main() -> None:
     ap.add_argument("--adapter", default=None, help="可选：不合并直接挂 LoRA 适配器目录")
     ap.add_argument("--port", type=int, default=8009)
     ap.add_argument("--cpu", action="store_true", help="强制 CPU 推理（默认自动用 GPU）")
+    ap.add_argument(
+        "--quant", action="store_true",
+        help="4-bit 量化加载（省显存约 2GB 但生成慢 30%%；默认 bf16 更快更准）",
+    )
     args = ap.parse_args()
 
     device = "cpu" if args.cpu else "auto"
-    bnb = BitsAndBytesConfig(
-        load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_quant_type="nf4",
-    )
-    print(f"加载模型: {args.model}（4-bit, device={device}）…")
+    quant_kwargs = {}
+    if args.quant:
+        quant_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_quant_type="nf4",
+        )
+    else:
+        quant_kwargs["torch_dtype"] = torch.bfloat16  # 显式指定，避免默认加载成 fp32 占 7GB
+    print(f"加载模型: {args.model}（{'4-bit' if args.quant else 'bf16'}, device={device}）…")
     tok = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
-        args.model, quantization_config=bnb, device_map=device, trust_remote_code=True,
+        args.model, device_map=device, trust_remote_code=True, **quant_kwargs,
     )
     if args.adapter:
         print(f"挂载适配器: {args.adapter}")

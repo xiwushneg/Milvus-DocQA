@@ -7,18 +7,58 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
+import httpx
+from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import load_config
 from app.schemas import ChatRequest, ChatResponse, DocStats, IngestResponse
+from core.llm import LLMClient
 from core.pipeline import RagPipeline, build_pipeline
+
+
+def build_llm_profiles(cfg: dict) -> dict[str, dict]:
+    """按 config.llm.profiles 构建可切换模型档案: id → {client, label, model, base_url}。
+
+    cloud 固定为主配置；其余档案覆盖 base_url/model，密钥/温度等继承主配置。
+    """
+    base = dict(cfg.get("llm", {}))
+    profiles = base.pop("profiles", None) or {}
+    out = {
+        "cloud": {
+            "client": LLMClient(base),
+            "label": f"云端 API · {base.get('model', '')}",
+            "model": base.get("model", ""),
+            "base_url": base.get("base_url", ""),
+        }
+    }
+    for pid, prof in profiles.items():
+        merged = {**base, **prof}
+        out[pid] = {
+            "client": LLMClient(merged),
+            "label": prof.get("label") or merged.get("model", pid),
+            "model": merged.get("model", ""),
+            "base_url": merged.get("base_url", ""),
+        }
+    return out
+
+
+def _probe_available(base_url: str) -> bool:
+    """1.5s 快速探测服务是否可达（收到任何 HTTP 响应即视为在线）。"""
+    if not base_url:
+        return False
+    try:
+        httpx.get(f"{base_url.rstrip('/')}/models", timeout=1.5)
+        return True
+    except Exception:
+        return False
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     cfg = load_config()
     app.state.pipeline = build_pipeline(cfg)
+    app.state.llms = build_llm_profiles(cfg)
     yield
 
 
@@ -58,16 +98,36 @@ async def ingest(
     return IngestResponse(documents=docs)
 
 
+@app.get("/api/llms")
+def list_llms(request: Request):
+    """列出可切换的生成模型档案及在线状态（供前端切换器使用）。"""
+    return [
+        {
+            "id": pid,
+            "label": info["label"],
+            "model": info["model"],
+            "available": _probe_available(info["base_url"]),
+        }
+        for pid, info in request.app.state.llms.items()
+    ]
+
+
 @app.post("/api/chat", response_model=ChatResponse)
-def chat(req: ChatRequest, pipeline: RagPipeline = Depends(get_pipeline)):
+def chat(
+    req: ChatRequest, request: Request, pipeline: RagPipeline = Depends(get_pipeline)
+):
+    llms = request.app.state.llms
+    chosen_id = req.llm if req.llm in llms else "cloud"  # 未知档案回退主配置
     try:
-        out = pipeline.ask(req.question, top_k=req.top_k)
+        out = pipeline.ask(
+            req.question, top_k=req.top_k, llm=llms[chosen_id]["client"]
+        )
     except Exception as exc:  # 网络/向量库瞬时故障 → 503 而非裸 500
         raise HTTPException(
             status_code=503,
             detail=f"问答服务暂时不可用（多为网络波动，请稍后重试）: {exc}",
         ) from exc
-    return ChatResponse(**out)
+    return ChatResponse(llm=chosen_id, **out)
 
 
 @app.get("/api/documents", response_model=DocStats)

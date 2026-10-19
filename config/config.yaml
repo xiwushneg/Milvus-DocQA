@@ -36,6 +36,12 @@ llm:
   api_key_env: "LLM_API_KEY"
   temperature: 0.1
   max_tokens: 1024
+  # 前端可切换的模型档案（cloud = 上面主配置；其余档案覆盖 base_url/model，密钥与温度继承）
+  profiles:
+    ft:
+      label: "本机微调 Qwen3-1.7B"
+      base_url: "http://127.0.0.1:8009/v1"
+      model: "qwen3-docqa-ft"
 
 retrieval:
   dense_top_k: 20          # 稠密向量召回数
