@@ -11,7 +11,7 @@ import argparse
 import json
 import time
 import uuid
-from threading import Thread
+from threading import Lock, Thread
 
 import torch
 from fastapi import FastAPI
@@ -19,6 +19,11 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TextIteratorStreamer
 from peft import PeftModel
+
+# 单 GPU 实例同一时间只能跑一个 generate：并发请求在锁上排队，
+# 避免 transformers generate 多线程并发导致的卡死/输出错乱。
+# 水平扩容方案：多实例部署 + 负载均衡（论文性能分析可引用）。
+GEN_LOCK = Lock()
 
 
 class ChatMessage(BaseModel):
@@ -65,7 +70,11 @@ def chat(req: ChatRequest):
             pad_token_id=tok.eos_token_id,
             streamer=streamer,
         )
-        Thread(target=model.generate, kwargs=gen_kwargs, daemon=True).start()
+        def _generate_locked():
+            with GEN_LOCK:
+                model.generate(**gen_kwargs)
+
+        Thread(target=_generate_locked, daemon=True).start()
 
         def sse():
             yield "data: " + json.dumps(
@@ -82,7 +91,7 @@ def chat(req: ChatRequest):
         return StreamingResponse(sse(), media_type="text/event-stream")
 
     t0 = time.time()
-    with torch.no_grad():
+    with GEN_LOCK, torch.no_grad():
         out = model.generate(
             **inputs,
             max_new_tokens=req.max_tokens,
@@ -119,6 +128,10 @@ def main() -> None:
         help="4-bit 量化加载（省显存约 2GB 但生成慢 30%%；默认 bf16 更快更准）",
     )
     args = ap.parse_args()
+
+    # 限制 torch CPU 线程池：避免并发请求时 OMP 线程与推理循环争抢 CPU 核，
+    # 导致 generate 吞吐大幅退化（实测 10 并发下单请求 2s → 68s）
+    torch.set_num_threads(4)
 
     device = "cpu" if args.cpu else "auto"
     quant_kwargs = {}

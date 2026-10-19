@@ -136,23 +136,66 @@ def chat(
 
 
 @app.post("/api/chat/stream")
-def chat_stream(
+async def chat_stream(
     req: ChatRequest, request: Request, pipeline: RagPipeline = Depends(get_pipeline)
 ):
-    """SSE 流式问答：refs（检索完成+引用）→ delta*（逐段生成）→ done（耗时）→ 结束。"""
+    """SSE 流式问答：rewrite? → refs（检索+引用）→ delta*（逐段生成）→ done（耗时）。
+
+    异步端点：检索（短阻塞）放线程池，生成阶段异步流式转发——客户端断连时
+    asyncio 取消可干净关闭 LLM 连接，不会遗留阻塞线程拖垮服务。
+    """
+    import time
+
+    from starlette.concurrency import run_in_threadpool
+
+    from core.llm import build_messages
+
     llms = request.app.state.llms
     chosen_id = req.llm if req.llm in llms else "cloud"
 
-    def event_gen():
+    async def event_gen():
+        t0 = time.perf_counter()
         try:
-            for ev in pipeline.ask_stream(
+            prepared = await run_in_threadpool(
+                pipeline.prepare,
                 req.question,
-                top_k=req.top_k,
-                llm=llms[chosen_id]["client"],
-                history=[m.model_dump() for m in req.history],
+                req.top_k,
+                llms["cloud"]["client"],
+                [m.model_dump() for m in req.history],
+            )
+            rewritten = prepared["rewritten"]
+            if rewritten != req.question:
+                yield f"data: {json.dumps({'type': 'rewrite', 'query': rewritten, 'llm': chosen_id}, ensure_ascii=False)}\n\n"
+            yield "data: " + json.dumps(
+                {
+                    "type": "refs",
+                    "references": pipeline._format_refs(prepared["contexts"]),
+                    "timings": prepared["timings"],
+                    "llm": chosen_id,
+                },
+                ensure_ascii=False,
+            ) + "\n\n"
+            t1 = time.perf_counter()
+            answer = ""
+            async for chunk in llms[chosen_id]["client"].astream_chat(
+                build_messages(rewritten, prepared["contexts"])
             ):
-                ev["llm"] = chosen_id
-                yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
+                answer += chunk
+                yield "data: " + json.dumps(
+                    {"type": "delta", "text": chunk, "llm": chosen_id}, ensure_ascii=False
+                ) + "\n\n"
+            timings = dict(prepared["timings"])
+            timings["llm_ms"] = int((time.perf_counter() - t1) * 1000)
+            yield "data: " + json.dumps(
+                {
+                    "type": "done",
+                    "answer": answer,
+                    "timings": timings,
+                    "total_ms": int((time.perf_counter() - t0) * 1000),
+                    "llm": chosen_id,
+                },
+                ensure_ascii=False,
+            ) + "\n\n"
         except Exception as exc:  # 流已开始，无法改 HTTP 状态码 → 以 error 事件告知
             detail = {"type": "error", "detail": str(exc), "llm": chosen_id}
             yield f"data: {json.dumps(detail, ensure_ascii=False)}\n\n"

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
+from threading import Lock
 
 from core.bm25 import BM25Index
 from core.embedder import build_embedder
@@ -40,6 +41,7 @@ class RagPipeline:
         self.bm25 = BM25Index()
         self._bm25_ready = False
         self._bm25_dirty = False  # 刚写入过数据，刷新时需等待可见
+        self._bm25_lock = Lock()  # 并发冷启动时只构建一次，避免重复全量拉取竞争
 
     # ==================== 入库 ====================
     def ingest_bytes(self, filename: str, data: bytes) -> dict:
@@ -82,11 +84,12 @@ class RagPipeline:
 
     # ==================== BM25 同步 ====================
     def refresh_bm25(self) -> int:
-        rows = self.store.all_chunks(wait_visible=self._bm25_dirty)
-        self.bm25.build(rows)
-        self._bm25_ready = True
-        self._bm25_dirty = False
-        return len(rows)
+        with self._bm25_lock:
+            rows = self.store.all_chunks(wait_visible=self._bm25_dirty)
+            self.bm25.build(rows)
+            self._bm25_ready = True
+            self._bm25_dirty = False
+            return len(rows)
 
     def _ensure_bm25(self) -> None:
         if not self._bm25_ready:
@@ -174,36 +177,30 @@ class RagPipeline:
             "total_ms": int((time.perf_counter() - t0) * 1000),
         }
 
-    def ask_stream(
+    def prepare(
         self,
         question: str,
         top_k: int | None = None,
-        llm: LLMClient | None = None,
+        rewrite_llm: LLMClient | None = None,
         history: list[dict] | None = None,
-    ):
-        """流式问答生成器：rewrite? → refs → delta* → done。"""
+    ) -> dict:
+        """流式问答的检索阶段（同步短阻塞，供异步端点放线程池执行）。
+
+        返回改写后的问题、上下文块与检索耗时；生成阶段由调用方异步流式完成。
+        """
         t0 = time.perf_counter()
-        eff_llm = llm or self.llm
         history = history or []
         if history:
             # 改写固定用主配置模型（cloud）：微调模型训练分布是 RAG 问答，指令改写遵循差
-            rewritten = self._rewrite_query(history, question, self.llm)
-            yield {"type": "rewrite", "query": rewritten}
+            rewritten = self._rewrite_query(history, question, rewrite_llm or self.llm)
         else:
             rewritten = question
         contexts, timings = self._retrieve(rewritten, top_k)
-        yield {"type": "refs", "references": self._format_refs(contexts), "timings": timings}
-        t1 = time.perf_counter()
-        answer = ""
-        for chunk in eff_llm.chat_stream(build_messages(rewritten, contexts)):
-            answer += chunk
-            yield {"type": "delta", "text": chunk}
-        timings["llm_ms"] = int((time.perf_counter() - t1) * 1000)
-        yield {
-            "type": "done",
-            "answer": answer,
+        timings["prep_ms"] = int((time.perf_counter() - t0) * 1000)
+        return {
+            "rewritten": rewritten,
+            "contexts": contexts,
             "timings": timings,
-            "total_ms": int((time.perf_counter() - t0) * 1000),
         }
 
 

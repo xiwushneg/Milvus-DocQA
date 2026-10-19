@@ -80,9 +80,15 @@ class LLMClient:
         return resp.json()["choices"][0]["message"]["content"]
 
     def chat_stream(self, messages: list[dict]):
-        """流式生成：按 OpenAI 兼容 SSE 协议逐段 yield 文本增量。"""
-        import httpx
+        """流式生成：按 OpenAI 兼容 SSE 协议逐段 yield 文本增量。
+
+        注意：此处刻意用 requests 而非 httpx——实测 httpx/httpcore 的
+        流式消费在并发下会触发服务端发送反压，拖慢本地生成队列
+        （十并发首 token 47~60s vs requests 2~14s），非流式仍走 httpx。
+        """
         import json
+
+        import requests as _requests
 
         payload = {
             "model": self._model,
@@ -91,15 +97,15 @@ class LLMClient:
             "max_tokens": self._max_tokens,
             "stream": True,
         }
-        with self._http.stream(
-            "POST",
+        with _requests.post(
             f"{self._base}/chat/completions",
             headers=self._headers,
             json=payload,
-            timeout=httpx.Timeout(300.0, connect=10.0),
+            stream=True,
+            timeout=(10, 300),
         ) as resp:
             resp.raise_for_status()
-            for line in resp.iter_lines():
+            for line in resp.iter_lines(decode_unicode=True):
                 if not line or not line.startswith("data:"):
                     continue
                 data = line[5:].strip()
@@ -110,6 +116,50 @@ class LLMClient:
                 except json.JSONDecodeError:
                     continue
                 choices = chunk.get("choices") or []  # 部分 chunk 只含 usage，choices 为空
+                text = choices[0].get("delta", {}).get("content") if choices else None
+                if text:
+                    yield text
+
+    async def astream_chat(self, messages: list[dict]):
+        """异步流式生成（SSE 逐段 yield）。
+
+        供 FastAPI 异步端点消费：客户端断连时 asyncio 取消可干净关闭
+        底层连接，不会像同步流那样遗留阻塞线程（僵尸）拖垮服务。
+        """
+        import json
+
+        import httpx as _httpx
+
+        if not hasattr(self, "_ahttp"):
+            # 读超时 120s 指两次数据块之间的最大间隔（含服务端排队时间）
+            self._ahttp = _httpx.AsyncClient(
+                timeout=_httpx.Timeout(120.0, connect=10.0)
+            )
+        payload = {
+            "model": self._model,
+            "messages": messages,
+            "temperature": self._temperature,
+            "max_tokens": self._max_tokens,
+            "stream": True,
+        }
+        async with self._ahttp.stream(
+            "POST",
+            f"{self._base}/chat/completions",
+            headers=self._headers,
+            json=payload,
+        ) as resp:
+            resp.raise_for_status()
+            async for line in resp.aiter_lines():
+                if not line or not line.startswith("data:"):
+                    continue
+                data = line[5:].strip()
+                if data == "[DONE]":
+                    break
+                try:
+                    chunk = json.loads(data)
+                except json.JSONDecodeError:
+                    continue
+                choices = chunk.get("choices") or []
                 text = choices[0].get("delta", {}).get("content") if choices else None
                 if text:
                     yield text
