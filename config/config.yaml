@@ -74,7 +74,7 @@ retrieval:
 # 关闭时 /api/chat 行为不变；开启后新增 /api/agent/chat 与 /api/agent/chat/stream。
 # 约束：不新增 Milvus collection/索引/字段；块类型内存判定；表格工件落 data/tables/。
 agent:
-  enabled: false
+  enabled: true
   brain_llm: "cloud"            # 意图/规划/评估/改写/校验固定使用的模型档案
   max_rounds: 3
   node_retries: 1               # 单节点异常重试次数（重试耗尽才终止并记 node_error）
