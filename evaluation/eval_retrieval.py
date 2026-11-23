@@ -19,13 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.config import load_config  # noqa: E402
 from core.fusion import rrf_fuse  # noqa: E402
 from core.pipeline import build_pipeline  # noqa: E402
-
-
-def is_gold_hit(hit: dict, gold: list[dict]) -> bool:
-    for g in gold:
-        if g["source"] in hit.get("source", "") and g.get("must_contain", "") in hit.get("text", ""):
-            return True
-    return False
+from evaluation.metrics import is_gold_hit  # noqa: E402
 
 
 def evaluate_strategy(name: str, rows: list, top_k: int) -> dict:

@@ -1,0 +1,40 @@
+{"question": "Milvus Lite 怎么安装，数据保存在哪里？", "answer": "通过 pip 安装 pymilvus 即可使用，数据保存在单个本地文件中。"}
+{"question": "Milvus Distributed 在什么环境上可以扩展到十亿级向量？", "answer": "Kubernetes 集群。"}
+{"question": "HNSW 的 M 参数控制什么？", "answer": "控制每个节点的连接数。"}
+{"question": "向量归一化之后，哪两种相似度度量在数学上等价？", "answer": "内积 IP 与余弦相似度 COSINE。"}
+{"question": "Milvus 的标量过滤让哪两种能力可以直接在数据库层实现？", "answer": "多租户隔离和权限控制。"}
+{"question": "RAG 的离线索引阶段包含哪些步骤？", "answer": "把文档解析为纯文本、切分为文本块、用嵌入模型编码为向量并存入向量数据库。"}
+{"question": "RAG 中重排序的典型做法是从多少候选中精选多少条送入大模型？", "answer": "从 Top 50 候选中精选 Top 5。"}
+{"question": "加权分数融合的主要缺点是什么？", "answer": "两路分数的量纲不一致，必须精心设计归一化并调整权重。"}
+{"question": "RRF 中的常数 k 增大会带来什么效果？", "answer": "排名差异对最终得分的影响越平缓。"}
+{"question": "bge-large-zh-v1.5 输出多少维向量？", "answer": "1024 维。"}
+{"question": "bge-m3 支持多少种语言？", "answer": "100 多种。"}
+{"question": "重排序漏斗的第二级为什么可以使用计算更昂贵、精度更高的模型？", "answer": "它只处理几十条候选，计算量可控。"}
+{"question": "工业界交叉编码器精排通常从多少召回候选中取多少条进入上下文？", "answer": "从 Top 50 到 Top 100 中精排后取 Top 5 到 Top 10。"}
+{"question": "递归字符分块的块长度经验起点是多少字符？", "answer": "300 到 600 字符。"}
+{"question": "分块时设置重叠的主要作用是什么？", "answer": "防止关键句子恰好落在切分边界上，保证边界附近内容至少在一个块中完整出现。"}
+{"question": "分块时应该为每个块附带哪些元数据？", "answer": "来源文档名、页码、章节标题。"}
+{"question": "RAG 抑制幻觉的三种配套工程手段是什么？", "answer": "提示词明确只依据资料回答、降低生成温度、要求答案附带引用标注。"}
+{"question": "Recall@K 指标衡量的是什么？", "answer": "标准片段出现在检索结果前 K 条中的问题占比。"}
+{"question": "知识库只有几个片段时，Recall@5 为什么没有区分度？", "answer": "此时 Recall@5 天然接近 100%，无法反映系统质量差异。"}
+{"question": "RAG 提示词的第一个要素是什么？", "answer": "角色与任务界定：明确模型是基于给定资料的问答助手。"}
+{"question": "多轮对话中裁剪历史有哪些常见策略？", "answer": "滑动窗口、历史摘要、最近几轮保留原文而更早内容摘要化的混合策略。"}
+{"question": "多轮场景下引用应该如何编号和维护？", "answer": "每轮独立检索、独立编号，跨轮追问重新检索并重新编号。"}
+{"question": "PDF 解析有哪两条技术路线？", "answer": "基于规则的解析（PyMuPDF、pdfplumber）与基于视觉和 OCR 的解析。"}
+{"question": "表格解析后怎样处理才能让大模型读懂表格结构？", "answer": "输出结构化的行列数据，或把表格转换成 Markdown 格式嵌入文本流。"}
+{"question": "评估一个向量数据库通常看哪四个维度？", "answer": "检索性能、数据管理能力、扩展性、生态与工程友好度。"}
+{"question": "生产级知识库需要在哪四个方面补齐工程化能力？", "answer": "文档管理、权限、可观测性、持续运营。"}
+{"question": "一个 Agent 通常由哪四部分组成？", "answer": "作为大脑的大模型、工具集、规划机制、记忆机制。"}
+{"question": "权限过滤应该在哪一层实现，为什么？", "answer": "在检索层实现，让无权文档根本不进入候选集，而不是在生成层事后补救。"}
+{"question": "RAG 相比微调，在知识更新上的优势是什么？", "answer": "文档变更只需重新入库、秒级生效；微调每次知识更新都要重新训练。"}
+{"question": "长上下文方案存在哪三重代价？", "answer": "推理成本随上下文增长、中间迷失现象、每次请求传输全部文档带来的延迟与费用。"}
+{"question": "这个知识库目前一共切出了多少个向量块？", "refusal_expected": true}
+{"question": "HNSW 原论文的作者是谁？", "refusal_expected": true}
+{"question": "bge-m3 训练时用了多少张 GPU？", "refusal_expected": true}
+{"question": "pgvector 最新版本号是多少？", "refusal_expected": true}
+{"question": "Elasticsearch 8.x 是哪一年发布的？", "refusal_expected": true}
+{"question": "RRF 融合公式最初发表在哪个会议上？", "refusal_expected": true}
+{"question": "bge-large-zh-v1.5 的模型参数量是多少？", "refusal_expected": true}
+{"question": "Milvus 的 GitHub 仓库采用哪种开源协议？", "refusal_expected": true}
+{"question": "Chroma 默认使用哪个嵌入模型？", "refusal_expected": true}
+{"question": "微软 GraphRAG 项目在 GitHub 上有多少 star？", "refusal_expected": true}

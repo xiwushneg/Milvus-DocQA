@@ -1,0 +1,466 @@
+[
+  {
+    "question": "Milvus 有哪几种部署形态？",
+    "answer": "三种：Milvus Lite、Milvus Standalone、Milvus Distributed。",
+    "gold": [
+      {
+        "source": "milvus入门",
+        "must_contain": "Milvus Lite"
+      }
+    ]
+  },
+  {
+    "question": "生产环境最常用的 Milvus 索引类型是什么？",
+    "answer": "HNSW，它是基于分层可导航小世界图的索引，兼顾高召回与低延迟。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "HNSW"
+      }
+    ]
+  },
+  {
+    "question": "文本向量检索最常用的距离度量是什么？",
+    "answer": "余弦相似度 COSINE。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "COSINE"
+      }
+    ]
+  },
+  {
+    "question": "HNSW 是什么结构的索引？",
+    "answer": "分层可导航小世界图。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "分层可导航小世界图"
+      }
+    ]
+  },
+  {
+    "question": "超大规模数据放不进内存时该用什么索引？",
+    "answer": "DISKANN，它把索引放到磁盘上，用磁盘 IO 换内存容量。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "DISKANN"
+      }
+    ]
+  },
+  {
+    "question": "Milvus 如何实现多租户数据隔离？",
+    "answer": "通过标量字段过滤：查询时用布尔表达式先按用户 ID 等属性过滤，再在过滤结果中做向量检索。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "标量"
+      }
+    ]
+  },
+  {
+    "question": "RAG 分为哪两个阶段？",
+    "answer": "离线索引与在线问答两个阶段：离线阶段解析、分块、向量化并入库；在线阶段检索相关块并交给大模型生成答案。",
+    "gold": [
+      {
+        "source": "rag原理",
+        "must_contain": "检索"
+      }
+    ]
+  },
+  {
+    "question": "RRF 融合公式的常数 k 通常取多少？",
+    "answer": "60。",
+    "gold": [
+      {
+        "source": "混合检索与RRF融合",
+        "must_contain": "60"
+      }
+    ]
+  },
+  {
+    "question": "为什么 BM25 和稠密检索要一起用？",
+    "answer": "两者盲区互补：稠密检索擅长语义，但对专有名词、型号、数字不敏感；BM25 完全不理解语义，却擅长精确关键词匹配。混合检索用 RRF 融合两路结果，补齐各自盲区。",
+    "gold": [
+      {
+        "source": "混合检索与RRF融合",
+        "must_contain": "BM25 完全不理解语义"
+      },
+      {
+        "source": "混合检索与RRF融合",
+        "must_contain": "盲区"
+      }
+    ]
+  },
+  {
+    "question": "RRF 相比加权分数融合的优点是什么？",
+    "answer": "免调参、对分数分布鲁棒：只使用排名而不使用原始分数，避免了量纲归一化和权重调整。",
+    "gold": [
+      {
+        "source": "混合检索与RRF融合",
+        "must_contain": "免调参"
+      }
+    ]
+  },
+  {
+    "question": "bge-m3 模型的三个 M 分别指什么？最大输入长度是多少？",
+    "answer": "三个 M 是 Multi-Lingual、Multi-Granularity、Multi-Function；最大输入长度为 8192 token。",
+    "gold": [
+      {
+        "source": "向量嵌入模型",
+        "must_contain": "8192"
+      }
+    ]
+  },
+  {
+    "question": "中文嵌入模型评测基准叫什么？",
+    "answer": "C-MTEB。",
+    "gold": [
+      {
+        "source": "向量嵌入模型",
+        "must_contain": "C-MTEB"
+      }
+    ]
+  },
+  {
+    "question": "交叉编码器为什么比双塔结构精度高但不能做全库检索？",
+    "answer": "交叉编码器把查询和文档拼接成一条输入一起送入 Transformer，让注意力在词级别充分交互，因此精度更高；但每条候选都要跑一次完整前向传播，无法像双塔那样离线预计算文档向量，所以不能做全库检索，只能用于精排。",
+    "gold": [
+      {
+        "source": "重排序技术",
+        "must_contain": "拼接"
+      }
+    ]
+  },
+  {
+    "question": "文档分块的重叠比例一般取多少？",
+    "answer": "典型取块长的 10% 到 20%。",
+    "gold": [
+      {
+        "source": "文档分块策略",
+        "must_contain": "10% 到 20%"
+      }
+    ]
+  },
+  {
+    "question": "递归字符分块是按什么顺序切分的？",
+    "answer": "按分隔符层级递归切分：先按段落切，超长段落再按句子切，超长句子最后按固定字符硬切。",
+    "gold": [
+      {
+        "source": "文档分块策略",
+        "must_contain": "分隔符"
+      }
+    ]
+  },
+  {
+    "question": "大模型产生幻觉的原因有哪些？",
+    "answer": "主要有三方面：训练数据错误、过时或偏见；生成机制本质是概率性的下一个词预测，倾向生成语言上合理而非事实上正确的内容；缺乏知识时不愿承认不知道，而是编造通顺答案。",
+    "gold": [
+      {
+        "source": "大模型幻觉与缓解",
+        "must_contain": "下一个词预测"
+      }
+    ]
+  },
+  {
+    "question": "衡量答案是否基于上下文、有没有编造的指标叫什么？",
+    "answer": "忠实度（Faithfulness）。",
+    "gold": [
+      {
+        "source": "RAG评估指标体系",
+        "must_contain": "忠实度"
+      }
+    ]
+  },
+  {
+    "question": "MRR 指标的定义是什么？",
+    "answer": "MRR（Mean Reciprocal Rank，平均倒数排名）：标准片段排第一得 1 分、排第二得 0.5 分，以此类推后取平均；它衡量命中结果排得靠不靠前。",
+    "gold": [
+      {
+        "source": "RAG评估指标体系",
+        "must_contain": "平均倒数排名"
+      }
+    ]
+  },
+  {
+    "question": "用大模型给另一个模型的答案打分的评估方法叫什么？",
+    "answer": "LLM-as-Judge（用大模型评判大模型）。",
+    "gold": [
+      {
+        "source": "RAG评估指标体系",
+        "must_contain": "Judge"
+      }
+    ]
+  },
+  {
+    "question": "问答场景的温度参数应该怎么设？",
+    "answer": "temperature 设为接近零的低值，降低随机性，提高同一问题答案的一致性。",
+    "gold": [
+      {
+        "source": "提示词工程与查询改写",
+        "must_contain": "temperature"
+      }
+    ]
+  },
+  {
+    "question": "《Milvus索引与检索原理》这篇文档的作者是谁？",
+    "refusal_expected": true
+  },
+  {
+    "question": "RRF 融合公式最初发表于哪一年的哪篇论文？",
+    "refusal_expected": true
+  },
+  {
+    "question": "HNSW 和 DISKANN 的内存占用具体相差多少 GB？",
+    "refusal_expected": true
+  },
+  {
+    "question": "Milvus 项目在 GitHub 上有多少 star？",
+    "refusal_expected": true
+  },
+  {
+    "question": "bge-reranker-v2-m3 的模型权重文件有多大？",
+    "refusal_expected": true
+  },
+  {
+    "question": "微软开源的 GraphRAG 项目用哪种算法把图聚合成主题社区？",
+    "answer": "微软开源的 GraphRAG 项目引入社区检测算法，把图聚合成主题社区并预生成社区摘要。",
+    "gold": [
+      {
+        "source": "GraphRAG与知识图谱",
+        "must_contain": "社区检测算法"
+      }
+    ]
+  },
+  {
+    "question": "GraphRAG 中需要图增强的问题类型被称为什么？",
+    "answer": "关系型与全局型问题才需要图增强，事实型问题走向量检索即可。",
+    "gold": [
+      {
+        "source": "GraphRAG与知识图谱",
+        "must_contain": "关系型与全局型问题"
+      }
+    ]
+  },
+  {
+    "question": "Milvus 会依据数据规模自动挑选索引的机制叫什么？",
+    "answer": "AUTOINDEX 会根据数据规模自动选择合适的索引类型。",
+    "gold": [
+      {
+        "source": "milvus入门",
+        "must_contain": "AUTOINDEX"
+      }
+    ]
+  },
+  {
+    "question": "HNSW 索引中 ef 参数控制的是什么？",
+    "answer": "ef 控制搜索时的候选队列长度，参数越大越精确，也越耗内存和延迟。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "候选队列长度"
+      }
+    ]
+  },
+  {
+    "question": "IVF 索引在中文里被称为什么索引？",
+    "answer": "IVF 即倒排文件索引，先对全库向量做聚类，查询时只在最近的几个聚类中心对应分区内搜索。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "倒排文件索引"
+      }
+    ]
+  },
+  {
+    "question": "近似最近邻搜索的英文缩写是什么？",
+    "answer": "近似最近邻搜索的英文缩写是 ANN（Approximate Nearest Neighbor）。",
+    "gold": [
+      {
+        "source": "Milvus索引与检索原理",
+        "must_contain": "ANN"
+      }
+    ]
+  },
+  {
+    "question": "超长上下文让模型对中部信息利用率下降的现象叫什么？",
+    "answer": "这一现象称为“中间迷失”，模型对超长上下文中部的信息利用率明显下降。",
+    "gold": [
+      {
+        "source": "RAG与微调的取舍",
+        "must_contain": "中间迷失"
+      }
+    ]
+  },
+  {
+    "question": "让模型学会特定输出格式与语气规范应使用哪种技术？",
+    "answer": "监督微调（SFT）擅长改变模型的行为与风格，适合让模型学会特定输出格式、语气规范与领域话术。",
+    "gold": [
+      {
+        "source": "RAG与微调的取舍",
+        "must_contain": "监督微调"
+      }
+    ]
+  },
+  {
+    "question": "文档内含“忽略之前所有要求”的指令属于哪类攻击？",
+    "answer": "这属于间接提示词注入：检索到的文档内容含恶意指令，可能劫持模型。",
+    "gold": [
+      {
+        "source": "RAG安全与权限控制",
+        "must_contain": "间接提示词注入"
+      }
+    ]
+  },
+  {
+    "question": "RAG 安全文档里说知识库可能从资产变成哪个英文词？",
+    "answer": "文档原文说任何一类安全问题处理不好，知识库就会从资产变成 liability。",
+    "gold": [
+      {
+        "source": "RAG安全与权限控制",
+        "must_contain": "liability"
+      }
+    ]
+  },
+  {
+    "question": "ReAct 模式的核心循环由哪三个环节组成？",
+    "answer": "ReAct 模式是“思考-行动-观察”循环：先思考需要什么信息，再选择工具发起调用，观察返回结果后决定下一步。",
+    "gold": [
+      {
+        "source": "从RAG到Agent的演进",
+        "must_contain": "思考-行动-观察"
+      }
+    ]
+  },
+  {
+    "question": "删除文档不彻底会让废止条款作为证据出现，被称为什么？",
+    "answer": "这被称为幽灵引用：被废止的条款仍会作为证据出现在答案里。",
+    "gold": [
+      {
+        "source": "企业知识库落地实践",
+        "must_contain": "幽灵引用"
+      }
+    ]
+  },
+  {
+    "question": "OpenAI 效果优秀但需数据出境的嵌入模型系列叫什么？",
+    "answer": "OpenAI 的 text-embedding-3 系列效果优秀但属闭源服务，数据需要出境。",
+    "gold": [
+      {
+        "source": "向量嵌入模型",
+        "must_contain": "text-embedding-3"
+      }
+    ]
+  },
+  {
+    "question": "bge-m3 除稠密检索和稀疏检索外还具备哪种检索能力？",
+    "answer": "bge-m3 同时具备稠密检索、稀疏检索和多向量检索三种能力。",
+    "gold": [
+      {
+        "source": "向量嵌入模型",
+        "must_contain": "多向量检索"
+      }
+    ]
+  },
+  {
+    "question": "哪个向量数据库让 PostgreSQL 用户无需引入新组件？",
+    "answer": "pgvector 让 PostgreSQL 用户无需引入新组件即可获得向量检索能力。",
+    "gold": [
+      {
+        "source": "向量数据库选型对比",
+        "must_contain": "pgvector"
+      }
+    ]
+  },
+  {
+    "question": "Meta 开源、需自行实现持久化的向量检索算法库叫什么？",
+    "answer": "FAISS 是 Meta 开源的向量检索算法库，数据管理、持久化、过滤都要自己实现。",
+    "gold": [
+      {
+        "source": "向量数据库选型对比",
+        "must_contain": "FAISS"
+      }
+    ]
+  },
+  {
+    "question": "解析阶段那句“输入垃圾输出垃圾”的英文格言怎么说？",
+    "answer": "解析阶段的英文格言是 garbage in, garbage out——解析阶段丢失或错乱的信息无法挽回。",
+    "gold": [
+      {
+        "source": "复杂文档解析技术",
+        "must_contain": "garbage in, garbage out"
+      }
+    ]
+  },
+  {
+    "question": "多轮 RAG 检索前把带指代的问题变成什么形式？",
+    "answer": "多轮 RAG 在检索前要把带指代的用户问题改写成自包含的独立查询。",
+    "gold": [
+      {
+        "source": "多轮对话与上下文管理",
+        "must_contain": "自包含"
+      }
+    ]
+  },
+  {
+    "question": "资料不足时提示词要求模型回答的原话是什么？",
+    "answer": "提示词要求资料不足或未涉及时，必须明确回答“根据现有资料无法回答”，禁止编造。",
+    "gold": [
+      {
+        "source": "提示词工程与查询改写",
+        "must_contain": "根据现有资料无法回答"
+      }
+    ]
+  },
+  {
+    "question": "语义缓存用什么来衡量两个问题是否语义等价？",
+    "answer": "语义缓存用嵌入相似度判断两个问题是否语义等价。",
+    "gold": [
+      {
+        "source": "语义缓存与性能优化",
+        "must_contain": "嵌入相似度"
+      }
+    ]
+  },
+  {
+    "question": "HyDE 的中文全称是什么？",
+    "answer": "HyDE 即假设性文档嵌入（Hypothetical Document Embeddings），先让大模型写一段假想的答案文档再检索。",
+    "gold": [
+      {
+        "source": "查询改写与HyDE",
+        "must_contain": "假设性文档嵌入"
+      }
+    ]
+  },
+  {
+    "question": "自动化评估中把问题、上下文、答案交给强模型打分的做法叫什么？",
+    "answer": "这种做法叫“用大模型评判大模型”（LLM as Judge）。",
+    "gold": [
+      {
+        "source": "RAG评估指标体系",
+        "must_contain": "用大模型评判大模型"
+      }
+    ]
+  },
+  {
+    "question": "bge-reranker-v2-m3 属于哪类模型结构？",
+    "answer": "bge-reranker-v2-m3 是交叉编码器结构的重排模型，把查询和文档拼接后一起送入 Transformer 打分。",
+    "gold": [
+      {
+        "source": "重排序技术",
+        "must_contain": "交叉编码器"
+      }
+    ]
+  },
+  {
+    "question": "双塔结构因为文档向量可怎样而速度极快？",
+    "answer": "双塔结构里文档向量可以离线预先算好，在线只需编码查询，所以速度极快。",
+    "gold": [
+      {
+        "source": "重排序技术",
+        "must_contain": "离线预先算好"
+      }
+    ]
+  }
+]

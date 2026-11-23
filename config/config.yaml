@@ -8,7 +8,6 @@ milvus:
   # uri: "./data/milvus_docqa.db"
   collection: "docqa_chunks"
   dense_dim: 1024          # BAAI/bge-m3=1024；BAAI/bge-large-zh-v1.5=1024；mock 测试用 256
-  index_metric: "COSINE"
 
 embedding:
   # local : 本地 sentence-transformers（首次运行下载权重，较慢）
@@ -25,6 +24,22 @@ chunking:
   chunk_size: 500          # 目标块大小（字符）
   chunk_overlap: 80        # 相邻块重叠（字符），约为 chunk_size 的 15%
   min_chunk_size: 30       # 过短块并入前一块
+
+ingest:
+  # 按内容 sha256 跳过重复入库（清单原子落盘）；置空则关闭去重
+  manifest_path: "data/ingest_manifest.json"
+  # DOCX 按正文顺序保留段落/表格；默认关闭以冻结现有 116 块基线语料
+  preserve_docx_order: false
+
+server:
+  # 生产建议改为前端域名白名单，例如 ["https://docqa.example.com"]
+  cors_origins: ["*"]
+  # 非空且对应环境变量有值时，/api/* 需要 X-API-Key（或 Bearer Token）
+  api_key_env: ""
+  # 按客户端 IP 的每分钟请求上限；0 表示关闭
+  rate_limit_per_min: 0
+  # /api/llms 在线探测结果缓存秒数（避免每次请求同步阻塞）
+  llm_probe_ttl_s: 30
 
 llm:
   # OpenAI 兼容协议，三选一：
@@ -54,3 +69,72 @@ retrieval:
     model: "BAAI/bge-reranker-v2-m3"
     api_base: "https://api.siliconflow.cn/v1"
     api_key_env: "EMBEDDING_API_KEY"
+
+# ============ Agentic RAG（增量升级，默认关闭） ============
+# 关闭时 /api/chat 行为不变；开启后新增 /api/agent/chat 与 /api/agent/chat/stream。
+# 约束：不新增 Milvus collection/索引/字段；块类型内存判定；表格工件落 data/tables/。
+agent:
+  enabled: false
+  brain_llm: "cloud"            # 意图/规划/评估/改写/校验固定使用的模型档案
+  max_rounds: 3
+  node_retries: 1               # 单节点异常重试次数（重试耗尽才终止并记 node_error）
+  max_subqueries_per_round: 3
+  top_k_per_subquery: 5
+  max_final_evidence: 8
+  on_budget_exhausted: "partial" # partial | refuse
+
+  # 意图分类 + 子查询分解：brain 结构化输出；解析失败自动回退规则
+  analyze:
+    mode: "brain"              # brain | rules
+    max_retries: 1
+
+  routing:
+    keyword_bm25_first: true   # 专有名词/编号/公式/代码优先 BM25，dense 零命中兜底
+    summary_evidence_bonus: 2  # SUMMARY 意图额外保留的证据数
+
+  budget:
+    max_llm_calls: 8
+    max_brain_calls: 6
+    max_prompt_tokens: 12000
+    max_completion_tokens: 4000
+    max_wall_ms: 30000
+    max_tool_calls: 3
+    novelty_epsilon: 0.10
+
+  sufficiency:
+    tau_low: 0.45
+    tau_high: 0.65
+    weights: {claim_support: 0.45, coverage: 0.25, top_score: 0.20, diversity: 0.10}
+
+  hyde:
+    enabled: true
+    start_round: 2
+
+  citations:
+    enabled: true               # 逐句引用校验 + 低置信拒答（需回答模型按 [E1] 标注）
+    min_coverage: 0.60
+    verify_claims: true
+    tau_answer_confidence: 0.55
+    calibration_path: "data/calibration.json"   # 由 evaluation/calibrate_thresholds.py 生成
+
+  tools:
+    enabled: true
+    tables_dir: "data/tables"   # 表格 CSV 工件与 registry.json（不写 Milvus）
+    duckdb: {enabled: true, max_rows: 200, timeout_ms: 3000}
+    calculator: {enabled: true}
+    unit_convert: {enabled: true}
+    code_exec: {enabled: false, timeout_ms: 3000}
+
+  memory:
+    session_ttl_s: 7200
+    max_turns: 20
+    history_turns: 6
+    persist_path: ""            # 非空时 JSON 持久化会话，例如 data/sessions.json
+
+  trace:
+    enabled: true
+    dir: "data/traces"
+
+  cost:
+    prompt_per_1k: 0.0          # 按实际供应商单价填写
+    completion_per_1k: 0.0

@@ -64,7 +64,61 @@ class LLMClient:
         self._temperature = float(lcfg.get("temperature", 0.1))
         self._max_tokens = int(lcfg.get("max_tokens", 1024))
 
-    def chat(self, messages: list[dict]) -> str:
+    def close(self) -> None:
+        """关闭同步 HTTP 连接池；可重复调用。"""
+        try:
+            self._http.close()
+        except Exception:
+            pass
+
+    async def aclose(self) -> None:
+        """关闭同步/异步连接池（应用 shutdown 时调用）。"""
+        ahttp = getattr(self, "_ahttp", None)
+        if ahttp is not None:
+            try:
+                await ahttp.aclose()
+            except Exception:
+                pass
+        self.close()
+
+    def chat_with_tools(
+        self,
+        messages: list[dict],
+        tools: list[dict],
+        *,
+        tool_choice: str = "auto",
+        temperature: float | None = None,
+        max_tokens: int | None = None,
+    ) -> dict:
+        """OpenAI 兼容 function calling。
+
+        返回 ``{"content": str, "tool_calls": list, "usage": dict}``；
+        服务端不支持 tools 时由调用方捕获异常并回退确定性工具规划。
+        """
+        resp = self._http.post(
+            f"{self._base}/chat/completions",
+            headers=self._headers,
+            json={
+                "model": self._model,
+                "messages": messages,
+                "tools": tools,
+                "tool_choice": tool_choice,
+                "temperature": self._temperature if temperature is None else temperature,
+                "max_tokens": self._max_tokens if max_tokens is None else max_tokens,
+            },
+            timeout=120,
+        )
+        resp.raise_for_status()
+        payload = resp.json()
+        message = (payload.get("choices") or [{}])[0].get("message") or {}
+        return {
+            "content": message.get("content") or "",
+            "tool_calls": message.get("tool_calls") or [],
+            "usage": payload.get("usage") or {},
+        }
+
+    def chat(self, messages: list[dict], usage: dict | None = None) -> str:
+        """非流式生成；传入 ``usage`` 时回填服务端返回的真实 token 用量。"""
         resp = self._http.post(
             f"{self._base}/chat/completions",
             headers=self._headers,
@@ -77,10 +131,16 @@ class LLMClient:
             timeout=300,
         )
         resp.raise_for_status()
-        return resp.json()["choices"][0]["message"]["content"]
+        payload = resp.json()
+        if usage is not None:
+            usage.update(payload.get("usage") or {})
+        return payload["choices"][0]["message"]["content"]
 
-    def chat_stream(self, messages: list[dict]):
+    def chat_stream(self, messages: list[dict], usage: dict | None = None):
         """流式生成：按 OpenAI 兼容 SSE 协议逐段 yield 文本增量。
+
+        传入 ``usage`` 时会请求 ``stream_options.include_usage``，若服务端在
+        末尾 chunk 返回用量则回填；不支持的旧服务端不受影响（不传即不加该参数）。
 
         注意：此处刻意用 requests 而非 httpx——实测 httpx/httpcore 的
         流式消费在并发下会触发服务端发送反压，拖慢本地生成队列
@@ -97,6 +157,8 @@ class LLMClient:
             "max_tokens": self._max_tokens,
             "stream": True,
         }
+        if usage is not None:
+            payload["stream_options"] = {"include_usage": True}
         with _requests.post(
             f"{self._base}/chat/completions",
             headers=self._headers,
@@ -115,6 +177,8 @@ class LLMClient:
                     chunk = json.loads(data)
                 except json.JSONDecodeError:
                     continue
+                if usage is not None and chunk.get("usage"):
+                    usage.update(chunk["usage"])
                 choices = chunk.get("choices") or []  # 部分 chunk 只含 usage，choices 为空
                 text = choices[0].get("delta", {}).get("content") if choices else None
                 if text:

@@ -1,26 +1,30 @@
 {
   "top_k": 5,
-  "num_questions": 20,
+  "num_questions": 49,
+  "corpus": "scripts/demo_data 20 篇，chunk_size=180 / chunk_overlap=40，独立 collection docqa_chunks_baseline116，共 116 块",
+  "eval_set": "evaluation/eval_set.json（49 题 = 44 可答 + 5 拒答；拒答题不参与检索指标）",
+  "eval_set_sha256": "4b7d3ecfcb73697ac5b54c08d2d13935731bf253544872c2a61c6daf62abb84c",
+  "note": "小语料下 Recall@5 已饱和至 1.000，策略差异体现在 MRR（排序质量）。混合检索 MRR +0.067，重排序再 +0.096。所有数字可用 config/config_baseline116.yaml 复现。",
   "results": [
     {
       "strategy": "dense",
-      "recall_at_k": 0.9,
-      "mrr": 0.789,
-      "avg_ms": 112.1,
+      "recall_at_k": 1.0,
+      "mrr": 0.776,
+      "avg_ms": 163.2,
       "top_k": 5
     },
     {
       "strategy": "hybrid(RRF)",
-      "recall_at_k": 0.95,
-      "mrr": 0.827,
-      "avg_ms": 112.8,
+      "recall_at_k": 1.0,
+      "mrr": 0.843,
+      "avg_ms": 164.0,
       "top_k": 5
     },
     {
       "strategy": "hybrid+rerank",
-      "recall_at_k": 0.95,
-      "mrr": 0.91,
-      "avg_ms": 647.0,
+      "recall_at_k": 1.0,
+      "mrr": 0.939,
+      "avg_ms": 1095.6,
       "top_k": 5
     }
   ]

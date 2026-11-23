@@ -5,18 +5,33 @@
 """
 from __future__ import annotations
 
+import asyncio
+import hmac
 import json
+import os
+import time
+from collections import defaultdict, deque
 from contextlib import asynccontextmanager
+from pathlib import Path
+from threading import Lock
 
 import httpx
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
+from app.agent_api import router as agent_router
 from app.config import load_config
 from app.schemas import ChatRequest, ChatResponse, DocStats, IngestResponse
+from core.loader import SUPPORTED_SUFFIXES
 from core.llm import LLMClient
 from core.pipeline import RagPipeline, build_pipeline
+
+
+_BOOT_SERVER = load_config().get("server") or {}
+_CORS_ORIGINS = list(_BOOT_SERVER.get("cors_origins") or ["*"])
+_RATE_LOCK = Lock()
+_RATE_HITS: dict[str, deque] = defaultdict(deque)
 
 
 def build_llm_profiles(cfg: dict) -> dict[str, dict]:
@@ -45,13 +60,13 @@ def build_llm_profiles(cfg: dict) -> dict[str, dict]:
     return out
 
 
-def _probe_available(base_url: str) -> bool:
-    """1.5s 快速探测服务是否可达（收到任何 HTTP 响应即视为在线）。"""
+async def _probe_available(base_url: str, client: httpx.AsyncClient) -> bool:
+    """1.5s 异步探测；仅 2xx 视为可用（401/404 不算在线）。"""
     if not base_url:
         return False
     try:
-        httpx.get(f"{base_url.rstrip('/')}/models", timeout=1.5)
-        return True
+        resp = await client.get(f"{base_url.rstrip('/')}/models")
+        return 200 <= resp.status_code < 300
     except Exception:
         return False
 
@@ -59,9 +74,31 @@ def _probe_available(base_url: str) -> bool:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     cfg = load_config()
+    server_cfg = cfg.get("server") or {}
+    app.state.api_key_env = str(server_cfg.get("api_key_env") or "").strip()
+    app.state.rate_limit_per_min = int(server_cfg.get("rate_limit_per_min", 0) or 0)
+    app.state.llm_probe_ttl_s = float(server_cfg.get("llm_probe_ttl_s", 30) or 0)
+    app.state.llm_probe_cache = None
     app.state.pipeline = build_pipeline(cfg)
     app.state.llms = build_llm_profiles(cfg)
+    # Agent 默认关闭：关闭时不导入/构建任何 Agent 组件，旧链路零开销
+    app.state.agent = None
+    if (cfg.get("agent") or {}).get("enabled", False):
+        from core.agentic.runtime import build_agent_runtime
+
+        app.state.agent = build_agent_runtime(cfg, app.state.pipeline, app.state.llms)
     yield
+    # 关闭连接池，避免 uvicorn 退出时遗留未释放的 HTTP 连接
+    for info in getattr(app.state, "llms", {}).values():
+        closer = getattr(info.get("client"), "aclose", None)
+        if callable(closer):
+            try:
+                await closer()
+            except Exception:
+                pass
+    pipeline = getattr(app.state, "pipeline", None)
+    if pipeline is not None:
+        pipeline.close()
 
 
 app = FastAPI(
@@ -71,8 +108,51 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
+    CORSMiddleware,
+    allow_origins=_CORS_ORIGINS,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def api_guard(request: Request, call_next):
+    """可选 API Key 鉴权 + 按 IP 限流；仅作用于 /api/*（health 放行）。"""
+    path = request.url.path
+    if not path.startswith("/api/") or path == "/api/health":
+        return await call_next(request)
+
+    key_env = getattr(app.state, "api_key_env", "")
+    expected = os.environ.get(key_env, "") if key_env else ""
+    if expected:
+        provided = request.headers.get("X-API-Key", "")
+        if not provided:
+            auth = request.headers.get("Authorization", "")
+            if auth.lower().startswith("bearer "):
+                provided = auth[7:].strip()
+        if not hmac.compare_digest(provided, expected):
+            return JSONResponse({"detail": "unauthorized"}, status_code=401)
+
+    limit = int(getattr(app.state, "rate_limit_per_min", 0) or 0)
+    if limit > 0:
+        client = request.client.host if request.client else "unknown"
+        now = time.monotonic()
+        with _RATE_LOCK:
+            bucket = _RATE_HITS[client]
+            while bucket and now - bucket[0] > 60:
+                bucket.popleft()
+            if len(bucket) >= limit:
+                retry_after = max(1, int(60 - (now - bucket[0])))
+                return JSONResponse(
+                    {"detail": "rate limit exceeded"},
+                    status_code=429,
+                    headers={"Retry-After": str(retry_after)},
+                )
+            bucket.append(now)
+    return await call_next(request)
+
+
+app.include_router(agent_router)
 
 
 def get_pipeline() -> RagPipeline:
@@ -92,25 +172,74 @@ async def ingest(
     if not files:
         raise HTTPException(status_code=400, detail="请上传至少一个文件")
     docs = []
-    for f in files:
-        data = await f.read()
-        if not data:
-            continue
-        docs.append(pipeline.ingest_bytes(f.filename or "unnamed", data))
-    return IngestResponse(documents=docs)
+    skipped = []
+    ingested = False
+    try:
+        for f in files:
+            name = f.filename or "unnamed"
+            data = await f.read()
+            if not data:
+                skipped.append({"source": name, "reason": "文件为空"})
+                continue
+            suffix = Path(name).suffix.lower()
+            if suffix not in SUPPORTED_SUFFIXES:
+                raise HTTPException(
+                    status_code=415,
+                    detail=f"不支持的文件类型: {name}（支持 {sorted(SUPPORTED_SUFFIXES)}）",
+                )
+            try:
+                # 批量入库先跳过 BM25 重建，全部写完只重建一次
+                stats = pipeline.ingest_bytes(name, data, rebuild_bm25=False)
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=f"无法解析 {name}: {exc}") from exc
+            except Exception as exc:
+                raise HTTPException(status_code=400, detail=f"入库失败 {name}: {exc}") from exc
+            if stats.get("skipped"):
+                skipped.append(
+                    {
+                        "source": name,
+                        "reason": "内容重复（sha256 相同）",
+                        "duplicate_of": stats.get("duplicate_of", ""),
+                    }
+                )
+                continue
+            docs.append(stats)
+            ingested = True
+    finally:
+        if ingested:
+            pipeline.refresh_bm25()
+    if not docs:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "没有可入库的文件", "skipped": skipped},
+        )
+    return IngestResponse(documents=docs, skipped=skipped)
 
 
 @app.get("/api/llms")
-def list_llms(request: Request):
-    """列出可切换的生成模型档案及在线状态（供前端切换器使用）。"""
+async def list_llms(request: Request):
+    """列出可切换的生成模型档案及在线状态（并发探测 + TTL 缓存）。"""
+    llms = request.app.state.llms
+    now = time.monotonic()
+    ttl = float(getattr(request.app.state, "llm_probe_ttl_s", 30.0))
+    cached = getattr(request.app.state, "llm_probe_cache", None)
+    if ttl > 0 and cached and now - cached[0] < ttl:
+        availability = cached[1]
+    else:
+        async with httpx.AsyncClient(timeout=1.5) as client:
+            values = await asyncio.gather(
+                *[_probe_available(info["base_url"], client) for info in llms.values()]
+            )
+        availability = dict(zip(llms.keys(), values))
+        request.app.state.llm_probe_cache = (now, availability)
     return [
         {
             "id": pid,
             "label": info["label"],
             "model": info["model"],
-            "available": _probe_available(info["base_url"]),
+            "available": availability.get(pid, False),
         }
-        for pid, info in request.app.state.llms.items()
+        for pid, info in llms.items()
     ]
 
 
@@ -217,8 +346,7 @@ def documents(pipeline: RagPipeline = Depends(get_pipeline)):
 
 @app.delete("/api/documents")
 def delete_document(source: str, pipeline: RagPipeline = Depends(get_pipeline)):
-    deleted = pipeline.store.delete_by_source(source)
-    pipeline.refresh_bm25()
+    deleted = pipeline.forget_source(source)
     if deleted == 0:
         raise HTTPException(status_code=404, detail=f"未找到文档: {source}")
     return {"deleted": deleted}

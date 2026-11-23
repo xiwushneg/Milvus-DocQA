@@ -68,6 +68,11 @@ def run_model(p, judge: LLMClient, client: LLMClient, model_id: str, items: list
     rows, refusals_total, refusals_ok = [], 0, 0
     f_sum = r_sum = t_sum = 0.0
     f_n = r_n = 0
+    # 裁判需要看到完整证据文本；引用里的 snippet 截断到 200 字会漏判为幻觉
+    lookup = {
+        (r["source"], int(r["chunk_idx"])): r["text"]
+        for r in p.store.all_chunks()
+    }
     for item in items:
         q = item["question"]
         expected = bool(item.get("refusal_expected"))
@@ -75,7 +80,15 @@ def run_model(p, judge: LLMClient, client: LLMClient, model_id: str, items: list
         out = p.ask(q, llm=client)
         dt = time.perf_counter() - t0
         answer = out["answer"]
-        contexts = "\n".join(f"[{i}] {r['snippet']}" for i, r in enumerate(out["references"], 1))
+        ctx_parts = []
+        for i, ref in enumerate(out["references"], 1):
+            try:
+                key = (ref["source"], int(ref["chunk_idx"]))
+            except (KeyError, TypeError, ValueError):
+                key = None
+            text = (lookup.get(key) if key else None) or ref.get("snippet") or ""
+            ctx_parts.append(f"[{i}] {text}")
+        contexts = "\n".join(ctx_parts)
         verdict = judge_one(judge, q, contexts, answer)
         refused = any(pat in answer for pat in REFUSAL_PAT)
         rows.append(

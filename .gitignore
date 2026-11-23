@@ -1,12 +1,27 @@
 # 运行时数据与密钥不入库（仅根目录 data/；finetune/data/ 训练集需入库）
-/data/
+/data/*
 .env
 __pycache__/
 *.pyc
 .pytest_cache/
 venv/
 .venv/
-evaluation/eval_set.json
+
+# Trae 内部资料（审查报告等）不入库
+.trae/
+
+# 评测中间产物与历史备份不入库（正式结果与评测集需入库）
+evaluation/results_agentic_ablation.before_*.json
+evaluation/results_rerank_repro*.json
+evaluation/results_smoke.json
+evaluation/eval_set_v1_20q.json
+data/calibration.before_*.json
+
+# 阈值标定产物入库（需置于 /data/* 忽略规则之后）
+!/data/calibration.json
+!/data/calibration_joint.json
+!/data/dev_confidence.jsonl
+!/data/dev_confidence_joint.jsonl
 
 *.log
 start_log.txt

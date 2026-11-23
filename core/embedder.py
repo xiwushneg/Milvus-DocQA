@@ -73,6 +73,13 @@ class ApiEmbedder(BaseEmbedder):
         self._batch = batch_size
         self.name = f"api:{model}"
 
+    def close(self) -> None:
+        """关闭 HTTP 连接池；可重复调用。"""
+        try:
+            self._http.close()
+        except Exception:
+            pass
+
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         out: list[list[float]] = []
         for i in range(0, len(texts), self._batch):

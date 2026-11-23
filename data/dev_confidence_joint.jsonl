@@ -1,0 +1,40 @@
+{"question": "RRF 中的常数 k 增大会带来什么效果？", "confidence": 0.9195, "raw_confidence": 0.9195, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9195}
+{"question": "重排序漏斗的第二级为什么可以使用计算更昂贵、精度更高的模型？", "confidence": 0.9899, "raw_confidence": 0.9899, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9899}
+{"question": "RRF 融合公式最初发表在哪个会议上？", "confidence": 0.2401, "raw_confidence": 0.2401, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "observed_confidence": 0.2401}
+{"question": "表格解析后怎样处理才能让大模型读懂表格结构？", "confidence": 0.9037, "raw_confidence": 0.9037, "coverage": 0.6667, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9037}
+{"question": "RAG 抑制幻觉的三种配套工程手段是什么？", "confidence": 0.9059, "raw_confidence": 0.9059, "coverage": 0.75, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9059}
+{"question": "bge-large-zh-v1.5 输出多少维向量？", "confidence": 0.9857, "raw_confidence": 0.9857, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9857}
+{"question": "RAG 提示词的第一个要素是什么？", "confidence": 0.6561, "raw_confidence": 0.6561, "coverage": 0.5, "answerable": true, "refused": true, "reconstructed": true, "observed_confidence": 0.54}
+{"question": "pgvector 最新版本号是多少？", "confidence": 0.0, "raw_confidence": 0.0, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "early_refusal": true}
+{"question": "bge-m3 训练时用了多少张 GPU？", "confidence": 0.2791, "raw_confidence": 0.2791, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "observed_confidence": 0.2791}
+{"question": "生产级知识库需要在哪四个方面补齐工程化能力？", "confidence": 0.9854, "raw_confidence": 0.9854, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9853}
+{"question": "分块时应该为每个块附带哪些元数据？", "confidence": 0.8656, "raw_confidence": 0.8656, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.8656}
+{"question": "分块时设置重叠的主要作用是什么？", "confidence": 0.9697, "raw_confidence": 0.9697, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9697}
+{"question": "评估一个向量数据库通常看哪四个维度？", "confidence": 1.0, "raw_confidence": 1.0, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 1.0}
+{"question": "长上下文方案存在哪三重代价？", "confidence": 0.9995, "raw_confidence": 0.9995, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9995}
+{"question": "RAG 的离线索引阶段包含哪些步骤？", "confidence": 0.9851, "raw_confidence": 0.9851, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9851}
+{"question": "加权分数融合的主要缺点是什么？", "confidence": 0.9767, "raw_confidence": 0.9767, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9767}
+{"question": "Milvus 的标量过滤让哪两种能力可以直接在数据库层实现？", "confidence": 0.961, "raw_confidence": 0.961, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.961}
+{"question": "bge-large-zh-v1.5 的模型参数量是多少？", "confidence": 0.299, "raw_confidence": 0.299, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "observed_confidence": 0.299}
+{"question": "知识库只有几个片段时，Recall@5 为什么没有区分度？", "confidence": 0.9708, "raw_confidence": 0.9708, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9708}
+{"question": "Milvus 的 GitHub 仓库采用哪种开源协议？", "confidence": 0.0, "raw_confidence": 0.0, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "early_refusal": true}
+{"question": "HNSW 原论文的作者是谁？", "confidence": 0.1967, "raw_confidence": 0.1967, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "observed_confidence": 0.1967}
+{"question": "Chroma 默认使用哪个嵌入模型？", "confidence": 0.0, "raw_confidence": 0.0, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "early_refusal": true}
+{"question": "HNSW 的 M 参数控制什么？", "confidence": 0.9744, "raw_confidence": 0.9744, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9743}
+{"question": "Milvus Lite 怎么安装，数据保存在哪里？", "confidence": 0.9771, "raw_confidence": 0.9771, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9771}
+{"question": "一个 Agent 通常由哪四部分组成？", "confidence": 0.6248, "raw_confidence": 0.6248, "coverage": 0.25, "answerable": true, "refused": true, "reconstructed": true, "observed_confidence": 0.54}
+{"question": "RAG 相比微调，在知识更新上的优势是什么？", "confidence": 0.915, "raw_confidence": 0.915, "coverage": 0.75, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.915}
+{"question": "Milvus Distributed 在什么环境上可以扩展到十亿级向量？", "confidence": 0.9844, "raw_confidence": 0.9844, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9844}
+{"question": "工业界交叉编码器精排通常从多少召回候选中取多少条进入上下文？", "confidence": 0.98, "raw_confidence": 0.98, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.98}
+{"question": "bge-m3 支持多少种语言？", "confidence": 0.9799, "raw_confidence": 0.9799, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9799}
+{"question": "Recall@K 指标衡量的是什么？", "confidence": 0.9483, "raw_confidence": 0.9483, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9483}
+{"question": "向量归一化之后，哪两种相似度度量在数学上等价？", "confidence": 0.9854, "raw_confidence": 0.9854, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9853}
+{"question": "RAG 中重排序的典型做法是从多少候选中精选多少条送入大模型？", "confidence": 0.931, "raw_confidence": 0.931, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9309}
+{"question": "权限过滤应该在哪一层实现，为什么？", "confidence": 0.9622, "raw_confidence": 0.9622, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9622}
+{"question": "微软 GraphRAG 项目在 GitHub 上有多少 star？", "confidence": 0.0, "raw_confidence": 0.0, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "early_refusal": true}
+{"question": "这个知识库目前一共切出了多少个向量块？", "confidence": 0.1978, "raw_confidence": 0.1978, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "observed_confidence": 0.1978}
+{"question": "Elasticsearch 8.x 是哪一年发布的？", "confidence": 0.0, "raw_confidence": 0.0, "coverage": 0.0, "answerable": false, "refused": true, "reconstructed": true, "early_refusal": true}
+{"question": "多轮对话中裁剪历史有哪些常见策略？", "confidence": 0.9812, "raw_confidence": 0.9812, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9812}
+{"question": "递归字符分块的块长度经验起点是多少字符？", "confidence": 0.985, "raw_confidence": 0.985, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.985}
+{"question": "PDF 解析有哪两条技术路线？", "confidence": 0.9762, "raw_confidence": 0.9762, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.9762}
+{"question": "多轮场景下引用应该如何编号和维护？", "confidence": 0.817, "raw_confidence": 0.817, "coverage": 1.0, "answerable": true, "refused": false, "reconstructed": true, "observed_confidence": 0.817}

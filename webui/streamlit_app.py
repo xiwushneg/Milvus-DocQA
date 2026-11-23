@@ -4,6 +4,7 @@
 """
 import html
 import json
+import uuid
 
 import streamlit as st
 import requests
@@ -74,6 +75,22 @@ with st.sidebar:
         st.warning("所选模型服务未在线，提问前请先启动对应服务（如 finetune/serve_local.py）")
 
     st.divider()
+    st.header("🧠 Agentic RAG")
+    agent_mode = st.toggle(
+        "启用自反思 + 引用校验",
+        value=False,
+        help="需后端 config.agent.enabled=true；开启后走 /api/agent/chat/stream",
+    )
+    if agent_mode:
+        if "agent_session" not in st.session_state:
+            st.session_state.agent_session = f"sess-{uuid.uuid4().hex[:8]}"
+        st.caption(f"会话 `{st.session_state.agent_session}`（服务端记忆）")
+        if st.button("🆕 新会话", use_container_width=True):
+            st.session_state.agent_session = f"sess-{uuid.uuid4().hex[:8]}"
+            st.session_state.history = []
+            st.rerun()
+
+    st.divider()
     st.header("🖥 系统状态")
     backend_ok = milvus_ok = False
     try:
@@ -124,6 +141,108 @@ def show_refs(refs: list) -> None:
         )
 
 
+def run_agent_stream(api: str, question: str, llm: str, session_id: str, status, holder) -> dict:
+    """消费 /api/agent/chat/stream：逐 token 渲染，并收集引用/轨迹/分账。"""
+    answer = ""
+    refs: list = []
+    citations: list = []
+    conflicts: list = []
+    metrics: dict = {}
+    trace_events: list = []
+    confidence, total_ms, trace_id, err = 0.0, 0, "", None
+
+    try:
+        resp = requests.post(
+            f"{api}/api/agent/chat/stream",
+            json={
+                "question": question,
+                "llm": llm,
+                "session_id": session_id,
+                "include_trace": False,
+            },
+            stream=True,
+            timeout=600,
+        )
+        resp.raise_for_status()
+        for line in resp.iter_lines(decode_unicode=True):
+            if not line or not line.startswith("data:"):
+                continue
+            ev = json.loads(line[5:].strip())
+            kind = ev.get("type")
+            if kind == "session":
+                trace_id = ev.get("trace_id", "")
+            elif kind == "trace":
+                trace_events.append(ev)
+                stage = ev.get("stage")
+                if stage and stage != "finalize":
+                    status.caption(f"⚙️ {stage} · round {ev.get('round', 0)}")
+            elif kind == "refs":
+                refs = ev.get("references", refs)
+                citations = ev.get("citations", citations)
+                conflicts = ev.get("conflicts", conflicts)
+                confidence = ev.get("confidence", confidence)
+            elif kind == "delta":
+                answer += ev.get("text", "")
+                holder.markdown(answer + "▌")
+            elif kind == "done":
+                answer = ev.get("answer", answer)
+                refs = ev.get("references", refs)
+                citations = ev.get("citations", citations)
+                conflicts = ev.get("conflicts", conflicts)
+                confidence = ev.get("confidence", confidence)
+                metrics = ev.get("metrics", {})
+                total_ms = ev.get("total_ms", metrics.get("latency_ms", 0))
+                trace_id = ev.get("trace_id", trace_id)
+            elif kind == "error":
+                err = ev.get("detail", "未知错误")
+    except Exception as exc:
+        err = f"请求失败：{exc}（请确认后端已启动且 agent.enabled=true）"
+
+    return {
+        "answer": answer,
+        "refs": refs,
+        "citations": citations,
+        "conflicts": conflicts,
+        "metrics": metrics,
+        "trace_events": trace_events,
+        "confidence": confidence,
+        "total_ms": total_ms,
+        "trace_id": trace_id,
+        "error": err,
+    }
+
+
+def show_agent_meta(citations: list, conflicts: list, metrics: dict, trace_events: list) -> None:
+    """引用校验、冲突、执行轨迹与模型分账。"""
+    if citations:
+        with st.expander(f"🧾 引用校验 · 覆盖率 {metrics.get('citation_coverage', 0):.0%}"):
+            for c in citations:
+                ok = c.get("valid", True)
+                ids = "、".join(c.get("evidence_ids") or [])
+                st.markdown(f"{'✅' if ok else '❌'} {c.get('sentence', '')}　`{ids}`")
+            if metrics.get("invalid_citations"):
+                st.warning(f"非法引用 {metrics['invalid_citations']} 处，答案已按低置信处理")
+    if conflicts:
+        st.warning(
+            "检测到资料冲突，答案已并列展示："
+            + "；".join(c.get("claim", "") for c in conflicts)
+        )
+    if trace_events:
+        with st.expander("🧭 执行轨迹"):
+            st.json(trace_events)
+    if metrics:
+        with st.expander("⚡ 模型分账"):
+            st.markdown(
+                f"`brain` {metrics.get('brain_llm_calls', 0)} 次 / "
+                f"{metrics.get('brain_latency_ms', 0)}ms · "
+                f"`answer` {metrics.get('answer_llm_calls', 0)} 次 / "
+                f"{metrics.get('answer_latency_ms', 0)}ms · "
+                f"tokens {metrics.get('prompt_tokens', 0)}+"
+                f"{metrics.get('completion_tokens', 0)} · "
+                f"成本 ¥{metrics.get('cost_cny', 0)}"
+            )
+
+
 tab_chat, tab_docs = st.tabs(["💬 智能问答", "📁 文档管理"])
 
 with tab_chat:
@@ -137,65 +256,120 @@ with tab_chat:
             if turn.get("refs"):
                 with st.expander("📎 参考来源"):
                     show_refs(turn["refs"])
+            meta = turn.get("agent_meta")
+            if meta:
+                show_agent_meta(
+                    meta.get("citations", []),
+                    meta.get("conflicts", []),
+                    meta.get("metrics", {}),
+                    meta.get("trace_events", []),
+                )
     q = st.chat_input("请输入你的问题…")
     if q:
         st.session_state.history.append({"role": "user", "content": q})
         with st.chat_message("user"):
             st.markdown(q)
-        with st.chat_message("assistant"):
-            status = st.empty()
-            status.caption("🔍 检索资料中…")
-            holder = st.empty()
-            answer, refs, timings, total_ms, err = "", [], None, None, None
-            recent = [
-                {"role": t["role"], "content": t["content"]}
-                for t in st.session_state.history[-7:-1]  # 排除刚追加的当前问题，带最近 3 轮
-            ]
-            try:
-                resp = requests.post(
-                    f"{API}/api/chat/stream",
-                    json={"question": q, "llm": chosen_llm, "history": recent},
-                    stream=True, timeout=600,
+        model_label = LLM_LABELS.get(chosen_llm, chosen_llm)
+
+        if agent_mode:
+            with st.chat_message("assistant"):
+                status = st.empty()
+                holder = st.empty()
+                status.caption("🧠 Agent 规划中…")
+                result = run_agent_stream(
+                    API, q, chosen_llm, st.session_state.agent_session, status, holder
                 )
-                resp.raise_for_status()
-                for line in resp.iter_lines(decode_unicode=True):
-                    if not line or not line.startswith("data:"):
-                        continue
-                    ev = json.loads(line[5:].strip())
-                    t = ev.get("type")
-                    if t == "rewrite":
-                        status.caption(f"🧠 指代消解 → {ev.get('query', '')}")
-                    elif t == "refs":
-                        refs = ev.get("references", [])
-                        status.caption("✍️ 检索完成，生成中…")
-                    elif t == "delta":
-                        answer += ev.get("text", "")
-                        holder.markdown(answer + "▌")
-                    elif t == "done":
-                        timings, total_ms = ev.get("timings"), ev.get("total_ms")
-                    elif t == "error":
-                        err = ev.get("detail", "未知错误")
-            except Exception as e:
-                st.error(f"请求失败：{e}（请确认后端已启动：uvicorn app.main:app --port 8000）")
-                st.stop()
-            if err:
-                st.error(f"生成失败：{err}")
-                st.stop()
-            status.empty()
-            holder.markdown(answer)
-            model_label = LLM_LABELS.get(chosen_llm, chosen_llm)
-            if refs:
-                with st.expander("📎 参考来源"):
-                    show_refs(refs)
-            st.caption(f"🤖 {model_label} · ⏱ 总耗时 {total_ms}ms")
-            if timings:
-                with st.expander("⚡ 分阶段耗时"):
-                    st.markdown(" · ".join(f"`{k}` {v}ms" for k, v in timings.items()))
-        st.session_state.history.append(
-            {"role": "assistant", "content": answer, "refs": refs, "llm_label": model_label}
-        )
-        with st.chat_message("assistant"):
-            pass  # 下轮渲染历史时展示引用
+                if result["error"]:
+                    status.empty()
+                    st.error(f"Agent 执行失败：{result['error']}")
+                    st.stop()
+                status.empty()
+                holder.markdown(result["answer"])
+                if result["refs"]:
+                    with st.expander("📎 参考来源"):
+                        show_refs(result["refs"])
+                show_agent_meta(
+                    result["citations"],
+                    result["conflicts"],
+                    result["metrics"],
+                    result["trace_events"],
+                )
+                metrics = result["metrics"]
+                st.caption(
+                    f"🤖 {model_label} · 🎯 置信度 {result['confidence']:.2f}"
+                    f" · 轮次 {metrics.get('rounds', 1)}"
+                    f" · ⏹ {metrics.get('stop_reason', '')}"
+                    f" · ⏱ {result['total_ms']}ms"
+                    + (f" · trace `{result['trace_id']}`" if result["trace_id"] else "")
+                )
+            st.session_state.history.append(
+                {
+                    "role": "assistant",
+                    "content": result["answer"],
+                    "refs": result["refs"],
+                    "llm_label": model_label,
+                    "agent_meta": {
+                        "citations": result["citations"],
+                        "conflicts": result["conflicts"],
+                        "metrics": result["metrics"],
+                        "trace_events": result["trace_events"],
+                        "confidence": result["confidence"],
+                    },
+                }
+            )
+        else:
+
+            with st.chat_message("assistant"):
+                status = st.empty()
+                status.caption("🔍 检索资料中…")
+                holder = st.empty()
+                answer, refs, timings, total_ms, err = "", [], None, None, None
+                recent = [
+                    {"role": t["role"], "content": t["content"]}
+                    for t in st.session_state.history[-7:-1]  # 排除刚追加的当前问题，带最近 3 轮
+                ]
+                try:
+                    resp = requests.post(
+                        f"{API}/api/chat/stream",
+                        json={"question": q, "llm": chosen_llm, "history": recent},
+                        stream=True, timeout=600,
+                    )
+                    resp.raise_for_status()
+                    for line in resp.iter_lines(decode_unicode=True):
+                        if not line or not line.startswith("data:"):
+                            continue
+                        ev = json.loads(line[5:].strip())
+                        t = ev.get("type")
+                        if t == "rewrite":
+                            status.caption(f"🧠 指代消解 → {ev.get('query', '')}")
+                        elif t == "refs":
+                            refs = ev.get("references", [])
+                            status.caption("✍️ 检索完成，生成中…")
+                        elif t == "delta":
+                            answer += ev.get("text", "")
+                            holder.markdown(answer + "▌")
+                        elif t == "done":
+                            timings, total_ms = ev.get("timings"), ev.get("total_ms")
+                        elif t == "error":
+                            err = ev.get("detail", "未知错误")
+                except Exception as e:
+                    st.error(f"请求失败：{e}（请确认后端已启动：uvicorn app.main:app --port 8000）")
+                    st.stop()
+                if err:
+                    st.error(f"生成失败：{err}")
+                    st.stop()
+                status.empty()
+                holder.markdown(answer)
+                if refs:
+                    with st.expander("📎 参考来源"):
+                        show_refs(refs)
+                st.caption(f"🤖 {model_label} · ⏱ 总耗时 {total_ms}ms")
+                if timings:
+                    with st.expander("⚡ 分阶段耗时"):
+                        st.markdown(" · ".join(f"`{k}` {v}ms" for k, v in timings.items()))
+            st.session_state.history.append(
+                {"role": "assistant", "content": answer, "refs": refs, "llm_label": model_label}
+            )
 
 with tab_docs:
     ups = st.file_uploader(

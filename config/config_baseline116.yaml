@@ -1,0 +1,101 @@
+# 基线语料复现专用配置（实验用，非生产配置）
+# 目的：用同一批 20 篇 scripts/demo_data 复现 results_rerank_ablation.json
+# 对应的 116 块语料，验证 E0 检索指标 Recall@5=1.000 / MRR=0.939。
+#
+# 与 config/config.yaml 的差异仅两处：
+#   1) milvus.collection 换成独立集合，不触碰当前 44 块生产库
+#   2) chunking.chunk_size 500 -> 180、chunk_overlap 80 -> 40
+#      实测：180/40 切 20 篇 demo_data 正好 116 块；500/80 只有 44 块
+#
+# 注意：块数一致不等于指标一定一致。复现后必须用 eval_retrieval.py
+# 校验 Recall@5=1.000、MRR=0.939（容差 0.001），通过后才可用于消融。
+# 小语料下 Recall@5 已饱和，策略差异以 MRR 衡量；基线数字见 results_rerank_ablation.json。
+# 验证通过后本文件可保留作为基线实验快照；不需要时直接删除即可。
+
+milvus:
+  uri: "http://localhost:19530"
+  collection: "docqa_chunks_baseline116"
+  dense_dim: 1024
+  index_metric: "COSINE"
+
+embedding:
+  provider: "api"
+  model: "BAAI/bge-m3"
+  api_base: "https://api.siliconflow.cn/v1"
+  api_key_env: "EMBEDDING_API_KEY"
+  batch_size: 32
+  device: "cpu"
+
+chunking:
+  chunk_size: 180
+  chunk_overlap: 40
+  min_chunk_size: 30
+
+llm:
+  base_url: "https://api.siliconflow.cn/v1"
+  model: "deepseek-ai/DeepSeek-V3.2"
+  api_key_env: "LLM_API_KEY"
+  temperature: 0.1
+  max_tokens: 1024
+  profiles:
+    ft:
+      label: "本机微调 Qwen3-1.7B"
+      base_url: "http://127.0.0.1:8009/v1"
+      model: "qwen3-docqa-ft"
+
+retrieval:
+  dense_top_k: 20
+  bm25_top_k: 20
+  rrf_k: 60
+  final_top_k: 5
+  rerank:
+    enabled: true
+    mode: "api"
+    model: "BAAI/bge-reranker-v2-m3"
+    api_base: "https://api.siliconflow.cn/v1"
+    api_key_env: "EMBEDDING_API_KEY"
+
+agent:
+  enabled: false
+  brain_llm: "cloud"
+  max_rounds: 3
+  max_subqueries_per_round: 3
+  top_k_per_subquery: 5
+  max_final_evidence: 8
+  on_budget_exhausted: "partial"
+  analyze: {mode: "brain", max_retries: 1}
+  routing: {keyword_bm25_first: true, summary_evidence_bonus: 2}
+  budget:
+    max_llm_calls: 8
+    max_brain_calls: 6
+    max_prompt_tokens: 12000
+    max_completion_tokens: 4000
+    max_wall_ms: 30000
+    max_tool_calls: 3
+    novelty_epsilon: 0.10
+  sufficiency:
+    tau_low: 0.45
+    tau_high: 0.65
+    weights: {claim_support: 0.45, coverage: 0.25, top_score: 0.20, diversity: 0.10}
+  hyde: {enabled: true, start_round: 2}
+  citations:
+    enabled: true
+    min_coverage: 0.60
+    verify_claims: true
+    tau_answer_confidence: 0.55
+    calibration_path: "data/calibration.json"
+  tools:
+    enabled: true
+    tables_dir: "data/tables"
+    duckdb: {enabled: true, max_rows: 200, timeout_ms: 3000}
+    calculator: {enabled: true}
+    unit_convert: {enabled: true}
+    code_exec: {enabled: false, timeout_ms: 3000}
+  memory:
+    session_ttl_s: 7200
+    max_turns: 20
+    history_turns: 6
+    persist_path: ""
+    long_term: false
+  trace: {enabled: true, dir: "data/traces"}
+  cost: {prompt_per_1k: 0.0, completion_per_1k: 0.0}

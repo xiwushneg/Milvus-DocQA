@@ -1,0 +1,333 @@
+{
+  "eval_set_n": 49,
+  "top_k": 5,
+  "retrieval_baseline": {
+    "source": "evaluation\\results_rerank_ablation.json",
+    "available": true,
+    "evaluator": "evaluation/eval_retrieval.py（Recall@K / MRR）",
+    "top_k": 5,
+    "num_questions": 49,
+    "results": [
+      {
+        "strategy": "dense",
+        "recall_at_k": 1.0,
+        "mrr": 0.776,
+        "avg_ms": 163.2,
+        "top_k": 5
+      },
+      {
+        "strategy": "hybrid(RRF)",
+        "recall_at_k": 1.0,
+        "mrr": 0.843,
+        "avg_ms": 164.0,
+        "top_k": 5
+      },
+      {
+        "strategy": "hybrid+rerank",
+        "recall_at_k": 1.0,
+        "mrr": 0.939,
+        "avg_ms": 1095.6,
+        "top_k": 5
+      }
+    ]
+  },
+  "baseline_check": {
+    "performed": true,
+    "passed": true,
+    "expected": {
+      "recall_at_k": 1.0,
+      "mrr": 0.939
+    },
+    "actual": {
+      "recall_at_k": 1.0,
+      "mrr": 0.9394
+    },
+    "tolerance": 0.001,
+    "source": "evaluation\\results_rerank_ablation.json"
+  },
+  "evaluator_legend": {
+    "retrieval_recall_at_k": "programmatic（eval_retrieval 命中规则，与 results_rerank_ablation.json 同口径）",
+    "retrieval_mrr": "programmatic（同左）",
+    "retrieval_ndcg_at_k": "programmatic（同左）",
+    "exact_match": "programmatic（normalized EM）",
+    "f1": "programmatic（token F1）",
+    "refusal_precision/recall/f1": "programmatic（拒答规则）",
+    "citation_coverage": "verifier（模型辅助 claim 校验）",
+    "invalid_citation_rate": "verifier（引用正则）",
+    "hallucination_rate": "verifier/LLM-as-Judge（unsupported claims）",
+    "avg_latency_ms/tokens": "运行时计量（trace usage）",
+    "ragas_*": "RAGAS（可选依赖，未安装则跳过）"
+  },
+  "variants": [
+    {
+      "variant": "E0",
+      "label": "固定流水线（dense+BM25+RRF+rerank）",
+      "metrics": {
+        "exact_match": 0.0,
+        "f1": 0.4371,
+        "answerable_n": 44,
+        "refusal": {
+          "precision": 0.3333,
+          "recall": 1.0,
+          "f1": 0.5,
+          "accuracy": 0.7959,
+          "tp": 5,
+          "fp": 10,
+          "fn": 0,
+          "tn": 34,
+          "n": 49,
+          "evaluator": "programmatic（拒答规则/校验器）"
+        },
+        "citations": {
+          "citation_coverage": 0.0,
+          "invalid_citation_rate": 0.0,
+          "hallucination_rate": 0.0,
+          "total_citations": 0,
+          "n": 49,
+          "evaluator": "verifier（引用正则 + 模型辅助 claim 校验）"
+        },
+        "avg_latency_ms": 6334.8,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "n": 49,
+        "evaluator": {
+          "exact_match": "programmatic（normalized EM）",
+          "f1": "programmatic（token F1）",
+          "refusal": "programmatic",
+          "citations": "verifier"
+        },
+        "retrieval": {
+          "recall_at_k": 1.0,
+          "mrr": 0.9394,
+          "ndcg_at_k": 0.9551,
+          "k": 5,
+          "n": 44,
+          "evaluator": "programmatic（RETRIEVAL_GOLD 命中规则）"
+        },
+        "avg_confidence": 0.0,
+        "stop_reasons": {
+          "-": 49
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "label": "+ 查询规划/意图路由/块类型",
+      "metrics": {
+        "exact_match": 0.0,
+        "f1": 0.3891,
+        "answerable_n": 44,
+        "refusal": {
+          "precision": 0.5,
+          "recall": 0.2,
+          "f1": 0.2857,
+          "accuracy": 0.898,
+          "tp": 1,
+          "fp": 1,
+          "fn": 4,
+          "tn": 43,
+          "n": 49,
+          "evaluator": "programmatic（拒答规则/校验器）"
+        },
+        "citations": {
+          "citation_coverage": 0.0,
+          "invalid_citation_rate": 0.0,
+          "hallucination_rate": 0.0,
+          "total_citations": 0,
+          "n": 49,
+          "evaluator": "verifier（引用正则 + 模型辅助 claim 校验）"
+        },
+        "avg_latency_ms": 20368.3,
+        "prompt_tokens": 92223,
+        "completion_tokens": 15980,
+        "n": 49,
+        "evaluator": {
+          "exact_match": "programmatic（normalized EM）",
+          "f1": "programmatic（token F1）",
+          "refusal": "programmatic",
+          "citations": "verifier"
+        },
+        "retrieval": {
+          "recall_at_k": 0.9545,
+          "mrr": 0.9053,
+          "ndcg_at_k": 0.918,
+          "k": 5,
+          "n": 44,
+          "evaluator": "programmatic（RETRIEVAL_GOLD 命中规则）"
+        },
+        "avg_confidence": 0.4796,
+        "stop_reasons": {
+          "sufficient": 42,
+          "out_of_scope": 2,
+          "max_rounds": 5
+        }
+      }
+    },
+    {
+      "variant": "E2",
+      "label": "+ 自反思闭环",
+      "metrics": {
+        "exact_match": 0.0,
+        "f1": 0.3894,
+        "answerable_n": 44,
+        "refusal": {
+          "precision": 0.3333,
+          "recall": 0.2,
+          "f1": 0.25,
+          "accuracy": 0.8776,
+          "tp": 1,
+          "fp": 2,
+          "fn": 4,
+          "tn": 42,
+          "n": 49,
+          "evaluator": "programmatic（拒答规则/校验器）"
+        },
+        "citations": {
+          "citation_coverage": 0.0,
+          "invalid_citation_rate": 0.0,
+          "hallucination_rate": 0.0,
+          "total_citations": 0,
+          "n": 49,
+          "evaluator": "verifier（引用正则 + 模型辅助 claim 校验）"
+        },
+        "avg_latency_ms": 23861.6,
+        "prompt_tokens": 97310,
+        "completion_tokens": 17121,
+        "n": 49,
+        "evaluator": {
+          "exact_match": "programmatic（normalized EM）",
+          "f1": "programmatic（token F1）",
+          "refusal": "programmatic",
+          "citations": "verifier"
+        },
+        "retrieval": {
+          "recall_at_k": 0.9545,
+          "mrr": 0.9053,
+          "ndcg_at_k": 0.918,
+          "k": 5,
+          "n": 44,
+          "evaluator": "programmatic（RETRIEVAL_GOLD 命中规则）"
+        },
+        "avg_confidence": 0.4694,
+        "stop_reasons": {
+          "sufficient": 42,
+          "node_error": 1,
+          "out_of_scope": 2,
+          "budget": 4
+        }
+      }
+    },
+    {
+      "variant": "E3",
+      "label": "+ 工具层",
+      "metrics": {
+        "exact_match": 0.0,
+        "f1": 0.3968,
+        "answerable_n": 44,
+        "refusal": {
+          "precision": 0.3333,
+          "recall": 0.2,
+          "f1": 0.25,
+          "accuracy": 0.8776,
+          "tp": 1,
+          "fp": 2,
+          "fn": 4,
+          "tn": 42,
+          "n": 49,
+          "evaluator": "programmatic（拒答规则/校验器）"
+        },
+        "citations": {
+          "citation_coverage": 0.0,
+          "invalid_citation_rate": 0.0,
+          "hallucination_rate": 0.0,
+          "total_citations": 0,
+          "n": 49,
+          "evaluator": "verifier（引用正则 + 模型辅助 claim 校验）"
+        },
+        "avg_latency_ms": 22886.4,
+        "prompt_tokens": 96487,
+        "completion_tokens": 17978,
+        "n": 49,
+        "evaluator": {
+          "exact_match": "programmatic（normalized EM）",
+          "f1": "programmatic（token F1）",
+          "refusal": "programmatic",
+          "citations": "verifier"
+        },
+        "retrieval": {
+          "recall_at_k": 0.9545,
+          "mrr": 0.9053,
+          "ndcg_at_k": 0.918,
+          "k": 5,
+          "n": 44,
+          "evaluator": "programmatic（RETRIEVAL_GOLD 命中规则）"
+        },
+        "avg_confidence": 0.4694,
+        "stop_reasons": {
+          "sufficient": 42,
+          "node_error": 1,
+          "out_of_scope": 2,
+          "budget": 3,
+          "answered": 1
+        }
+      }
+    },
+    {
+      "variant": "E4",
+      "label": "+ 逐句引用/冲突并列/低置信拒答",
+      "metrics": {
+        "exact_match": 0.0227,
+        "f1": 0.4783,
+        "answerable_n": 44,
+        "refusal": {
+          "precision": 0.5,
+          "recall": 0.6,
+          "f1": 0.5455,
+          "accuracy": 0.898,
+          "tp": 3,
+          "fp": 3,
+          "fn": 2,
+          "tn": 41,
+          "n": 49,
+          "evaluator": "programmatic（拒答规则/校验器）"
+        },
+        "citations": {
+          "citation_coverage": 0.7602,
+          "invalid_citation_rate": 0.1429,
+          "hallucination_rate": 0.197,
+          "total_citations": 63,
+          "n": 49,
+          "evaluator": "verifier（引用正则 + 模型辅助 claim 校验）"
+        },
+        "avg_latency_ms": 34234.2,
+        "prompt_tokens": 114157,
+        "completion_tokens": 21956,
+        "n": 49,
+        "evaluator": {
+          "exact_match": "programmatic（normalized EM）",
+          "f1": "programmatic（token F1）",
+          "refusal": "programmatic",
+          "citations": "verifier"
+        },
+        "retrieval": {
+          "recall_at_k": 0.9318,
+          "mrr": 0.8674,
+          "ndcg_at_k": 0.8839,
+          "k": 5,
+          "n": 44,
+          "evaluator": "programmatic（RETRIEVAL_GOLD 命中规则）"
+        },
+        "avg_confidence": 0.775,
+        "stop_reasons": {
+          "sufficient": 40,
+          "budget": 3,
+          "node_error": 2,
+          "out_of_scope": 2,
+          "low_confidence": 2
+        }
+      }
+    }
+  ],
+  "answer_llm": "cloud",
+  "brain_llm": "cloud"
+}

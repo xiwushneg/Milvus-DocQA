@@ -34,12 +34,19 @@ def main() -> None:
     cfg = load_config(args.config)
     pipeline = build_pipeline(cfg)
     print(f"共 {len(files)} 个文件待导入，embedding = {pipeline.embedder.name}")
+    ingested = 0
     for f in files:
-        stats = pipeline.ingest_bytes(f.name, f.read_bytes())
+        stats = pipeline.ingest_bytes(f.name, f.read_bytes(), rebuild_bm25=False)
+        if stats.get("skipped"):
+            print(f"  ↷ {stats['source']}: 与 {stats.get('duplicate_of', '')} 内容重复，跳过")
+            continue
+        ingested += 1
         print(
             f"  ✔ {stats['source']}: {stats['segments']} 段 → {stats['chunks']} 块，"
             f"耗时 {stats['elapsed_ms']}ms（含向量化 {stats['embed_ms']}ms）"
         )
+    if ingested:
+        pipeline.refresh_bm25()  # 批量落库后只重建一次 BM25
     print(f"完成，Milvus 当前共 {pipeline.store.count()} 块")
 
 

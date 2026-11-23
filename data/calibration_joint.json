@@ -1,0 +1,12 @@
+{
+  "tau_answer_confidence": 0.3,
+  "refusal_f1": 1.0,
+  "false_refusal_rate": 0.0,
+  "refused": 10,
+  "min_coverage": 0.0,
+  "mode": "joint",
+  "n": 40,
+  "n_answerable": 30,
+  "n_unanswerable": 10,
+  "max_false_refusal": 0.05
+}

@@ -19,21 +19,23 @@ def file_sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()[:16]
 
 
-def parse_file(path: str) -> list[dict]:
+def parse_file(path: str, *, preserve_docx_order: bool = False) -> list[dict]:
     p = Path(path)
     if p.suffix.lower() not in SUPPORTED_SUFFIXES:
         raise ValueError(
             f"不支持的文件类型: {p.suffix}（支持 {sorted(SUPPORTED_SUFFIXES)}）"
         )
-    return parse_bytes(p.name, p.read_bytes())
+    return parse_bytes(p.name, p.read_bytes(), preserve_docx_order=preserve_docx_order)
 
 
-def parse_bytes(filename: str, data: bytes) -> list[dict]:
+def parse_bytes(
+    filename: str, data: bytes, *, preserve_docx_order: bool = False
+) -> list[dict]:
     suffix = Path(filename).suffix.lower()
     if suffix == ".pdf":
         return _parse_pdf(data)
     if suffix == ".docx":
-        return _parse_docx(data)
+        return _parse_docx(data, preserve_order=preserve_docx_order)
     if suffix in (".md", ".markdown", ".txt", ".text"):
         return [{"text": _decode(data), "page": 1}]
     raise ValueError(f"不支持的文件类型: {suffix}")
@@ -60,10 +62,29 @@ def _parse_pdf(data: bytes) -> list[dict]:
     return segments
 
 
-def _parse_docx(data: bytes) -> list[dict]:
+def _parse_docx(data: bytes, preserve_order: bool = False) -> list[dict]:
     import docx
 
     d = docx.Document(io.BytesIO(data))
+    if preserve_order:
+        # 按文档 body 顺序遍历段落/表格，保留原始排版（默认关闭以冻结现有语料）
+        from docx.oxml.ns import qn
+        from docx.table import Table
+        from docx.text.paragraph import Paragraph
+
+        lines: list[str] = []
+        for child in d.element.body.iterchildren():
+            if child.tag == qn("w:p"):
+                text = Paragraph(child, d).text
+                if text.strip():
+                    lines.append(text)
+            elif child.tag == qn("w:tbl"):
+                for row in Table(child, d).rows:
+                    cells = [c.text.strip() for c in row.cells if c.text.strip()]
+                    if cells:
+                        lines.append(" | ".join(cells))
+        return [{"text": "\n".join(lines), "page": 1}]
+
     lines = [p.text for p in d.paragraphs if p.text.strip()]
     for table in d.tables:  # 表格内容一并纳入
         for row in table.rows:

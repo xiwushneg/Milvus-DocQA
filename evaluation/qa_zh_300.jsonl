@@ -1,0 +1,300 @@
+{"question": "请说明《RAG评估指标体系》里「检索评估需要先构造评估集：每条样本包含一个问题和标准答案所在的片段位置（gold」的含义。", "gold": [{"source": "RAG评估指标体系", "must_contain": "检索评估需要先构造评估集：每条样本包含一个问题和标准答案所在的片段位置（gold"}], "refusal_expected": false}
+{"question": "请说明《GraphRAG与知识图谱》里「结性问题\"的能力，例如\"这批文档的主要议题是什么\"——这类问题单靠局部片段检索根」的含义。", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "结性问题\"的能力，例如\"这批文档的主要议题是什么\"——这类问题单靠局部片段检索根"}], "refusal_expected": false}
+{"question": "原文如何描述「但它有一个系统性弱点——对于专有名词、产品型号、错误代码、法规编号这类\"字面即关」？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "但它有一个系统性弱点——对于专有名词、产品型号、错误代码、法规编号这类\"字面即关"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》中提到「# 向量嵌入模型选型」，具体上下文是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "# 向量嵌入模型选型"}], "refusal_expected": false}
+{"question": "原文如何描述「多轮对话给 RAG 带来的新问题」？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "多轮对话给 RAG 带来的新问题"}], "refusal_expected": false}
+{"question": "原文如何描述「这种设计把\"信任模型\"转变为\"信任可核对的证据链\"，是金融、法律、医疗等高风险领」？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "这种设计把\"信任模型\"转变为\"信任可核对的证据链\"，是金融、法律、医疗等高风险领"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》中提到「毫无意义。因此多轮 RAG 在检索之前多了一个必经环节：把带」，具体上下文是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "毫无意义。因此多轮 RAG 在检索之前多了一个必经环节：把带"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》中，「GraphRAG 在向量索引之外构建知识图谱：用大模型从文档中抽取实体与关系（如」具体是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "GraphRAG 在向量索引之外构建知识图谱：用大模型从文档中抽取实体与关系（如"}], "refusal_expected": false}
+{"question": "《重排序技术》中，「第一级召回追求速度，使用的模型必须能在毫秒级处理海量文档，例如向量检索的 ANN」具体是什么？", "gold": [{"source": "重排序技术", "must_contain": "第一级召回追求速度，使用的模型必须能在毫秒级处理海量文档，例如向量检索的 ANN"}], "refusal_expected": false}
+{"question": "请说明《RAG评估指标体系》里「答案相关性（Answer Relevance）衡量答案是否真正回应了用户的问题。」的含义。", "gold": [{"source": "RAG评估指标体系", "must_contain": "答案相关性（Answer Relevance）衡量答案是否真正回应了用户的问题。"}], "refusal_expected": false}
+{"question": "原文如何描述「RAG 分为离线索引与在线问答两个阶段。」？", "gold": [{"source": "rag原理", "must_contain": "RAG 分为离线索引与在线问答两个阶段。"}], "refusal_expected": false}
+{"question": "《重排序技术》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《RAG与微调的取舍》中，「RAG 的每个答案都来自可检索的具体片段，能给出引用出处，满足企业对可验证性的要」具体是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "RAG 的每个答案都来自可检索的具体片段，能给出引用出处，满足企业对可验证性的要"}], "refusal_expected": false}
+{"question": "原文如何描述「工程上的务实路线是以向量检索为主体，对特定的高价值场景引入图增强，而不是一步到位」？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "工程上的务实路线是以向量检索为主体，对特定的高价值场景引入图增强，而不是一步到位"}], "refusal_expected": false}
+{"question": "根据《RAG安全与权限控制》，「对检索内容做结构化包裹与转义；」指的是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "对检索内容做结构化包裹与转义；"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》首次发布于哪一年？", "gold": [], "refusal_expected": true}
+{"question": "《文档分块策略》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "原文如何描述「语义缓存与 RAG 性能优化」？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "语义缓存与 RAG 性能优化"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「成（占大头，一至数秒）、以及可选的重排序。」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "成（占大头，一至数秒）、以及可选的重排序。"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》关于「当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案。」的说明是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案。"}], "refusal_expected": false}
+{"question": "请说明《企业知识库落地实践》里「收集高频问题反哺文档建设——用户反复问而文档答不好的地方，往往说明源文档本身需要」的含义。", "gold": [{"source": "企业知识库落地实践", "must_contain": "收集高频问题反哺文档建设——用户反复问而文档答不好的地方，往往说明源文档本身需要"}], "refusal_expected": false}
+{"question": "《milvus入门》中，「Milvus 是一款开源的高性能向量数据库，专为海量向量的相似度检索而设计，采用」具体是什么？", "gold": [{"source": "milvus入门", "must_contain": "Milvus 是一款开源的高性能向量数据库，专为海量向量的相似度检索而设计，采用"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》中，「对输出做敏感信息审计。」具体是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "对输出做敏感信息审计。"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》关于「二是引用要求不具体，只说\"给出引用\"而不规定编号格式，输出会不稳定；」的说明是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "二是引用要求不具体，只说\"给出引用\"而不规定编号格式，输出会不稳定；"}], "refusal_expected": false}
+{"question": "请说明《rag原理》里「BM25 等稀疏关键词检索擅长精确匹配，但无法理解同义表达。」的含义。", "gold": [{"source": "rag原理", "must_contain": "BM25 等稀疏关键词检索擅长精确匹配，但无法理解同义表达。"}], "refusal_expected": false}
+{"question": "原文如何描述「检索增强生成从架构上压缩了幻觉的空间：模型被要求只依据检索到的文档片段作答，而不」？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "检索增强生成从架构上压缩了幻觉的空间：模型被要求只依据检索到的文档片段作答，而不"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》关于「向量维度与相似度度量」的说明是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "向量维度与相似度度量"}], "refusal_expected": false}
+{"question": "原文如何描述「忠实度（Faithfulness）衡量答案是否严格基于检索到的上下文、有没有编造」？", "gold": [{"source": "RAG评估指标体系", "must_contain": "忠实度（Faithfulness）衡量答案是否严格基于检索到的上下文、有没有编造"}], "refusal_expected": false}
+{"question": "原文如何描述「Recall@K 衡量标准片段出现在检索结果前 K 条中的问题占比，回答\"该找到」？", "gold": [{"source": "RAG评估指标体系", "must_contain": "Recall@K 衡量标准片段出现在检索结果前 K 条中的问题占比，回答\"该找到"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》中，「Milvus 的标量过滤恰好支持这种设计，多租户场景下每个查询都自动携带租户条件」具体是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "Milvus 的标量过滤恰好支持这种设计，多租户场景下每个查询都自动携带租户条件"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "原文如何描述「成本上，RAG 的主要开销是嵌入计算和向量存储，远低于微调所需的 GPU 训练资」？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "成本上，RAG 的主要开销是嵌入计算和向量存储，远低于微调所需的 GPU 训练资"}], "refusal_expected": false}
+{"question": "原文如何描述「选型时应结合团队现状：从零构建的生产系统，Milvus 这类专用向量数据库是当前」？", "gold": [{"source": "向量数据库选型对比", "must_contain": "选型时应结合团队现状：从零构建的生产系统，Milvus 这类专用向量数据库是当前"}], "refusal_expected": false}
+{"question": "原文如何描述「提示词工程在 RAG 中的应用」？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "提示词工程在 RAG 中的应用"}], "refusal_expected": false}
+{"question": "原文如何描述「SW 索引需要多少内存\"。」？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "SW 索引需要多少内存\"。"}], "refusal_expected": false}
+{"question": "《milvus入门》关于「FLAT 索引进行暴力检索，召回率百分之百，适合小数据集。」的说明是什么？", "gold": [{"source": "milvus入门", "must_contain": "FLAT 索引进行暴力检索，召回率百分之百，适合小数据集。"}], "refusal_expected": false}
+{"question": "《文档分块策略》中，「在目标长度内，同时尽量在自然边界断开，保住语义完整。」具体是什么？", "gold": [{"source": "文档分块策略", "must_contain": "在目标长度内，同时尽量在自然边界断开，保住语义完整。"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》中，「大模型应用架构正在经历三个阶段的演进。」具体是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "大模型应用架构正在经历三个阶段的演进。"}], "refusal_expected": false}
+{"question": "原文如何描述「它按照预定义的分隔符层级递归切分：先尝试按段落切，超长的段落再按句子切，超长的句」？", "gold": [{"source": "文档分块策略", "must_contain": "它按照预定义的分隔符层级递归切分：先尝试按段落切，超长的段落再按句子切，超长的句"}], "refusal_expected": false}
+{"question": "请说明《企业知识库落地实践》里「版本更新应做到增量替换而不是全库重建，避免每次小改动都触发昂贵的全量嵌入。」的含义。", "gold": [{"source": "企业知识库落地实践", "must_contain": "版本更新应做到增量替换而不是全库重建，避免每次小改动都触发昂贵的全量嵌入。"}], "refusal_expected": false}
+{"question": "根据《查询改写与HyDE》，「档文体\"近得多，实践中常能显著提升召回。」指的是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "档文体\"近得多，实践中常能显著提升召回。"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》中，「密钥管理上，API Key 等凭证一律通过环境变量或密钥管理服务注入，绝不进入代」具体是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "密钥管理上，API Key 等凭证一律通过环境变量或密钥管理服务注入，绝不进入代"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《大模型幻觉与缓解》关于「三是当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案。」的说明是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "三是当模型缺乏某方面知识时，它往往不会承认不知道，而是编造一个语言上通顺的答案。"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》关于「在企业场景中，答案可验证往往比答案流畅更重要。」的说明是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "在企业场景中，答案可验证往往比答案流畅更重要。"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》中，「向量检索的结构性局限」具体是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "向量检索的结构性局限"}], "refusal_expected": false}
+{"question": "《RAG评估指标体系》中，「严谨的场景则辅以人工抽检校准。」具体是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "严谨的场景则辅以人工抽检校准。"}], "refusal_expected": false}
+{"question": "原文如何描述「粗排向量检索用的是双塔结构：查询和文档分别独立编码成向量，再算距离。」？", "gold": [{"source": "重排序技术", "must_contain": "粗排向量检索用的是双塔结构：查询和文档分别独立编码成向量，再算距离。"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》中，「RAG 项目的成功一半在技术选型，另一半在这些持续的运营机制。」具体是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "RAG 项目的成功一半在技术选型，另一半在这些持续的运营机制。"}], "refusal_expected": false}
+{"question": "请说明《文档分块策略》里「块太小，完整语义被切断，\"上下文不完整\"，即使检索命中，大模型拿到的片段也读不通」的含义。", "gold": [{"source": "文档分块策略", "must_contain": "块太小，完整语义被切断，\"上下文不完整\"，即使检索命中，大模型拿到的片段也读不通"}], "refusal_expected": false}
+{"question": "《RAG评估指标体系》中，「没有评估的 RAG 优化全凭感觉：调整分块大小、更换嵌入模型、开关重排序，每一项」具体是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "没有评估的 RAG 优化全凭感觉：调整分块大小、更换嵌入模型、开关重排序，每一项"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》中，「，提高同一问题的答案一致性；」具体是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "，提高同一问题的答案一致性；"}], "refusal_expected": false}
+{"question": "原文如何描述「RAG 系统评估指标体系」？", "gold": [{"source": "RAG评估指标体系", "must_contain": "RAG 系统评估指标体系"}], "refusal_expected": false}
+{"question": "请说明《提示词工程与查询改写》里「常见陷阱有三：一是指令堆砌过多，模型顾此失彼，约束应精简并按优先级排列；」的含义。", "gold": [{"source": "提示词工程与查询改写", "must_contain": "常见陷阱有三：一是指令堆砌过多，模型顾此失彼，约束应精简并按优先级排列；"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》中，「大模型幻觉的成因与缓解」具体是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "大模型幻觉的成因与缓解"}], "refusal_expected": false}
+{"question": "《重排序技术》中，「昂贵但精度更高的模型，对每条候选与查询的相关性做精细判断，把真正相关的段落排到最」具体是什么？", "gold": [{"source": "重排序技术", "must_contain": "昂贵但精度更高的模型，对每条候选与查询的相关性做精细判断，把真正相关的段落排到最"}], "refusal_expected": false}
+{"question": "请说明《大模型幻觉与缓解》里「配套的工程手段包括：在提示词中明确指示\"仅根据提供的资料回答，资料中没有就说不知」的含义。", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "配套的工程手段包括：在提示词中明确指示\"仅根据提供的资料回答，资料中没有就说不知"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》中，「知识库中的文档并非人人可见：合同、薪酬制度、项目资料都有各自的可见范围。」具体是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "知识库中的文档并非人人可见：合同、薪酬制度、项目资料都有各自的可见范围。"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《向量嵌入模型》中，「问答而言，bge-m3 在语义检索上的表现与 bge-large 相当，同时显著」具体是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "问答而言，bge-m3 在语义检索上的表现与 bge-large 相当，同时显著"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》中，「引用溯源的做法是在文档分块阶段保留来源文件名和页码等元数据，检索命中后把这些元数」具体是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "引用溯源的做法是在文档分块阶段保留来源文件名和页码等元数据，检索命中后把这些元数"}], "refusal_expected": false}
+{"question": "根据《RAG评估指标体系》，「类推后取平均，回答\"找到的排得靠不靠前\"。」指的是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "类推后取平均，回答\"找到的排得靠不靠前\"。"}], "refusal_expected": false}
+{"question": "请说明《RAG评估指标体系》里「评估体系把系统效果变成可量化的数字，让每一次迭代都有数据依据，这是从演示项目到生」的含义。", "gold": [{"source": "RAG评估指标体系", "must_contain": "评估体系把系统效果变成可量化的数字，让每一次迭代都有数据依据，这是从演示项目到生"}], "refusal_expected": false}
+{"question": "原文如何描述「工业界通行的组合是：双塔模型或稀疏检索召回 Top 50 到 Top 100，交」？", "gold": [{"source": "重排序技术", "must_contain": "工业界通行的组合是：双塔模型或稀疏检索召回 Top 50 到 Top 100，交"}], "refusal_expected": false}
+{"question": "请说明《向量嵌入模型》里「对数据敏感的企业私有文档场景，开源模型加自托管或国内托管 API 是更稳妥的选择」的含义。", "gold": [{"source": "向量嵌入模型", "must_contain": "对数据敏感的企业私有文档场景，开源模型加自托管或国内托管 API 是更稳妥的选择"}], "refusal_expected": false}
+{"question": "请说明《混合检索与RRF融合》里「义，\"计算机\"和\"电脑\"在它眼里是两个毫无关系的词，同义改写、口语化表达都会导致」的含义。", "gold": [{"source": "混合检索与RRF融合", "must_contain": "义，\"计算机\"和\"电脑\"在它眼里是两个毫无关系的词，同义改写、口语化表达都会导致"}], "refusal_expected": false}
+{"question": "《混合检索与RRF融合》中，「第一种是加权分数融合，把两路的归一化分数按权重相加，缺点是稠密检索的余弦分数在 」具体是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "第一种是加权分数融合，把两路的归一化分数按权重相加，缺点是稠密检索的余弦分数在 "}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》中，「例如历史中讨论过 Milvus 的索引，用户追问\"那它需要多少内存\"，改写后就变」具体是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "例如历史中讨论过 Milvus 的索引，用户追问\"那它需要多少内存\"，改写后就变"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》关于「RAG 系统的安全与权限控制」的说明是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "RAG 系统的安全与权限控制"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》中，「RAG 在 Agent 时代的角色变化」具体是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "RAG 在 Agent 时代的角色变化"}], "refusal_expected": false}
+{"question": "请说明《Milvus索引与检索原理》里「如果对每一个查询向量都与库中所有向量精确计算距离，复杂度随数据量线性增长，数据量」的含义。", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "如果对每一个查询向量都与库中所有向量精确计算距离，复杂度随数据量线性增长，数据量"}], "refusal_expected": false}
+{"question": "原文如何描述「基于视觉与 OCR 的路线对页面截图后用 OCR 引擎（或视觉大模型）识别文字，」？", "gold": [{"source": "复杂文档解析技术", "must_contain": "基于视觉与 OCR 的路线对页面截图后用 OCR 引擎（或视觉大模型）识别文字，"}], "refusal_expected": false}
+{"question": "《文档分块策略》中，「其一，最小块长度过滤：页眉、页码、目录条目这类残留会形成过短的碎块，产生噪声向量」具体是什么？", "gold": [{"source": "文档分块策略", "must_contain": "其一，最小块长度过滤：页眉、页码、目录条目这类残留会形成过短的碎块，产生噪声向量"}], "refusal_expected": false}
+{"question": "请说明《混合检索与RRF融合》里「RRF 的经典公式为：score(d) = sum over i of 1/(k」的含义。", "gold": [{"source": "混合检索与RRF融合", "must_contain": "RRF 的经典公式为：score(d) = sum over i of 1/(k"}], "refusal_expected": false}
+{"question": "原文如何描述「队列，经人工标注后转化为评估集新样本，形成\"线上反馈驱动评估集增长、评估集驱动参」？", "gold": [{"source": "企业知识库落地实践", "must_contain": "队列，经人工标注后转化为评估集新样本，形成\"线上反馈驱动评估集增长、评估集驱动参"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》中，「嵌入模型（Embedding Model）把文本映射成固定长度的稠密向量，向量之」具体是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "嵌入模型（Embedding Model）把文本映射成固定长度的稠密向量，向量之"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》中，「温度参数与提示词配合使用：问答类任务把 temperature 设为接近零的低值」具体是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "温度参数与提示词配合使用：问答类任务把 temperature 设为接近零的低值"}], "refusal_expected": false}
+{"question": "根据《重排序技术》，「但速度的代价是精度——这些粗排模型对\"查询与文档是否真正相关\"的判断比较粗糙。」指的是什么？", "gold": [{"source": "重排序技术", "must_contain": "但速度的代价是精度——这些粗排模型对\"查询与文档是否真正相关\"的判断比较粗糙。"}], "refusal_expected": false}
+{"question": "请说明《Milvus索引与检索原理》里「文本嵌入向量归一化后，IP 与 COSINE 数学等价，文本检索普遍采用 COS」的含义。", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "文本嵌入向量归一化后，IP 与 COSINE 数学等价，文本检索普遍采用 COS"}], "refusal_expected": false}
+{"question": "请说明《查询改写与HyDE》里「查询扩展在原查询中补充同义术语与相关概念，扩大语义覆盖面，对一词多义的缩写尤其有」的含义。", "gold": [{"source": "查询改写与HyDE", "must_contain": "查询扩展在原查询中补充同义术语与相关概念，扩大语义覆盖面，对一词多义的缩写尤其有"}], "refusal_expected": false}
+{"question": "请说明《复杂文档解析技术》里「一个设计良好的解析器，输出的不是纯文本，而是带结构与出处的语义单元序列。」的含义。", "gold": [{"source": "复杂文档解析技术", "must_contain": "一个设计良好的解析器，输出的不是纯文本，而是带结构与出处的语义单元序列。"}], "refusal_expected": false}
+{"question": "请说明《复杂文档解析技术》里「工程上常用先探测后分流的策略：有文本流的走规则解析，纯图片页才走 OCR，兼顾质」的含义。", "gold": [{"source": "复杂文档解析技术", "must_contain": "工程上常用先探测后分流的策略：有文本流的走规则解析，纯图片页才走 OCR，兼顾质"}], "refusal_expected": false}
+{"question": "请说明《混合检索与RRF融合》里「误代码、法规编号这类\"字面即关键\"的查询，语义向量反而不够敏感，因为这些词在训练」的含义。", "gold": [{"source": "混合检索与RRF融合", "must_contain": "误代码、法规编号这类\"字面即关键\"的查询，语义向量反而不够敏感，因为这些词在训练"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》中提到「也越耗内存和延迟。DISKANN 将索引放到磁盘上，专为单机」，具体上下文是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "也越耗内存和延迟。DISKANN 将索引放到磁盘上，专为单机"}], "refusal_expected": false}
+{"question": "原文如何描述「更进一步，对低分答案建立人工反馈闭环：用户点\"没有帮助\"的问答记录进入待审队列，」？", "gold": [{"source": "企业知识库落地实践", "must_contain": "更进一步，对低分答案建立人工反馈闭环：用户点\"没有帮助\"的问答记录进入待审队列，"}], "refusal_expected": false}
+{"question": "请说明《向量数据库选型对比》里「也可以在应用层维护独立的 BM25 通道再自行融合，灵活性最高。」的含义。", "gold": [{"source": "向量数据库选型对比", "must_contain": "也可以在应用层维护独立的 BM25 通道再自行融合，灵活性最高。"}], "refusal_expected": false}
+{"question": "原文如何描述「解析是 RAG 质量的第一道关口」？", "gold": [{"source": "复杂文档解析技术", "must_contain": "解析是 RAG 质量的第一道关口"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《RAG安全与权限控制》首次发布于哪一年？", "gold": [], "refusal_expected": true}
+{"question": "《RAG评估指标体系》中，「MRR（Mean Reciprocal Rank，平均倒数排名）在命中基础上进一」具体是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "MRR（Mean Reciprocal Rank，平均倒数排名）在命中基础上进一"}], "refusal_expected": false}
+{"question": "《混合检索与RRF融合》中，「混合检索（Hybrid Search）的思路是让两路检索并行执行：同一条查询同时」具体是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "混合检索（Hybrid Search）的思路是让两路检索并行执行：同一条查询同时"}], "refusal_expected": false}
+{"question": "根据《多轮对话与上下文管理》，「对话历史不能无限增长，否则提示词膨胀、成本上升且关键信息被稀释。」指的是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "对话历史不能无限增长，否则提示词膨胀、成本上升且关键信息被稀释。"}], "refusal_expected": false}
+{"question": "原文如何描述「OpenAI 的 text-embedding-3 系列效果优秀但属于闭源服务，」？", "gold": [{"source": "向量嵌入模型", "must_contain": "OpenAI 的 text-embedding-3 系列效果优秀但属于闭源服务，"}], "refusal_expected": false}
+{"question": "根据《RAG安全与权限控制》，「权限过滤必须在检索层实现，而不是在生成层事后补救——正确做法是把用户身份或部门属」指的是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "权限过滤必须在检索层实现，而不是在生成层事后补救——正确做法是把用户身份或部门属"}], "refusal_expected": false}
+{"question": "请说明《复杂文档解析技术》里「PDF 解析的两条路线」的含义。", "gold": [{"source": "复杂文档解析技术", "must_contain": "PDF 解析的两条路线"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》关于「实现要点是设置合理的相似度阈值：过高命中率低，过低则把不同问题误判为等价返回错误」的说明是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "实现要点是设置合理的相似度阈值：过高命中率低，过低则把不同问题误判为等价返回错误"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中提到「# 复杂文档解析技术」，具体上下文是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "# 复杂文档解析技术"}], "refusal_expected": false}
+{"question": "《RAG与微调的取舍》关于「当需求是让模型学会特定的输出格式、语气规范、领域话术，或压缩提示词以降低推理成本」的说明是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "当需求是让模型学会特定的输出格式、语气规范、领域话术，或压缩提示词以降低推理成本"}], "refusal_expected": false}
+{"question": "根据《企业知识库落地实践》，「系统需要完整的文档生命周期支持——上传、版本更新、删除与失效。」指的是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "系统需要完整的文档生命周期支持——上传、版本更新、删除与失效。"}], "refusal_expected": false}
+{"question": "请说明《milvus入门》里「HNSW 是基于图的索引，兼顾高召回率与低延迟，是生产环境最常用的选择。」的含义。", "gold": [{"source": "milvus入门", "must_contain": "HNSW 是基于图的索引，兼顾高召回率与低延迟，是生产环境最常用的选择。"}], "refusal_expected": false}
+{"question": "根据《查询改写与HyDE》，「为什么原始查询常常不适合检索」指的是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "为什么原始查询常常不适合检索"}], "refusal_expected": false}
+{"question": "请说明《文档分块策略》里「重叠的作用是防止关键句子恰好落在切分边界上：没有重叠时，一句横跨两块的话在每一块」的含义。", "gold": [{"source": "文档分块策略", "must_contain": "重叠的作用是防止关键句子恰好落在切分边界上：没有重叠时，一句横跨两块的话在每一块"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》中，「常见策略有三：滑动窗口只保留最近 N 轮；」具体是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "常见策略有三：滑动窗口只保留最近 N 轮；"}], "refusal_expected": false}
+{"question": "原文如何描述「分块还应设置重叠（Overlap），即相邻块共享一小段文本，典型取块长的 10%」？", "gold": [{"source": "文档分块策略", "must_contain": "分块还应设置重叠（Overlap），即相邻块共享一小段文本，典型取块长的 10%"}], "refusal_expected": false}
+{"question": "《混合检索与RRF融合》关于「在真实的企业文档问答场景中，只使用一种检索方式往往难以获得稳定的召回质量。」的说明是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "在真实的企业文档问答场景中，只使用一种检索方式往往难以获得稳定的召回质量。"}], "refusal_expected": false}
+{"question": "根据《RAG评估指标体系》，「两个指标配合，既能看出漏召问题，也能看出排序质量问题。」指的是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "两个指标配合，既能看出漏召问题，也能看出排序质量问题。"}], "refusal_expected": false}
+{"question": "原文如何描述「RAG 是抑制幻觉的架构级手段」？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "RAG 是抑制幻觉的架构级手段"}], "refusal_expected": false}
+{"question": "原文如何描述「Milvus Lite 是轻量级版本，通过 pip 安装 pymilvus 即可」？", "gold": [{"source": "milvus入门", "must_contain": "Milvus Lite 是轻量级版本，通过 pip 安装 pymilvus 即可"}], "refusal_expected": false}
+{"question": "原文如何描述「FAISS 是 Meta 开源的向量检索算法库，单机性能优秀，但它只是库而非数据」？", "gold": [{"source": "向量数据库选型对比", "must_contain": "FAISS 是 Meta 开源的向量检索算法库，单机性能优秀，但它只是库而非数据"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》关于「向量检索以\"段落\"为检索单元，擅长回答局部事实性问题，但面对需要跨文档、多跳推理」的说明是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "向量检索以\"段落\"为检索单元，擅长回答局部事实性问题，但面对需要跨文档、多跳推理"}], "refusal_expected": false}
+{"question": "根据《rag原理》，「离线索引阶段将文档解析为纯文本，切分为较小的文本块，用嵌入模型把每个文本块编码为」指的是什么？", "gold": [{"source": "rag原理", "must_contain": "离线索引阶段将文档解析为纯文本，切分为较小的文本块，用嵌入模型把每个文本块编码为"}], "refusal_expected": false}
+{"question": "原文如何描述「重排序使用交叉编码器对候选文档与问题联合编码打分，精度高于向量相似度但计算更贵，」？", "gold": [{"source": "rag原理", "must_contain": "重排序使用交叉编码器对候选文档与问题联合编码打分，精度高于向量相似度但计算更贵，"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》中，「Agent 遇到需要知识的问题时调用检索工具，判断证据不足时可以改写查询再检索，」具体是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "Agent 遇到需要知识的问题时调用检索工具，判断证据不足时可以改写查询再检索，"}], "refusal_expected": false}
+{"question": "请说明《复杂文档解析技术》里「页眉页脚、水印、页码这类重复性噪声应在解析阶段过滤，否则会产生大量低质碎块污染向」的含义。", "gold": [{"source": "复杂文档解析技术", "must_contain": "页眉页脚、水印、页码这类重复性噪声应在解析阶段过滤，否则会产生大量低质碎块污染向"}], "refusal_expected": false}
+{"question": "请说明《提示词工程与查询改写》里「生成温度越低，模型越倾向于选择概率最高的词，输出越保守确定。」的含义。", "gold": [{"source": "提示词工程与查询改写", "must_contain": "生成温度越低，模型越倾向于选择概率最高的词，输出越保守确定。"}], "refusal_expected": false}
+{"question": "《RAG评估指标体系》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《rag原理》中，「单一检索方式各有盲区。」具体是什么？", "gold": [{"source": "rag原理", "must_contain": "单一检索方式各有盲区。"}], "refusal_expected": false}
+{"question": "《rag原理》中，「混合检索将两路召回结果用倒数排名融合 RRF 合并，RRF 公式为每个文档的得分」具体是什么？", "gold": [{"source": "rag原理", "must_contain": "混合检索将两路召回结果用倒数排名融合 RRF 合并，RRF 公式为每个文档的得分"}], "refusal_expected": false}
+{"question": "根据《重排序技术》，「交叉编码器与双塔结构」指的是什么？", "gold": [{"source": "重排序技术", "must_contain": "交叉编码器与双塔结构"}], "refusal_expected": false}
+{"question": "原文如何描述「入库前的敏感信息治理同样重要：身份证号、密钥、个人隐私应在解析与分块阶段被识别并」？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "入库前的敏感信息治理同样重要：身份证号、密钥、个人隐私应在解析与分块阶段被识别并"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》关于「FLAT 是暴力精确检索，不做任何索引，适合小数据集或对精度要求极高的场合。」的说明是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "FLAT 是暴力精确检索，不做任何索引，适合小数据集或对精度要求极高的场合。"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中，「评估一个向量数据库，通常看四个维度：检索性能（召回率与延迟）、数据管理能力（增删」具体是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "评估一个向量数据库，通常看四个维度：检索性能（召回率与延迟）、数据管理能力（增删"}], "refusal_expected": false}
+{"question": "《milvus入门》中，「s Distributed 是分布式版本，可在 Kubernetes 集群上水平」具体是什么？", "gold": [{"source": "milvus入门", "must_contain": "s Distributed 是分布式版本，可在 Kubernetes 集群上水平"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》关于「多轮对话则充满口语化的省略与指代：\"那第二种呢？」的说明是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "多轮对话则充满口语化的省略与指代：\"那第二种呢？"}], "refusal_expected": false}
+{"question": "《milvus入门》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《向量数据库选型对比》中提到「# 向量数据库选型对比」，具体上下文是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "# 向量数据库选型对比"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》中，「第二阶段是 RAG：外部知识通过检索注入上下文，模型从\"凭记忆回答\"变为\"依据证」具体是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "第二阶段是 RAG：外部知识通过检索注入上下文，模型从\"凭记忆回答\"变为\"依据证"}], "refusal_expected": false}
+{"question": "《milvus入门》关于「Milvus Standalone 是单机服务器版，通过 Docker 部署，支」的说明是什么？", "gold": [{"source": "milvus入门", "must_contain": "Milvus Standalone 是单机服务器版，通过 Docker 部署，支"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「与精确缓存不同，语义缓存用嵌入相似度判断等价性——\"Milvus 是什么\"和\"介」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "与精确缓存不同，语义缓存用嵌入相似度判断等价性——\"Milvus 是什么\"和\"介"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「此外，嵌入与生成模型支持 OpenAI 兼容协议，意味着任何时候都可以在本地 v」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "此外，嵌入与生成模型支持 OpenAI 兼容协议，意味着任何时候都可以在本地 v"}], "refusal_expected": false}
+{"question": "请说明《RAG与微调的取舍》里「用微调注入事实知识的问题在于：知识更新困难、容易过拟合、且无法保证\"问了答得出\"」的含义。", "gold": [{"source": "RAG与微调的取舍", "must_contain": "用微调注入事实知识的问题在于：知识更新困难、容易过拟合、且无法保证\"问了答得出\""}], "refusal_expected": false}
+{"question": "《rag原理》中，「RAG（Retrieval-Augmented Generation，检索增强生」具体是什么？", "gold": [{"source": "rag原理", "must_contain": "RAG（Retrieval-Augmented Generation，检索增强生"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》首次发布于哪一年？", "gold": [], "refusal_expected": true}
+{"question": "原文如何描述「HNSW（分层可导航小世界图）把向量组织成多层次的近邻图，查询从顶层稀疏图出发逐」？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "HNSW（分层可导航小世界图）把向量组织成多层次的近邻图，查询从顶层稀疏图出发逐"}], "refusal_expected": false}
+{"question": "原文如何描述「第二种是倒数排名融合 RRF（Reciprocal Rank Fusion），它」？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "第二种是倒数排名融合 RRF（Reciprocal Rank Fusion），它"}], "refusal_expected": false}
+{"question": "请说明《多轮对话与上下文管理》里「对知识库问答，还应识别话题切换：用户换了新话题后，旧话题的历史对改写反而形成干扰」的含义。", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "对知识库问答，还应识别话题切换：用户换了新话题后，旧话题的历史对改写反而形成干扰"}], "refusal_expected": false}
+{"question": "原文如何描述「这种\"Agentic RAG\"能处理单轮 RAG 无法应对的复杂任务，例如\"对比」？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "这种\"Agentic RAG\"能处理单轮 RAG 无法应对的复杂任务，例如\"对比"}], "refusal_expected": false}
+{"question": "《文档分块策略》中，「递归字符分块（Recursive Character Splitting）是最常」具体是什么？", "gold": [{"source": "文档分块策略", "must_contain": "递归字符分块（Recursive Character Splitting）是最常"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中，「Milvus 支持在同一个集合中同时管理稠密向量与稀疏向量，并提供加权与 RRF」具体是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "Milvus 支持在同一个集合中同时管理稠密向量与稀疏向量，并提供加权与 RRF"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中，「Milvus 是专门为向量检索构建的分布式数据库，支持多种索引类型与标量过滤，提」具体是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "Milvus 是专门为向量检索构建的分布式数据库，支持多种索引类型与标量过滤，提"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「必须调用大模型时也有优化空间。」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "必须调用大模型时也有优化空间。"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》关于「向量检索把查询和文档映射到同一语义空间，能缓解但无法完全消除这种错位。」的说明是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "向量检索把查询和文档映射到同一语义空间，能缓解但无法完全消除这种错位。"}], "refusal_expected": false}
+{"question": "原文如何描述「第三阶段是 Agent：模型不再只回答问题，而是规划步骤、调用工具、执行多步任务」？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "第三阶段是 Agent：模型不再只回答问题，而是规划步骤、调用工具、执行多步任务"}], "refusal_expected": false}
+{"question": "原文如何描述「更新一代的 bge-m3 是多语言、多功能模型：所谓 M3 是指 Multi-L」？", "gold": [{"source": "向量嵌入模型", "must_contain": "更新一代的 bge-m3 是多语言、多功能模型：所谓 M3 是指 Multi-L"}], "refusal_expected": false}
+{"question": "请说明《RAG安全与权限控制》里「任何一类处理不好，知识库就会从资产变成 liability。」的含义。", "gold": [{"source": "RAG安全与权限控制", "must_contain": "任何一类处理不好，知识库就会从资产变成 liability。"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》中，「基础指标包括：问答量、检索命中率、各阶段延迟分布、大模型调用的 token 消耗」具体是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "基础指标包括：问答量、检索命中率、各阶段延迟分布、大模型调用的 token 消耗"}], "refusal_expected": false}
+{"question": "根据《向量数据库选型对比》，「对文档问答这类场景，能否原生支持混合检索很关键。」指的是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "对文档问答这类场景，能否原生支持混合检索很关键。"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》中，「例如\"A 公司的 CEO 毕业于哪所大学\"——答案分散在两份文档中，向量检索分别」具体是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "例如\"A 公司的 CEO 毕业于哪所大学\"——答案分散在两份文档中，向量检索分别"}], "refusal_expected": false}
+{"question": "《重排序技术》中，「交叉编码器（Cross Encoder）把查询和文档拼接成一条输入，一起送入 T」具体是什么？", "gold": [{"source": "重排序技术", "must_contain": "交叉编码器（Cross Encoder）把查询和文档拼接成一条输入，一起送入 T"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》关于「会作为证据出现在答案里。」的说明是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "会作为证据出现在答案里。"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《文档分块策略》中提到「# 文档分块策略详解」，具体上下文是什么？", "gold": [{"source": "文档分块策略", "must_contain": "# 文档分块策略详解"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中提到「。工程上常用先探测后分流的策略：有文本流的走规则解析，纯图片」，具体上下文是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "。工程上常用先探测后分流的策略：有文本流的走规则解析，纯图片"}], "refusal_expected": false}
+{"question": "根据《从RAG到Agent的演进》，「第一阶段是纯生成：用户提问、模型作答，模型仅凭参数内知识回应。」指的是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "第一阶段是纯生成：用户提问、模型作答，模型仅凭参数内知识回应。"}], "refusal_expected": false}
+{"question": "根据《milvus入门》，「AUTOINDEX 会根据数据规模自动选择合适的索引类型。」指的是什么？", "gold": [{"source": "milvus入门", "must_contain": "AUTOINDEX 会根据数据规模自动选择合适的索引类型。"}], "refusal_expected": false}
+{"question": "根据《rag原理》，「稠密向量检索擅长语义匹配，但对专有名词、型号、数字等精确关键词不敏感。」指的是什么？", "gold": [{"source": "rag原理", "must_contain": "稠密向量检索擅长语义匹配，但对专有名词、型号、数字等精确关键词不敏感。"}], "refusal_expected": false}
+{"question": "原文如何描述「在 RAG 系统中，嵌入模型决定了\"语义上相关的段落能否在向量空间中彼此靠近\"，」？", "gold": [{"source": "向量嵌入模型", "must_contain": "在 RAG 系统中，嵌入模型决定了\"语义上相关的段落能否在向量空间中彼此靠近\"，"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》中，「向量索引通过特殊的组织结构牺牲少量精度，换取几个数量级的检索加速，这类方法统称为」具体是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "向量索引通过特殊的组织结构牺牲少量精度，换取几个数量级的检索加速，这类方法统称为"}], "refusal_expected": false}
+{"question": "原文如何描述「余弦相似度 COSINE 衡量向量方向的一致性，是文本向量检索最常用的度量。」？", "gold": [{"source": "milvus入门", "must_contain": "余弦相似度 COSINE 衡量向量方向的一致性，是文本向量检索最常用的度量。"}], "refusal_expected": false}
+{"question": "《rag原理》关于「在线问答阶段将用户问题也编码为向量，在向量库中检索最相似的文本块，把它们作为上下」的说明是什么？", "gold": [{"source": "rag原理", "must_contain": "在线问答阶段将用户问题也编码为向量，在向量库中检索最相似的文本块，把它们作为上下"}], "refusal_expected": false}
+{"question": "请说明《从RAG到Agent的演进》里「进入 Agent 阶段，RAG 并没有被取代，而是降维成 Agent 工具箱中的」的含义。", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "进入 Agent 阶段，RAG 并没有被取代，而是降维成 Agent 工具箱中的"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《RAG评估指标体系》中，「最常用的两个指标是召回率和平均倒数排名。」具体是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "最常用的两个指标是召回率和平均倒数排名。"}], "refusal_expected": false}
+{"question": "根据《GraphRAG与知识图谱》，「实体抽取与消歧的质量直接决定图的质量，错误会级联放大。」指的是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "实体抽取与消歧的质量直接决定图的质量，错误会级联放大。"}], "refusal_expected": false}
+{"question": "原文如何描述「缓存还应支持 TTL 与按知识库版本失效，文档更新后旧缓存必须作废。」？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "缓存还应支持 TTL 与按知识库版本失效，文档更新后旧缓存必须作废。"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》中，「GraphRAG 不是向量检索的替代品，而是互补：事实型问题走向量检索又快又准，」具体是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "GraphRAG 不是向量检索的替代品，而是互补：事实型问题走向量检索又快又准，"}], "refusal_expected": false}
+{"question": "请说明《多轮对话与上下文管理》里「查询改写通常用一次轻量的大模型调用完成：把对话历史与最新问题一起交给模型，输出一」的含义。", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "查询改写通常用一次轻量的大模型调用完成：把对话历史与最新问题一起交给模型，输出一"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》中，「企业文档是活的：合同会修订、制度会废止、新人会持续上传。」具体是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "企业文档是活的：合同会修订、制度会废止、新人会持续上传。"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》关于「代价也明显：图谱构建需要大量大模型调用，成本与延迟高；」的说明是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "代价也明显：图谱构建需要大量大模型调用，成本与延迟高；"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》关于「检索时先解析查询中的实体，在图上做关联扩展，把多跳推理需要的关联子图一并取回，再」的说明是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "检索时先解析查询中的实体，在图上做关联扩展，把多跳推理需要的关联子图一并取回，再"}], "refusal_expected": false}
+{"question": "原文如何描述「重排序（Rerank）是漏斗的第二级。」？", "gold": [{"source": "重排序技术", "must_contain": "重排序（Rerank）是漏斗的第二级。"}], "refusal_expected": false}
+{"question": "原文如何描述「删除文档时必须级联清理其在向量库中的所有分块，否则形成\"幽灵引用\"：被废止的条款」？", "gold": [{"source": "企业知识库落地实践", "must_contain": "删除文档时必须级联清理其在向量库中的所有分块，否则形成\"幽灵引用\"：被废止的条款"}], "refusal_expected": false}
+{"question": "《RAG与微调的取舍》首次发布于哪一年？", "gold": [], "refusal_expected": true}
+{"question": "原文如何描述「监督微调 SFT 用领域问答数据对模型参数做继续训练；」？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "监督微调 SFT 用领域问答数据对模型参数做继续训练；"}], "refusal_expected": false}
+{"question": "《RAG评估指标体系》关于「体系把系统效果变成可量化的数字，让每一次迭代都有数据依据，这是从演示项目到生产系」的说明是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "体系把系统效果变成可量化的数字，让每一次迭代都有数据依据，这是从演示项目到生产系"}], "refusal_expected": false}
+{"question": "原文如何描述「pgvector 则让 PostgreSQL 用户无需引入新组件即可获得向量检索」？", "gold": [{"source": "向量数据库选型对比", "must_contain": "pgvector 则让 PostgreSQL 用户无需引入新组件即可获得向量检索"}], "refusal_expected": false}
+{"question": "根据《从RAG到Agent的演进》，「一个 Agent 通常由四部分组成：作为\"大脑\"的大模型负责理解与决策；」指的是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "一个 Agent 通常由四部分组成：作为\"大脑\"的大模型负责理解与决策；"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》关于「表格是重灾区：直接抽文本会把行列结构压扁成混乱的字符流，检索命中后大模型也无法解」的说明是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "表格是重灾区：直接抽文本会把行列结构压扁成混乱的字符流，检索命中后大模型也无法解"}], "refusal_expected": false}
+{"question": "根据《多轮对话与上下文管理》，「单轮问答中，用户的问题是自包含的。」指的是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "单轮问答中，用户的问题是自包含的。"}], "refusal_expected": false}
+{"question": "根据《Milvus索引与检索原理》，「相似度度量与标量过滤」指的是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "相似度度量与标量过滤"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》关于「数据量小且要求百分百精确，用 FLAT；」的说明是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "数据量小且要求百分百精确，用 FLAT；"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》中，「其中 bge-large-zh-v1.5 输出 1024 维向量，专门针对中文语」具体是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "其中 bge-large-zh-v1.5 输出 1024 维向量，专门针对中文语"}], "refusal_expected": false}
+{"question": "请说明《向量嵌入模型》里「对中文文档问答而言，bge-m3 在语义检索上的表现与 bge-large 相当」的含义。", "gold": [{"source": "向量嵌入模型", "must_contain": "对中文文档问答而言，bge-m3 在语义检索上的表现与 bge-large 相当"}], "refusal_expected": false}
+{"question": "根据《企业知识库落地实践》，「生产系统必须可观测。」指的是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "生产系统必须可观测。"}], "refusal_expected": false}
+{"question": "原文如何描述「但 BM25 完全不理解语义，\"计算机\"和\"电脑\"在它眼里是两个毫无关系的词，同」？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "但 BM25 完全不理解语义，\"计算机\"和\"电脑\"在它眼里是两个毫无关系的词，同"}], "refusal_expected": false}
+{"question": "请说明《RAG与微调的取舍》里「在抑制幻觉方面，RAG 把生成约束在检索到的证据范围内，配合引用机制可审计。」的含义。", "gold": [{"source": "RAG与微调的取舍", "must_contain": "在抑制幻觉方面，RAG 把生成约束在检索到的证据范围内，配合引用机制可审计。"}], "refusal_expected": false}
+{"question": "根据《RAG与微调的取舍》，「微调擅长改变模型的行为与风格，而不是注入事实知识。」指的是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "微调擅长改变模型的行为与风格，而不是注入事实知识。"}], "refusal_expected": false}
+{"question": "原文如何描述「检索的最小单位是块：块太大，一个块里混杂多个主题，嵌入向量被稀释，语义表示变得模」？", "gold": [{"source": "文档分块策略", "must_contain": "检索的最小单位是块：块太大，一个块里混杂多个主题，嵌入向量被稀释，语义表示变得模"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》关于「Agent 的核心构成」的说明是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "Agent 的核心构成"}], "refusal_expected": false}
+{"question": "原文如何描述「用户输入的查询与文档的表达方式往往存在系统性错位：查询是口语化、简短、带省略的，」？", "gold": [{"source": "查询改写与HyDE", "must_contain": "用户输入的查询与文档的表达方式往往存在系统性错位：查询是口语化、简短、带省略的，"}], "refusal_expected": false}
+{"question": "《混合检索与RRF融合》中，「BM25 等稀疏关键词检索则恰好相反：它基于词频统计，对精确关键词的命中能力极强」具体是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "BM25 等稀疏关键词检索则恰好相反：它基于词频统计，对精确关键词的命中能力极强"}], "refusal_expected": false}
+{"question": "《rag原理》关于「为向量，在向量库中检索最相似的文本块，把它们作为上下文与问题一起交给大模型，由大」的说明是什么？", "gold": [{"source": "rag原理", "must_contain": "为向量，在向量库中检索最相似的文本块，把它们作为上下文与问题一起交给大模型，由大"}], "refusal_expected": false}
+{"question": "《rag原理》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《从RAG到Agent的演进》中，「规划机制决定多步任务的执行顺序，可以是模型自主推理（如 ReAct 模式的思考-」具体是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "规划机制决定多步任务的执行顺序，可以是模型自主推理（如 ReAct 模式的思考-"}], "refusal_expected": false}
+{"question": "《从RAG到Agent的演进》关于「工具集把外部能力（检索、数据库查询、计算器、API 调用）封装成模型可调用的函数」的说明是什么？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "工具集把外部能力（检索、数据库查询、计算器、API 调用）封装成模型可调用的函数"}], "refusal_expected": false}
+{"question": "《重排序技术》关于「但双塔的代价是查询和文档在编码时互相看不见，交互信息全部丢失。」的说明是什么？", "gold": [{"source": "重排序技术", "must_contain": "但双塔的代价是查询和文档在编码时互相看不见，交互信息全部丢失。"}], "refusal_expected": false}
+{"question": "原文如何描述「实践中成熟的做法是 RAG 管知识、微调管风格，两者互补而非互斥。」？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "实践中成熟的做法是 RAG 管知识、微调管风格，两者互补而非互斥。"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》中，「相似度度量方面，文本向量检索最常用余弦相似度 COSINE，它只关注方向而忽略模」具体是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "相似度度量方面，文本向量检索最常用余弦相似度 COSINE，它只关注方向而忽略模"}], "refusal_expected": false}
+{"question": "原文如何描述「检索到的文档内容会被拼进提示词，若文档本身含有恶意指令，例如\"忽略之前的所有要求」？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "检索到的文档内容会被拼进提示词，若文档本身含有恶意指令，例如\"忽略之前的所有要求"}], "refusal_expected": false}
+{"question": "请说明《提示词工程与查询改写》里「RAG 提示词的三要素」的含义。", "gold": [{"source": "提示词工程与查询改写", "must_contain": "RAG 提示词的三要素"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《RAG与微调的取舍》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "请说明《Milvus索引与检索原理》里「DISKANN 将索引放到磁盘上，专为单机放不下内存的超大规模数据设计，用磁盘 」的含义。", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "DISKANN 将索引放到磁盘上，专为单机放不下内存的超大规模数据设计，用磁盘 "}], "refusal_expected": false}
+{"question": "根据《GraphRAG与知识图谱》，「这类问题的本质是知识以图结构存在：实体为节点、关系为边。」指的是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "这类问题的本质是知识以图结构存在：实体为节点、关系为边。"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》中，「一个能跑的 RAG 演示与一个企业可用的知识库系统之间，隔着工程化的鸿沟。」具体是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "一个能跑的 RAG 演示与一个企业可用的知识库系统之间，隔着工程化的鸿沟。"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中，「解析时应为每个内容单元记录来源页码与标题层级，这些元数据随分块进入向量库，是引用」具体是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "解析时应为每个内容单元记录来源页码与标题层级，这些元数据随分块进入向量库，是引用"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》中，「提示词工程（Prompt Engineering）在 RAG 中的作用，是把\"检」具体是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "提示词工程（Prompt Engineering）在 RAG 中的作用，是把\"检"}], "refusal_expected": false}
+{"question": "原文如何描述「上下文压缩减少送入模型的 token 数：对检索到的候选块做精简，去掉冗余词句，」？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "上下文压缩减少送入模型的 token 数：对检索到的候选块做精简，去掉冗余词句，"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》中，「每一层都有成本，是否引入应由评估集数据决定：改写层对召回率提升明显，精排层对 M」具体是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "每一层都有成本，是否引入应由评估集数据决定：改写层对召回率提升明显，精排层对 M"}], "refusal_expected": false}
+{"question": "根据《RAG与微调的取舍》，「让大模型掌握特定领域知识有三条常见路线。」指的是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "让大模型掌握特定领域知识有三条常见路线。"}], "refusal_expected": false}
+{"question": "《文档分块策略》中，「块长度的经验起点是 300 到 600 字符，对应中文大约两百到四百字，约等于两」具体是什么？", "gold": [{"source": "文档分块策略", "must_contain": "块长度的经验起点是 300 到 600 字符，对应中文大约两百到四百字，约等于两"}], "refusal_expected": false}
+{"question": "请说明《查询改写与HyDE》里「查询改写技术族的目标，就是在检索之前把用户查询翻译成\"更接近文档表达\"的形式。」的含义。", "gold": [{"source": "查询改写与HyDE", "must_contain": "查询改写技术族的目标，就是在检索之前把用户查询翻译成\"更接近文档表达\"的形式。"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「任何时候都可以在本地 vLLM、Ollama 与云端托管之间切换，把延迟与成本控」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "任何时候都可以在本地 vLLM、Ollama 与云端托管之间切换，把延迟与成本控"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》关于「文档库结构变化（如新增大类）后复查分块与检索策略的适配性；」的说明是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "文档库结构变化（如新增大类）后复查分块与检索策略的适配性；"}], "refusal_expected": false}
+{"question": "《RAG与微调的取舍》关于「RAG 最不可替代的能力是知识更新与溯源。」的说明是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "RAG 最不可替代的能力是知识更新与溯源。"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》关于「选错嵌入模型的代价无法通过下游调优弥补。」的说明是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "选错嵌入模型的代价无法通过下游调优弥补。"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》中，「除向量相似度外，Milvus 还支持标量字段过滤：每个向量可以附带来源、页码、用」具体是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "除向量相似度外，Milvus 还支持标量字段过滤：每个向量可以附带来源、页码、用"}], "refusal_expected": false}
+{"question": "请说明《语义缓存与性能优化》里「语义缓存是性价比最高的优化：把历史问题与答案存起来，新问题进来先判断是否与缓存中」的含义。", "gold": [{"source": "语义缓存与性能优化", "must_contain": "语义缓存是性价比最高的优化：把历史问题与答案存起来，新问题进来先判断是否与缓存中"}], "refusal_expected": false}
+{"question": "根据《文档分块策略》，「这个区间能容纳完整的论述单元，又不会让嵌入表示过于分散。」指的是什么？", "gold": [{"source": "文档分块策略", "must_contain": "这个区间能容纳完整的论述单元，又不会让嵌入表示过于分散。"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》中，「IVF（倒排文件索引）先对全库向量做聚类，查询时只在最近的几个聚类中心对应分区内」具体是什么？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "IVF（倒排文件索引）先对全库向量做聚类，查询时只在最近的几个聚类中心对应分区内"}], "refusal_expected": false}
+{"question": "《RAG评估指标体系》中，「自动化评估常用\"用大模型评判大模型\"（LLM as Judge）的方式：把问题、」具体是什么？", "gold": [{"source": "RAG评估指标体系", "must_contain": "自动化评估常用\"用大模型评判大模型\"（LLM as Judge）的方式：把问题、"}], "refusal_expected": false}
+{"question": "原文如何描述「HyDE（Hypothetical Document Embeddings，假设」？", "gold": [{"source": "查询改写与HyDE", "must_contain": "HyDE（Hypothetical Document Embeddings，假设"}], "refusal_expected": false}
+{"question": "请说明《RAG与微调的取舍》里「RAG、微调与长上下文的取舍」的含义。", "gold": [{"source": "RAG与微调的取舍", "must_contain": "RAG、微调与长上下文的取舍"}], "refusal_expected": false}
+{"question": "根据《语义缓存与性能优化》，「批处理把多个请求合并推理提高吞吐。」指的是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "批处理把多个请求合并推理提高吞吐。"}], "refusal_expected": false}
+{"question": "《文档分块策略》关于「相比固定步长硬切，递归切分能显著减少\"一句话被拦腰斩断\"的情况。」的说明是什么？", "gold": [{"source": "文档分块策略", "must_contain": "相比固定步长硬切，递归切分能显著减少\"一句话被拦腰斩断\"的情况。"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》中，「一次 RAG 问答的耗时由四段组成：查询向量化（几十毫秒）、检索（几十毫秒）、大」具体是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "一次 RAG 问答的耗时由四段组成：查询向量化（几十毫秒）、检索（几十毫秒）、大"}], "refusal_expected": false}
+{"question": "请说明《RAG安全与权限控制》里「缓解手段包括：在系统提示词中声明文档内容只是数据不是指令；」的含义。", "gold": [{"source": "RAG安全与权限控制", "must_contain": "缓解手段包括：在系统提示词中声明文档内容只是数据不是指令；"}], "refusal_expected": false}
+{"question": "请说明《重排序技术》里「它的相关性判断精度显著高于双塔，这也是 bge-reranker-v2-m3 等」的含义。", "gold": [{"source": "重排序技术", "must_contain": "它的相关性判断精度显著高于双塔，这也是 bge-reranker-v2-m3 等"}], "refusal_expected": false}
+{"question": "请说明《重排序技术》里「因为文档向量可以离线预先算好，在线只需编码查询，所以速度极快。」的含义。", "gold": [{"source": "重排序技术", "must_contain": "因为文档向量可以离线预先算好，在线只需编码查询，所以速度极快。"}], "refusal_expected": false}
+{"question": "《企业知识库落地实践》关于「生产系统必须在文档管理、权限、可观测性、持续运营四个方面补齐能力。」的说明是什么？", "gold": [{"source": "企业知识库落地实践", "must_contain": "生产系统必须在文档管理、权限、可观测性、持续运营四个方面补齐能力。"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中，「解决方案要么用支持表格结构还原的解析库输出结构化的行列数据，要么把表格转换成 M」具体是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "解决方案要么用支持表格结构还原的解析库输出结构化的行列数据，要么把表格转换成 M"}], "refusal_expected": false}
+{"question": "请说明《大模型幻觉与缓解》里「二是语言模型的生成机制本质上是概率性的下一个词预测，它会倾向于生成\"语言上合理\"」的含义。", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "二是语言模型的生成机制本质上是概率性的下一个词预测，它会倾向于生成\"语言上合理\""}], "refusal_expected": false}
+{"question": "请说明《向量数据库选型对比》里「Chroma 是轻量级向量数据库，几行代码即可上手，适合原型验证，但分布式能力与」的含义。", "gold": [{"source": "向量数据库选型对比", "must_contain": "Chroma 是轻量级向量数据库，几行代码即可上手，适合原型验证，但分布式能力与"}], "refusal_expected": false}
+{"question": "根据《提示词工程与查询改写》，「第一是角色与任务界定：明确告诉模型它是基于给定资料的问答助手，只依据提供的参考信」指的是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "第一是角色与任务界定：明确告诉模型它是基于给定资料的问答助手，只依据提供的参考信"}], "refusal_expected": false}
+{"question": "请说明《milvus入门》里「Milvus Distributed 是分布式版本，可在 Kubernetes 」的含义。", "gold": [{"source": "milvus入门", "must_contain": "Milvus Distributed 是分布式版本，可在 Kubernetes "}], "refusal_expected": false}
+{"question": "根据《大模型幻觉与缓解》，「成因主要有三方面：一是训练数据本身的错误、过时或偏见被模型记忆；」指的是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "成因主要有三方面：一是训练数据本身的错误、过时或偏见被模型记忆；"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》中，「要求答案附带引用标注，让每句话都能回溯到具体来源。」具体是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "要求答案附带引用标注，让每句话都能回溯到具体来源。"}], "refusal_expected": false}
+{"question": "请说明《Milvus索引与检索原理》里「内存受限的超大规模场景考虑 DISKANN。」的含义。", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "内存受限的超大规模场景考虑 DISKANN。"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》中，「多查询改写让大模型把一个查询改写成多个不同视角的版本，分别检索后用 RRF 融合」具体是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "多查询改写让大模型把一个查询改写成多个不同视角的版本，分别检索后用 RRF 融合"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "根据《混合检索与RRF融合》，「为什么单一检索通道存在盲区」指的是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "为什么单一检索通道存在盲区"}], "refusal_expected": false}
+{"question": "原文如何描述「企业场景下 RAG 系统面临三类安全问题：数据越权访问、提示词注入攻击、敏感信息」？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "企业场景下 RAG 系统面临三类安全问题：数据越权访问、提示词注入攻击、敏感信息"}], "refusal_expected": false}
+{"question": "《milvus入门》中，「欧氏距离 L2 衡量向量空间中的直线距离。」具体是什么？", "gold": [{"source": "milvus入门", "must_contain": "欧氏距离 L2 衡量向量空间中的直线距离。"}], "refusal_expected": false}
+{"question": "请说明《重排序技术》里「它只处理几十条候选，因此可以用计算昂贵但精度更高的模型，对每条候选与查询的相关性」的含义。", "gold": [{"source": "重排序技术", "must_contain": "它只处理几十条候选，因此可以用计算昂贵但精度更高的模型，对每条候选与查询的相关性"}], "refusal_expected": false}
+{"question": "《语义缓存与性能优化》关于「流式输出不减少总耗时但显著改善体感——用户看到答案逐字出现而不是盯着空白等待。」的说明是什么？", "gold": [{"source": "语义缓存与性能优化", "must_contain": "流式输出不减少总耗时但显著改善体感——用户看到答案逐字出现而不是盯着空白等待。"}], "refusal_expected": false}
+{"question": "原文如何描述「GraphRAG 与知识图谱增强检索」？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "GraphRAG 与知识图谱增强检索"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》关于「第三是输出格式约定：要求答案分点陈述、关键论断附带引用标记、控制在合理长度内，保」的说明是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "第三是输出格式约定：要求答案分点陈述、关键论断附带引用标记、控制在合理长度内，保"}], "refusal_expected": false}
+{"question": "原文如何描述「这样任何一路的系统性盲区都会被另一路补齐，实践证明混合检索在多数文档问答基准上显」？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "这样任何一路的系统性盲区都会被另一路补齐，实践证明混合检索在多数文档问答基准上显"}], "refusal_expected": false}
+{"question": "请说明《语义缓存与性能优化》里「优化思路自然是\"能不调大模型就不调，必须调就调得更快\"。」的含义。", "gold": [{"source": "语义缓存与性能优化", "must_contain": "优化思路自然是\"能不调大模型就不调，必须调就调得更快\"。"}], "refusal_expected": false}
+{"question": "《向量嵌入模型》关于「BAAI（智源实验室）发布的 BGE 系列是中文检索嵌入的事实标准之一。」的说明是什么？", "gold": [{"source": "向量嵌入模型", "must_contain": "BAAI（智源实验室）发布的 BGE 系列是中文检索嵌入的事实标准之一。"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中，「garbage in, garbage out——解析阶段丢失或错乱的信息，后续」具体是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "garbage in, garbage out——解析阶段丢失或错乱的信息，后续"}], "refusal_expected": false}
+{"question": "《混合检索与RRF融合》中，「混合检索与 RRF 融合」具体是什么？", "gold": [{"source": "混合检索与RRF融合", "must_contain": "混合检索与 RRF 融合"}], "refusal_expected": false}
+{"question": "《GraphRAG与知识图谱》中，「两条碎片拼成完整答案。」具体是什么？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "两条碎片拼成完整答案。"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中提到「## 混合检索支持度」，具体上下文是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "## 混合检索支持度"}], "refusal_expected": false}
+{"question": "原文如何描述「在 ReAct 循环中，模型先思考\"我需要什么信息\"，再选择工具发起调用，观察返」？", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "在 ReAct 循环中，模型先思考\"我需要什么信息\"，再选择工具发起调用，观察返"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》关于「目前没有银弹，纵深防御是现实选择。」的说明是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "目前没有银弹，纵深防御是现实选择。"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中提到「研系统的内核。Chroma 是轻量级向量数据库，几行代码即可」，具体上下文是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "研系统的内核。Chroma 是轻量级向量数据库，几行代码即可"}], "refusal_expected": false}
+{"question": "请说明《GraphRAG与知识图谱》里「GraphRAG 的基本思路」的含义。", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "GraphRAG 的基本思路"}], "refusal_expected": false}
+{"question": "根据《大模型幻觉与缓解》，「上下文中的真实片段为答案提供了事实锚点，显著降低了自由发挥的空间。」指的是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "上下文中的真实片段为答案提供了事实锚点，显著降低了自由发挥的空间。"}], "refusal_expected": false}
+{"question": "《RAG与微调的取舍》关于「长上下文方案则依赖模型超大的上下文窗口，把全部文档直接塞进提示词。」的说明是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "长上下文方案则依赖模型超大的上下文窗口，把全部文档直接塞进提示词。"}], "refusal_expected": false}
+{"question": "请说明《查询改写与HyDE》里「查询改写解决\"找不找得到\"，重排序解决\"排得靠不靠前\"，两者作用于漏斗的不同层级」的含义。", "gold": [{"source": "查询改写与HyDE", "must_contain": "查询改写解决\"找不找得到\"，重排序解决\"排得靠不靠前\"，两者作用于漏斗的不同层级"}], "refusal_expected": false}
+{"question": "原文如何描述「Milvus 索引类型与检索原理」？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "Milvus 索引类型与检索原理"}], "refusal_expected": false}
+{"question": "请说明《文档分块策略》里「太小，完整语义被切断，\"上下文不完整\"，即使检索命中，大模型拿到的片段也读不通，」的含义。", "gold": [{"source": "文档分块策略", "must_contain": "太小，完整语义被切断，\"上下文不完整\"，即使检索命中，大模型拿到的片段也读不通，"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》关于「假设文档中的事实错误无关紧要，要的只是它的语义轮廓。」的说明是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "假设文档中的事实错误无关紧要，要的只是它的语义轮廓。"}], "refusal_expected": false}
+{"question": "根据《RAG与微调的取舍》，「文档变更只需重新入库，秒级生效，而微调一次动辄数小时且每次知识更新都要重训。」指的是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "文档变更只需重新入库，秒级生效，而微调一次动辄数小时且每次知识更新都要重训。"}], "refusal_expected": false}
+{"question": "请说明《向量嵌入模型》里「嵌入模型在 RAG 中的作用」的含义。", "gold": [{"source": "向量嵌入模型", "must_contain": "嵌入模型在 RAG 中的作用"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》中，「提示词的优化同样应该评估驱动：准备一组有标准答案的问题，每次修改提示词后批量重跑」具体是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "提示词的优化同样应该评估驱动：准备一组有标准答案的问题，每次修改提示词后批量重跑"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《混合检索与RRF融合》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《多轮对话与上下文管理》关于「这次额外调用增加少量延迟，但决定了检索是否命中，是值回票价的投资。」的说明是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "这次额外调用增加少量延迟，但决定了检索是否命中，是值回票价的投资。"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》中，「Elasticsearch 以全文检索见长，8.x 版本加入向量检索能力，适合已」具体是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "Elasticsearch 以全文检索见长，8.x 版本加入向量检索能力，适合已"}], "refusal_expected": false}
+{"question": "《重排序技术》关于「检索增强生成中的检索环节通常是一个漏斗：先从全库中快速捞出候选，再对候选精细排序」的说明是什么？", "gold": [{"source": "重排序技术", "must_contain": "检索增强生成中的检索环节通常是一个漏斗：先从全库中快速捞出候选，再对候选精细排序"}], "refusal_expected": false}
+{"question": "《Milvus索引与检索原理》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《提示词工程与查询改写》中提到「幻觉的第一道闸门。第三是输出格式约定：要求答案分点陈述、关键」，具体上下文是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "幻觉的第一道闸门。第三是输出格式约定：要求答案分点陈述、关键"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "根据《milvus入门》，「Milvus 提供三种部署形态。」指的是什么？", "gold": [{"source": "milvus入门", "must_contain": "Milvus 提供三种部署形态。"}], "refusal_expected": false}
+{"question": "《RAG与微调的取舍》中，「检索增强生成 RAG 把知识放在外部向量库，推理时检索相关片段拼进上下文；」具体是什么？", "gold": [{"source": "RAG与微调的取舍", "must_contain": "检索增强生成 RAG 把知识放在外部向量库，推理时检索相关片段拼进上下文；"}], "refusal_expected": false}
+{"question": "原文如何描述「选型经验：百万级以下数据、追求高召回低延迟，HNSW 是默认答案；」？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "选型经验：百万级以下数据、追求高召回低延迟，HNSW 是默认答案；"}], "refusal_expected": false}
+{"question": "《向量数据库选型对比》关于「ES 天然强在 BM25，向量检索相对是其插件能力。」的说明是什么？", "gold": [{"source": "向量数据库选型对比", "must_contain": "ES 天然强在 BM25，向量检索相对是其插件能力。"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》中，「多轮对话与上下文管理」具体是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "多轮对话与上下文管理"}], "refusal_expected": false}
+{"question": "原文如何描述「三是忽略了上下文长度的预算，塞入过多候选块会稀释关键信息，还会增加成本和延迟，通」？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "三是忽略了上下文长度的预算，塞入过多候选块会稀释关键信息，还会增加成本和延迟，通"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "《milvus入门》中，「Milvus 向量数据库入门」具体是什么？", "gold": [{"source": "milvus入门", "must_contain": "Milvus 向量数据库入门"}], "refusal_expected": false}
+{"question": "《大模型幻觉与缓解》中，「大模型幻觉（Hallucination）指模型生成的内容看似流畅自信、实际上与事」具体是什么？", "gold": [{"source": "大模型幻觉与缓解", "must_contain": "大模型幻觉（Hallucination）指模型生成的内容看似流畅自信、实际上与事"}], "refusal_expected": false}
+{"question": "原文如何描述「Milvus 支持三种相似度度量：内积 IP、欧氏距离 L2 和余弦相似度 CO」？", "gold": [{"source": "Milvus索引与检索原理", "must_contain": "Milvus 支持三种相似度度量：内积 IP、欧氏距离 L2 和余弦相似度 CO"}], "refusal_expected": false}
+{"question": "《重排序技术》中，「重排序技术：从召回候选到最终上下文」具体是什么？", "gold": [{"source": "重排序技术", "must_contain": "重排序技术：从召回候选到最终上下文"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》中，「基于规则路线以 PyMuPDF、pdfplumber 为代表，直接读取 PDF 」具体是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "基于规则路线以 PyMuPDF、pdfplumber 为代表，直接读取 PDF "}], "refusal_expected": false}
+{"question": "请说明《从RAG到Agent的演进》里「从 RAG 到 Agent：大模型应用的架构演进」的含义。", "gold": [{"source": "从RAG到Agent的演进", "must_contain": "从 RAG 到 Agent：大模型应用的架构演进"}], "refusal_expected": false}
+{"question": "《文档分块策略》中，「文档分块（Chunking）是 RAG 链路中最容易被低估的环节。」具体是什么？", "gold": [{"source": "文档分块策略", "must_contain": "文档分块（Chunking）是 RAG 链路中最容易被低估的环节。"}], "refusal_expected": false}
+{"question": "《查询改写与HyDE》中，「查询改写与 HyDE 技术」具体是什么？", "gold": [{"source": "查询改写与HyDE", "must_contain": "查询改写与 HyDE 技术"}], "refusal_expected": false}
+{"question": "原文如何描述「典型的增强链路是：查询改写或扩展 → 双路检索召回 → RRF 融合 → 交叉编」？", "gold": [{"source": "查询改写与HyDE", "must_contain": "典型的增强链路是：查询改写或扩展 → 双路检索召回 → RRF 融合 → 交叉编"}], "refusal_expected": false}
+{"question": "请说明《rag原理》里「RAG 检索增强生成原理」的含义。", "gold": [{"source": "rag原理", "must_contain": "RAG 检索增强生成原理"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》的作者是谁？", "gold": [], "refusal_expected": true}
+{"question": "请说明《多轮对话与上下文管理》里「\"——这类问题直接送进检索会彻底失效，因为\"第二种\"\"它\"脱离对话历史毫无意义。」的含义。", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "\"——这类问题直接送进检索会彻底失效，因为\"第二种\"\"它\"脱离对话历史毫无意义。"}], "refusal_expected": false}
+{"question": "《复杂文档解析技术》关于「企业文档远比纯文本复杂：多栏排版、表格、图片、页眉页脚、扫描件，每一类都是解析陷」的说明是什么？", "gold": [{"source": "复杂文档解析技术", "must_contain": "企业文档远比纯文本复杂：多栏排版、表格、图片、页眉页脚、扫描件，每一类都是解析陷"}], "refusal_expected": false}
+{"question": "《提示词工程与查询改写》中，「资料不足或未涉及时，必须明确回答\"根据现有资料无法回答\"，禁止编造。」具体是什么？", "gold": [{"source": "提示词工程与查询改写", "must_contain": "资料不足或未涉及时，必须明确回答\"根据现有资料无法回答\"，禁止编造。"}], "refusal_expected": false}
+{"question": "《RAG安全与权限控制》中，「vus 的标量过滤恰好支持这种设计，多租户场景下每个查询都自动携带租户条件，实现」具体是什么？", "gold": [{"source": "RAG安全与权限控制", "must_contain": "vus 的标量过滤恰好支持这种设计，多租户场景下每个查询都自动携带租户条件，实现"}], "refusal_expected": false}
+{"question": "原文如何描述「微软开源的 GraphRAG 项目还引入社区检测算法，把图聚合成主题社区并预生成」？", "gold": [{"source": "GraphRAG与知识图谱", "must_contain": "微软开源的 GraphRAG 项目还引入社区检测算法，把图聚合成主题社区并预生成"}], "refusal_expected": false}
+{"question": "《多轮对话与上下文管理》中，「因此多轮 RAG 在检索之前多了一个必经环节：把带指代的用户问题改写成自包含的独」具体是什么？", "gold": [{"source": "多轮对话与上下文管理", "must_contain": "因此多轮 RAG 在检索之前多了一个必经环节：把带指代的用户问题改写成自包含的独"}], "refusal_expected": false}
+{"question": "请说明《混合检索与RRF融合》里「稠密向量检索擅长理解语义：用户问\"电脑坏了\"，能够召回包含\"计算机故障\"的段落，」的含义。", "gold": [{"source": "混合检索与RRF融合", "must_contain": "稠密向量检索擅长理解语义：用户问\"电脑坏了\"，能够召回包含\"计算机故障\"的段落，"}], "refusal_expected": false}
