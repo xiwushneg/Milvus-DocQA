@@ -60,12 +60,16 @@ def build_llm_profiles(cfg: dict) -> dict[str, dict]:
     return out
 
 
-async def _probe_available(base_url: str, client: httpx.AsyncClient) -> bool:
+async def _probe_available(
+    base_url: str, client: httpx.AsyncClient, headers: dict | None = None
+) -> bool:
     """1.5s 异步探测；仅 2xx 视为可用（401/404 不算在线）。"""
     if not base_url:
         return False
     try:
-        resp = await client.get(f"{base_url.rstrip('/')}/models")
+        resp = await client.get(
+            f"{base_url.rstrip('/')}/models", headers=headers or {}
+        )
         return 200 <= resp.status_code < 300
     except Exception:
         return False
@@ -228,7 +232,14 @@ async def list_llms(request: Request):
     else:
         async with httpx.AsyncClient(timeout=1.5) as client:
             values = await asyncio.gather(
-                *[_probe_available(info["base_url"], client) for info in llms.values()]
+                *[
+                    _probe_available(
+                        info["base_url"],
+                        client,
+                        getattr(info["client"], "_headers", {}),
+                    )
+                    for info in llms.values()
+                ]
             )
         availability = dict(zip(llms.keys(), values))
         request.app.state.llm_probe_cache = (now, availability)

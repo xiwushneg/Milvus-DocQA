@@ -37,7 +37,7 @@ def _install_state(monkeypatch, *, ttl: float = 60.0) -> None:
 def test_llms_reports_only_2xx_as_available(monkeypatch):
     calls: list[str] = []
 
-    async def fake_probe(base_url: str, client) -> bool:
+    async def fake_probe(base_url: str, client, headers=None) -> bool:
         calls.append(base_url)
         return base_url.startswith("http://local.test")
 
@@ -58,7 +58,7 @@ def test_llms_reports_only_2xx_as_available(monkeypatch):
 def test_llms_caches_within_ttl(monkeypatch):
     calls: list[str] = []
 
-    async def fake_probe(base_url: str, client) -> bool:
+    async def fake_probe(base_url: str, client, headers=None) -> bool:
         calls.append(base_url)
         return True
 
@@ -75,7 +75,7 @@ def test_llms_caches_within_ttl(monkeypatch):
 def test_llms_reprobes_after_ttl(monkeypatch):
     calls: list[str] = []
 
-    async def fake_probe(base_url: str, client) -> bool:
+    async def fake_probe(base_url: str, client, headers=None) -> bool:
         calls.append(base_url)
         return True
 
@@ -101,7 +101,7 @@ def test_probe_available_rejects_non_2xx(monkeypatch):
         def __init__(self, status_code: int):
             self.status_code = status_code
 
-        async def get(self, url: str):
+        async def get(self, url: str, headers=None):
             return FakeResponse(self.status_code)
 
     async def run(status_code: int) -> bool:
@@ -113,3 +113,27 @@ def test_probe_available_rejects_non_2xx(monkeypatch):
     assert asyncio.run(run(204)) is True
     assert asyncio.run(run(401)) is False
     assert asyncio.run(run(404)) is False
+
+
+def test_probe_available_sends_auth_header():
+    class FakeResponse:
+        status_code = 200
+
+    class FakeClient:
+        def __init__(self):
+            self.headers = None
+
+        async def get(self, url: str, headers=None):
+            self.headers = headers
+            return FakeResponse()
+
+    import asyncio
+
+    client = FakeClient()
+    ok = asyncio.run(
+        main._probe_available(
+            "http://x/v1", client, {"Authorization": "Bearer k"}
+        )
+    )
+    assert ok is True
+    assert client.headers == {"Authorization": "Bearer k"}
